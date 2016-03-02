@@ -1,0 +1,21 @@
+<ion-view view-title="Results">
+  <ion-content>
+    <ion-list>
+      <div class="item item-divider">
+        Results
+      </div>
+      <ion-item ng-repeat="b in beerList" href="#/app/beers/{{b.id}}">
+        <div class="row">
+          <div class="col text-left">
+            <img ng-src={{b.labels.icon}}>
+          </div>
+          <div class="col col-75 col-text-wrap text-left">
+            <strong>{{b.name}}</strong><br>
+            ABV: {{b.abv}}% <br>
+            IBU: {{b.ibu}}
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
