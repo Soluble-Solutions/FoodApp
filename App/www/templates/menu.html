@@ -21,25 +21,67 @@
     <ion-header-bar class="bar-balanced">
       <h1 class="title">Menu</h1>
     </ion-header-bar>
-    <ion-content id="menu">
+    <ion-content id="menu_left">
       <ion-list>
-        <ion-item menu-close href="#/app/feed">
-          Live Feed
+        <ion-item class="item item-dark" menu-close href="#/app/feed">
+          Today
         </ion-item>
       </ion-list>
     </ion-content>
   </ion-side-menu>
 
   <ion-side-menu side="right">
-    <ion-header-bar class="bar-stable">
-      <h1 class="title">Filters</h1>
+    <ion-header-bar class="bar-balanced">
+      <h1 class="title">Filter</h1>
     </ion-header-bar>
-    <ion-content id="menu">
-      <ion-list>
-        <ion-item menu-close href="#/app/feed">
-          filters here..
-        </ion-item>
-      </ion-list>
+    <ion-content id="menu_right">
+      <ul class="list list-dark">
+        <li class="item item-dark item-toggle">
+           Umph
+           <label class="toggle toggle-balanced">
+             <input type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+        <li class="item item-dark item-toggle">
+           Arnold
+           <label class="toggle toggle-balanced">
+             <input type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+        <li class="item item-dark item-toggle">
+           Vegetarian
+           <label class="toggle toggle-balanced">
+             <input type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+        <li class="item item-dark item-toggle">
+           Low-Calorie
+           <label class="toggle toggle-balanced">
+             <input type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+        <li class="item item-dark item-toggle">
+           Vegan
+           <label class="toggle toggle-balanced">
+             <input type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+      </ul>
     </ion-content>
   </ion-side-menu>
 </ion-side-menus>
