@@ -33,15 +33,13 @@
     </ion-header-bar>
     <ion-content id="menu_left">
       <div class="list">
-
-        <ion-toggle id="filterItem" ng-repeat="f in filters"
+        <ion-checkbox class="item item-dark checkbox-balanced" id="filterItem" ng-repeat="f in filters"
             ng-model="f.checked"
             ng-checked="f.checked">
           {{ f.text }}
-        </ion-toggle>
-
+        </ion-checkbox>
       </div>
     </ion-content>
   </ion-side-menu>
-  
+
 </ion-side-menus>

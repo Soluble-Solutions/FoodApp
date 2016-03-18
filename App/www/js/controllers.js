@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
     $scope.filters = [
       {id: 1, text: "Umph", checked: true},
       {id: 2, text: "Arnold", checked: true},
-      {id: 3, text: "Mac's Place", checked: false}
+      {id: 3, text: "Mac's Place", checked: true}
     ];
 
     $scope.newPost = function() {
