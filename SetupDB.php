@@ -15,6 +15,52 @@ $dbname = "foodapp";
 
   // set the PDO error mode to exception
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $sql = 'USE foodapp;';
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $sql = 'CREATE TABLE Entry
+  (
+    entry_id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(45),
+    votes INT,
+    hot TINYBLOB,
+    cold TINYBLOB,
+    vegan TINYBLOB,
+    vegitarian TINYBLOB,
+    umph TINYBLOB,
+    arnold TINYBLOB,
+    bakery TINYBLOB,
+    grill TINYBLOB,
+    pizza TINYBLOB,
+    deli TINYBLOB,
+    home_zone TINYBLOB,
+    mongolian_grill TINYBLOB,
+    produce TINYBLOB,
+    soup TINYBLOB,
+    tex_mex TINYBLOB,
+    healthy_on_the_hilltop TINYBLOB,
+    international TINYBLOB,
+    salad_bar TINYBLOB,
+    time_stamp VARCHAR(45),
+    image BLOB,
+    PRIMARY KEY (entry_id)
+);'; 
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $sql = 'CREATE TABLE Comments
+  (
+    comment_id INT NOT NULL AUTO_INCREMENT,
+    comment VARCHAR(100),
+    entry_id INT,
+    PRIMARY KEY (comment_id),
+    FOREIGN KEY (entry_id)
+      REFERENCES Entry (entry_id)
+);'; 
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  
 
   /*try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
