@@ -1,77 +1,26 @@
 <ion-view view-title="F&#x21D5;&#x21D5;D">
   <ion-content id="feed">
     <div class="list">
-      <div class="item item-icon-right">
-        <h2>Example 1</h2>
-        <p>@ Umph - Healthy on the Hilltop</p>
-        <div class="icon">
-          <div class="col">
-            <i class="ion-chevron-up"></i><br>
-            <i class="ion-chevron-down"></i>
+      <div class="item" ng-repeat="f in feedData" id="feedItem">
+        <div class="item item-icon-right" id="feedItemTitle">
+          <h2>{{f.url}}</h2>
+          <p>@ Umph - Healthy on the Hilltop</p>
+          <div class="icon">
+            <div class="col">
+              <i class="ion-chevron-up"></i><br>
+              <h3 class="text-center">{{f.votes}}</h3>
+              <i class="ion-chevron-down"></i>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="item item-image">
-        <img src="./img/Food_example.jpg">
-      </div>
-      <a class="item item-icon-left" href="#" ng-click="openDetails()" id="comments">
-        <i class="icon ion-drag"></i>
-        View Details<span class="badge badge-balanced">Top Ranked!</span>
-      </a>
-
-      <div class="item item-icon-right">
-        <h2>Example 2</h2>
-        <p>@ Arnold</p>
-        <div class="icon">
-          <div class="col">
-            <i class="ion-chevron-up"></i><br>
-            <i class="ion-chevron-down"></i>
-          </div>
+        <div class="item item-image" id="feedItemImage">
+          <img ng-src={{f.image}}>
         </div>
+        <a class="item item-icon-left" href="#" ng-click="openDetails()" id="feedItemDetails">
+          <i class="icon ion-drag"></i>
+          View Details<span class="badge badge-balanced">Top Ranked!</span>
+        </a>
       </div>
-      <div class="item item-image">
-        <img src="./img/Food_example.jpg">
-      </div>
-      <a class="item item-icon-left" href="#" ng-click="openDetails()" id="comments">
-        <i class="icon ion-drag"></i>
-        View Details<span class="badge badge-balanced">#2</span>
-      </a>
-
-      <div class="item item-icon-right">
-        <h2>Example 3</h2>
-        <p>@ Umph - Healthy on the Hilltop</p>
-        <div class="icon">
-          <div class="col">
-            <i class="ion-chevron-up"></i><br>
-            <i class="ion-chevron-down"></i>
-          </div>
-        </div>
-      </div>
-      <div class="item item-image">
-        <img src="./img/Food_example.jpg">
-      </div>
-      <a class="item item-icon-left" href="#" ng-click="openDetails()" id="comments">
-        <i class="icon ion-drag"></i>
-        View Details<span class="badge badge-balanced">#3</span>
-      </a>
-
-      <div class="item item-icon-right">
-        <h2>Example 4</h2>
-        <p>@ Arnold</p>
-        <div class="icon">
-          <div class="col">
-            <i class="ion-chevron-up"></i><br>
-            <i class="ion-chevron-down"></i>
-          </div>
-        </div>
-      </div>
-      <div class="item item-image">
-        <img src="./img/Food_example.jpg">
-      </div>
-      <a class="item item-icon-left" href="#" ng-click="openDetails()" id="comments">
-        <i class="icon ion-drag"></i>
-        View Details<span class="badge badge-assertive">Worst Ranked</span>
-      </a>
     </div>
   </ion-content>
 </ion-view>

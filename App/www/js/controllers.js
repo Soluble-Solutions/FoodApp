@@ -14,29 +14,29 @@ angular.module('starter.controllers', [])
       $state.go('app.post');
     }
 
-    $scope.takeImage = function() {
-      console.log("takeImage() called...");
-      var options = {
-          quality: 80,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          allowEdit: true,
-          encodingType: Camera.EncodingType.JPEG,
-          targetWidth: 250,
-          targetHeight: 250,
-          popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: false
-      };
-
-      $cordovaCamera.getPicture(options).then(function(imageData) {
-          $scope.srcImage = "data:image/jpeg;base64," + imageData;
-      }, function(err) {
-          // error
-      });
-    }
 })
 
-.controller('PostCtrl', function() {
+.controller('PostCtrl', function($scope) {
+  $scope.takeImage = function() {
+    console.log("takeImage() called...");
+    var options = {
+        quality: 80,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 250,
+        targetHeight: 250,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+        $scope.srcImage = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+        // error
+    });
+  }
 
 })
 
@@ -45,23 +45,20 @@ angular.module('starter.controllers', [])
 
   $http.get("http://private-1091a1-sample276.apiary-mock.com/index")
   .then(function(response) {
-      $scope.feedData = response.data[0];
+      $scope.feedData = response.data;
       $scope.status = response.status;
       $scope.statusText = response.statusText;
-      $scope.number = $scope.feedData.number;
 
       //DEBUGGING//
-      console.log("scope.statusText = " + $scope.statusText);
-      console.log("scope.status = " + $scope.status);
-      console.log("$scope.feedData = " + $scope.feedData);
-      console.log("$scope.number = " + $scope.number);
+      console.log("Status = " + $scope.statusText);
+      console.log(response);
+      console.log($scope.feedData);
   });
 
   $scope.openDetails = function() {
     console.log("Switching to $state: app.details")
     $state.go('app.details');
   }
-
 
 })
 

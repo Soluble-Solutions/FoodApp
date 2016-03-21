@@ -7,3 +7,12 @@
 #comments {
   background-color:#F8F8F8;
 }
+
+#feedItem {
+  border-bottom: none;
+  padding:0;
+}
+
+#feedItemImage {
+  max-height: 30rem;
+}
