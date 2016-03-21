@@ -4,12 +4,13 @@ angular.module('starter.controllers', [])
     $scope.filters = [
       {id: 1, text: "Umph", checked: true},
       {id: 2, text: "Arnold", checked: true},
-      {id: 3, text: "Mac's Place", checked: true}
+      {id: 3, text: "Mac's Place", checked: true},
+      {id: 4, text: "Vegetarian", checked: false},
+      {id: 5, text: "Vegan", checked: false}
     ];
 
     $scope.newPost = function() {
-      console.log("newPost() called.");
-      console.log("Switching 'state' to 'app.post'.");
+      console.log("Switching to $state: app.post");
       $state.go('app.post');
     }
 
@@ -56,7 +57,8 @@ angular.module('starter.controllers', [])
       console.log("$scope.number = " + $scope.number);
   });
 
-  $scope.openComments = function() {
+  $scope.openDetails = function() {
+    console.log("Switching to $state: app.details")
     $state.go('app.details');
   }
 
