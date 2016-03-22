@@ -2,11 +2,23 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
     $scope.filters = [
-      {id: 1, text: "Umph", checked: true},
-      {id: 2, text: "Arnold", checked: true},
-      {id: 3, text: "Mac's Place", checked: true},
-      {id: 4, text: "Vegetarian", checked: false},
-      {id: 5, text: "Vegan", checked: false}
+      {text:"Arnold", checked:false},
+      {text:"Umph", checked:true},
+      {text:"Hot", checked:true},
+      {text:"Cold", checked:false},
+      {text:"Vegetarian", checked:true},
+      {text:"Vegan", checked:true},
+      {text:"Bakery", checked:false},
+      {text:"Grill", checked:true},
+      {text:"Pizza", checked:false},
+      {text:"Deli", checked:false},
+      {text:"Home_zone", checked:false},
+      {text:"Mongolian_grill", checked:false},
+      {text:"Produce", checked:false},
+      {text:"Soup", checked:false},
+      {text:"Tex_Mex", checked:false},
+      {text:"Healthy_on_the_Hilltop", checked:false},
+      {text:"International", checked:false}
     ];
 
     $scope.newPost = function() {
