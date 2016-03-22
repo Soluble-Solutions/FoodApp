@@ -19,77 +19,64 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = 'CREATE TABLE Entry
+  $sql = 'CREATE TABLE IF NOT Exists Characteristics
   (
-    entry_id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(45),
-    votes INT,
-    time_stamp datetime,
-    image BLOB,
-    PRIMARY KEY (entry_id)
-);
-    CREATE TABLE FoodType
-    (
-      hot TINYINT(1),
-      cold TINYINT(1),
-      vegan TINYINT(1),
-      vegetarian TINYINT(1)
-      FOREIGN KEY (entry_id)
-    );
-    CREATE TABLE Location
-    (
-      umph TINYINT(1),
-      arnold TINYINT(1),
-      bakery TINYINT(1),
-      grill TINYINT(1),
-      pizza TINYINT(1),
-      deli TINYINT(1),
-      home_zone TINYINT(1),
-      mongolian_grill TINYINT(1),
-      produce TINYINT(1),
-      soup TINYINT(1),
-      tex_mex TINYINT(1),
-      healthy_on_the_hilltop TINYINT(1),
-      international TINYINT(1),
-      salad_bar TINYINT(1)
-    );'
-  $conn->query($sql);
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $sql = 'CREATE TABLE Comments
-  (
-    comment_id INT NOT NULL AUTO_INCREMENT,
-    comment VARCHAR(100),
-    entry_id INT,
-    PRIMARY KEY (comment_id),
-    FOREIGN KEY (entry_id)
-    REFERENCES Entry (entry_id)
+    characteristics_id int  NOT NULL  AUTO_INCREMENT,
+    hot TINYINT(1),
+    cold TINYINT(1),
+    vegetarian TINYINT(1),
+    vegan TINYINT(1),
+    entry_id INT  NOT NULL,
+    CONSTRAINT Characteristics_pk PRIMARY KEY (characteristics_id)
+  );
 
-);';
+  CREATE TABLE IF NOT EXISTS Comment
+  (
+    comment_id INT  NOT NULL  AUTO_INCREMENT,
+    comment VARCHAR(200)  NOT NULL,
+    time_stamp DateTime  NOT NULL,
+    entry_id INT  NOT NULL,
+    CONSTRAINT Comment_pk PRIMARY KEY (comment_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS Entry
+  (
+    entry_id int  NOT NULL  AUTO_INCREMENT,
+    title varchar(45)  NOT NULL,
+    votes int,
+    time_stamp timestamp  NOT NULL,
+    image varchar(100)  NOT NULL,
+    location_id int  NOT NULL,
+    characteristics_id int,
+    comment_id int,
+    CONSTRAINT entry_id PRIMARY KEY (entry_id)
+  );';
+
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+  $sql = 'CREATE TABLE IF NOT EXISTS Location
+  (
+    location_id int  NOT NULL  AUTO_INCREMENT,
+    umph tinyint(1),
+    arnold tinyint(1),
+    bakery tinyint(1),
+    grill tinyint(1),
+    pizza tinyint(1),
+    deli tinyint(1),
+    home_zone tinyint(1),
+    mongolian_grill tinyint(1),
+    produce tinyint(1),
+    soup tinyint(1),
+    tex_mex tinyint(1),
+    healthy_on_the_hilltop tinyint(1),
+    international tinyint(1),
+    salad_bar tinyint(1),
+    entry_id int  NOT NULL,
+    CONSTRAINT Location_pk PRIMARY KEY (location_id)
+  );';
 
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  /*try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-  } catch (\Exception $e){
-    echo $e->getMessage(),PHP_EOL;
-  }
-  if($conn->select_db('foodapp') === false){
-    $sql = "CREATE DATABASE foodapp;";
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-
-    $q = $conn->query($sql);
-    $q->setFetchMode(PDO::FETCH_ASSOC);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-  }*/
-  /*$sql = 'mysql_select_db($mysql, 'foodapp')';
-  if(!$sql)
-    echo "database exists";
-    //do everything
-  else {
-    $sql2 = "CREATE DATABASE foodapp;
-
-  }*/
   ?>
