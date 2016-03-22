@@ -16,3 +16,12 @@
 #feedItemImage {
   max-height: 30rem;
 }
+
+.bar {
+  background-color:#236B8E;
+  color:white;
+}
+
+.title {
+  color:white;
+}
