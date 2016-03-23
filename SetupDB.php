@@ -19,15 +19,22 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = 'CREATE TABLE IF NOT Exists Characteristics
+  $sql = 'CREATE TABLE IF NOT EXISTS Attribute
   (
-    characteristics_id int  NOT NULL  AUTO_INCREMENT,
-    hot TINYINT(1),
-    cold TINYINT(1),
-    vegetarian TINYINT(1),
-    vegan TINYINT(1),
-    entry_id INT  NOT NULL,
-    CONSTRAINT Characteristics_pk PRIMARY KEY (characteristics_id)
+    attribute_id INT  NOT NULL  AUTO_INCREMENT,
+    name VARCHAR(45)  NOT NULL,
+    CONSTRAINT Attribute_pk PRIMARY KEY (attribute_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS Entry
+  (
+    entry_id INT  NOT NULL  AUTO_INCREMENT,
+    title VARCHAR(45)  NOT NULL,
+    votes INT  NOT NULL,
+    time_stamp DateTime  NOT NULL,
+    image VARCHAR(100)  NOT NULL,
+    station_id INT  NOT NULL,
+    CONSTRAINT entry_id PRIMARY KEY (entry_id)
   );
 
   CREATE TABLE IF NOT EXISTS Comment
@@ -36,44 +43,42 @@ $dbname = "foodapp";
     comment VARCHAR(200)  NOT NULL,
     time_stamp DateTime  NOT NULL,
     entry_id INT  NOT NULL,
-    CONSTRAINT Comment_pk PRIMARY KEY (comment_id)
+    CONSTRAINT Comment_pk PRIMARY KEY (comment_id),
+    CONSTRAINT Comment_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
   );
 
-  CREATE TABLE IF NOT EXISTS Entry
+  CREATE TABLE IF NOT EXISTS Dining_Hall
   (
-    entry_id int  NOT NULL  AUTO_INCREMENT,
-    title varchar(45)  NOT NULL,
-    votes int,
-    time_stamp timestamp  NOT NULL,
-    image varchar(100)  NOT NULL,
-    location_id int  NOT NULL,
-    characteristics_id int,
-    comment_id int,
-    CONSTRAINT entry_id PRIMARY KEY (entry_id)
-  );';
+    dh_id INT  NOT NULL  AUTO_INCREMENT,
+    name VARCHAR(45)  NOT NULL,
+    entry_id INT  NOT NULL,
+    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id),
+    CONSTRAINT Location_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
+  );
 
-  $conn->query($sql);
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-  $sql = 'CREATE TABLE IF NOT EXISTS Location
+  CREATE TABLE IF NOT EXISTS Entry_Attributes
   (
-    location_id int  NOT NULL  AUTO_INCREMENT,
-    umph tinyint(1),
-    arnold tinyint(1),
-    bakery tinyint(1),
-    grill tinyint(1),
-    pizza tinyint(1),
-    deli tinyint(1),
-    home_zone tinyint(1),
-    mongolian_grill tinyint(1),
-    produce tinyint(1),
-    soup tinyint(1),
-    tex_mex tinyint(1),
-    healthy_on_the_hilltop tinyint(1),
-    international tinyint(1),
-    salad_bar tinyint(1),
-    entry_id int  NOT NULL,
-    CONSTRAINT Location_pk PRIMARY KEY (location_id)
+    entry_id INT  NOT NULL  AUTO_INCREMENT,
+    attribute_id INT  NOT NULL,
+    CONSTRAINT Entry_Attributes_pk PRIMARY KEY (entry_id,attribute_id),
+    CONSTRAINT Entry_Attributes_Attribute_fk FOREIGN KEY (attribute_id) REFERENCES Attribute (attribute_id),
+    CONSTRAINT Entry_Attributes_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS Station
+  (
+    station_id INT  NOT NULL  AUTO_INCREMENT,
+    name VARCHAR(45)  NOT NULL,
+    CONSTRAINT Station_pk PRIMARY KEY (station_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS DiningHall_Station
+  (
+    dh_id INT  NOT NULL,
+    station_id INT  NOT NULL,
+    CONSTRAINT DiningHall_Station_pk PRIMARY KEY (dh_id,station_id),
+    CONSTRAINT DiningHall_Station_Dining_Hall_fk FOREIGN KEY (dh_id) REFERENCES Dining_Hall (dh_id),
+    CONSTRAINT DiningHall_Station_Station_fk FOREIGN KEY (station_id) REFERENCES Station (station_id)
   );';
 
   $conn->query($sql);
