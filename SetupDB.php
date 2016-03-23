@@ -34,7 +34,6 @@ $dbname = "foodapp";
     time_stamp DateTime  NOT NULL,
     image VARCHAR(100)  NOT NULL,
     dh_id INT NOT NULL,
-    comment_id INT NOT NULL,
     station_id INT  NOT NULL,
     CONSTRAINT entry_id PRIMARY KEY (entry_id)
   );
@@ -53,7 +52,9 @@ $dbname = "foodapp";
   (
     dh_id INT  NOT NULL  AUTO_INCREMENT,
     name VARCHAR(45)  NOT NULL,
-    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id)
+    entry_id INT  NOT NULL,
+    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id),
+    CONSTRAINT Location_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
   );
 
   CREATE TABLE IF NOT EXISTS Entry_Attributes
@@ -150,7 +151,6 @@ insert into Station (name) values ('eget');
 insert into Station (name) values ('diam');
 insert into Station (name) values ('nulla');
 insert into Station (name) values ('mauris');
-
 ";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
