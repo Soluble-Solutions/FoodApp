@@ -2,40 +2,53 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
     $scope.filters = [
-      {id: 1, text: "Umph", checked: true},
-      {id: 2, text: "Arnold", checked: true},
-      {id: 3, text: "Mac's Place", checked: true}
+      {text:"Arnold", checked:false},
+      {text:"Umph", checked:true},
+      {text:"Hot", checked:true},
+      {text:"Cold", checked:false},
+      {text:"Vegetarian", checked:true},
+      {text:"Vegan", checked:true},
+      {text:"Bakery", checked:false},
+      {text:"Grill", checked:true},
+      {text:"Pizza", checked:false},
+      {text:"Deli", checked:false},
+      {text:"Home_zone", checked:false},
+      {text:"Mongolian_grill", checked:false},
+      {text:"Produce", checked:false},
+      {text:"Soup", checked:false},
+      {text:"Tex_Mex", checked:false},
+      {text:"Healthy_on_the_Hilltop", checked:false},
+      {text:"International", checked:false}
     ];
 
     $scope.newPost = function() {
-      console.log("newPost() called.");
-      console.log("Switching 'state' to 'app.post'.");
+      console.log("Switching to $state: app.post");
       $state.go('app.post');
     }
 
-    $scope.takeImage = function() {
-      console.log("takeImage() called...");
-      var options = {
-          quality: 80,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          allowEdit: true,
-          encodingType: Camera.EncodingType.JPEG,
-          targetWidth: 250,
-          targetHeight: 250,
-          popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: false
-      };
-
-      $cordovaCamera.getPicture(options).then(function(imageData) {
-          $scope.srcImage = "data:image/jpeg;base64," + imageData;
-      }, function(err) {
-          // error
-      });
-    }
 })
 
-.controller('PostCtrl', function() {
+.controller('PostCtrl', function($scope) {
+  $scope.takeImage = function() {
+    console.log("takeImage() called...");
+    var options = {
+        quality: 80,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 250,
+        targetHeight: 250,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+        $scope.srcImage = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+        // error
+    });
+  }
 
 })
 
@@ -44,22 +57,20 @@ angular.module('starter.controllers', [])
 
   $http.get("http://private-1091a1-sample276.apiary-mock.com/index")
   .then(function(response) {
-      $scope.feedData = response.data[0];
+      $scope.feedData = response.data;
       $scope.status = response.status;
       $scope.statusText = response.statusText;
-      $scope.number = $scope.feedData.number;
 
       //DEBUGGING//
-      console.log("scope.statusText = " + $scope.statusText);
-      console.log("scope.status = " + $scope.status);
-      console.log("$scope.feedData = " + $scope.feedData);
-      console.log("$scope.number = " + $scope.number);
+      console.log("Status = " + $scope.statusText);
+      console.log(response);
+      console.log($scope.feedData);
   });
 
-  $scope.openComments = function() {
+  $scope.openDetails = function() {
+    console.log("Switching to $state: app.details")
     $state.go('app.details');
   }
-
 
 })
 
