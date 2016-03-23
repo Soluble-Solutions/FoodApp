@@ -10,25 +10,44 @@ $dbname = "foodapp";
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
   try{
-    $sql = 'SELECT image,votes
-            FROM Entry
-            ORDER BY votes DESC';
+    $sql = 'SELECT *
+            FROM Entry'; #ORDER BY votes DESC
     $db = $this->dbConn;
 
     $q = $db->query($sql);
     $check = $q->setFetchMode(PDO::FETCH_ASSOC);
+    $row = $q->fetchAll(); //
+    $returnArr = array();
+    if(sizeof($row)>=1){
+      //$returnArr['success'] ='True';
+      $data = $row[0];
+      $returnArr['entry_id'] = $data['entry_id'];
+      $returnArr['title'] = $data['title'];
+      $returnArr['votes'] = $data['votes'];
+      $returnArr['time_stamp'] = $data['time_stamp'];
+      $returnArr['image'] = $data['image'];
+      $returnArr['dh_id'] = $data['dh_id'];
+      $returnArr['comment_id'] = $data['comment_id'];
+      $returnArr['station_id'] = $data['station_id'];
 
+    }
+    else{
+      $returnArr['success'] ='False';
+    }
+    return json_encode($returnArr);
+  }
+    /*
     if($check){
       //$response->setStatus(200);
     //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       header('Content-type: application/json');
-      echo json_encode($check);
+      echo json_encode($q);
       $db = null;
     } else{
       throw new PDOException('No records found.');
     }
 
-  }
+  }*/
     catch(PDOException $e){
       $this->notFoundHandler; //404
       //$app->$response->setStatus(404);
