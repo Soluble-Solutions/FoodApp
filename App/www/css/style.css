@@ -1,10 +1,18 @@
-#menu_right,
-#menu_left,
-#filterItem {
-  background-color:	#404040;
+.bar {
+  background-color:#236B8E;
+  color:white;
 }
 
-#comments {
+.title {
+  color:white;
+}
+
+#navBarButton,
+#backButton {
+  color:white;
+}
+
+#feed {
   background-color:#F8F8F8;
 }
 
@@ -17,11 +25,6 @@
   max-height: 30rem;
 }
 
-.bar {
-  background-color:#236B8E;
-  color:white;
-}
-
-.title {
-  color:white;
+#comments {
+  background-color:#F8F8F8;
 }
