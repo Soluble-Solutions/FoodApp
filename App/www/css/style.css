@@ -7,7 +7,6 @@
   color:white;
 }
 
-
 i.button.button-icon.icon.ion-chevron-up:hover{
   color: #236B8E;
 }
@@ -37,7 +36,7 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   color: #236B8E;
 }
 
-#navButton,
+#navBarButton,
 #backButton {
   color:white;
 }
