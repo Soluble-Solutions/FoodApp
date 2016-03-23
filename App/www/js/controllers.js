@@ -55,7 +55,7 @@ angular.module('starter.controllers', [])
 .controller('FeedCtrl', function($scope, $http, $state) {
   $scope.feedData = {};
 
-  $http.get("http://private-1091a1-sample276.apiary-mock.com/index")
+  $http.get("http://private-5fb8c-foodapp322.apiary-mock.com/index")
   .then(function(response) {
       $scope.feedData = response.data;
       $scope.status = response.status;
@@ -72,10 +72,13 @@ angular.module('starter.controllers', [])
     $state.go('app.details');
   }
 
+  $scope.upvote = $scope.votes+1;
+  $scope.downvote = $scope.votes-1;
+
   $scope.upVote = function() {
     var data = $.param({
             json: JSON.stringify({
-                votes: $scope.votes+1
+                votes: $scope.upvote
             })
     });
     $http.post("http://private-80215-sample276.apiary-mock.com/index", data).success(function(data,status){
@@ -84,10 +87,11 @@ angular.module('starter.controllers', [])
     //put request changing ranking in database to one more
   }
 
+
   $scope.downVote = function() {
     var data = $.param({
             json: JSON.stringify({
-                votes: $scope.votes-1
+                votes: $scope.downvote
             })
     });
     $http.post("http://private-80215-sample276.apiary-mock.com/index", data).success(function(data,status){
