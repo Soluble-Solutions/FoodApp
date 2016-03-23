@@ -7,6 +7,7 @@
   color:white;
 }
 
+
 i.button.button-icon.icon.ion-chevron-up:hover{
   color: #236B8E;
 }
@@ -34,15 +35,17 @@ i.button.button-icon.icon.ion-chevron-down{
 
 i.button.button-icon.icon.ion-chevron-down:hover{
   color: #236B8E;
+}
 
-#navBarButton,
+#navButton,
 #backButton {
   color:white;
 }
 
-#votes{
+#votes {
   position: absolute;
-  left: 100px;
+  right:1.6rem;
+  bottom:1.5rem;
 }
 
 #feed {
