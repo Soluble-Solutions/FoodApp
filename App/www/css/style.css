@@ -8,19 +8,19 @@
 }
 
 i.button.button-icon.icon.ion-chevron-up:hover{
-  color: #33cd5f;
+  color: #236B8E;
 }
 
 i.button.button-icon.icon.ion-chevron-up{
   position: absolute;
   bottom: 2rem;
-  margin-bottom: 2rem;
+  top: 5px;
+  margin-bottom: 1rem;
   padding-bottom: 3rem;
 }
 
 i.button.button-icon.icon.ion-chevron-up:before{
   position: relative;
-  left: 1.25rem;
 }
 
 i.button.button-icon.icon.ion-chevron-down{
@@ -33,11 +33,16 @@ i.button.button-icon.icon.ion-chevron-down{
 
 
 i.button.button-icon.icon.ion-chevron-down:hover{
-  color: red;
+  color: #236B8E;
 
 #navBarButton,
 #backButton {
   color:white;
+}
+
+#votes{
+  position: absolute;
+  left: 100px;
 }
 
 #feed {

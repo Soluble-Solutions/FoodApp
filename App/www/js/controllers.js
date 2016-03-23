@@ -65,6 +65,7 @@ angular.module('starter.controllers', [])
       console.log("Status = " + $scope.statusText);
       console.log(response);
       console.log($scope.feedData);
+      console.log($scope.votes);
   });
 
   $scope.openDetails = function() {
@@ -76,30 +77,37 @@ angular.module('starter.controllers', [])
   $scope.downvote = $scope.votes-1;
 
   $scope.upVote = function() {
-    var data = $.param({
-            json: JSON.stringify({
-                votes: $scope.upvote
-            })
-    });
-    $http.post("http://private-80215-sample276.apiary-mock.com/index", data).success(function(data,status){
+    // var data = params({
+    //         json: JSON.stringify({
+    //             votes: $scope.upvote
+    //         })
+    // });
+    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {votes: $scope.upvote}).success(function(data,status){
       $scope.votes = data;
-    })
+      console.log($scope.votes);
+    }).error(function(data, status){
+      $scope.status = status;
+      console.log($scope.status);
+    });
     //put request changing ranking in database to one more
   }
 
 
   $scope.downVote = function() {
-    var data = $.param({
-            json: JSON.stringify({
-                votes: $scope.downvote
-            })
-    });
-    $http.post("http://private-80215-sample276.apiary-mock.com/index", data).success(function(data,status){
+    // var data = params({
+    //         json: JSON.stringify({
+    //             votes: $scope.downvote
+    //         })
+    // });
+    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {votes: $scope.downvote}).success(function(data,status){
       $scope.votes = data;
-    })
+      console.log($scope.votes);
+    }).error(function(data, status){
+      $scope.status = status;
+      console.log($scope.status);
+    });
     //Put request changing ranking in database to one less
   }
-
 })
 
 
@@ -112,4 +120,4 @@ angular.module('starter.controllers', [])
     {id: 3, text: "I don't know how people eat here..."}
   ];
 
-});
+})

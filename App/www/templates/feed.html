@@ -5,10 +5,10 @@
         <div class="item item-icon-right" id="feedItemTitle">
           <h2>{{f.url}}</h2>
           <p>@ Umph - Healthy on the Hilltop</p>
-          <div class="item item-icon-right">
+          <div class="icon item-icon-right">
             <div class="col">
               <i class="button button-icon icon ion-chevron-up" ng-click="upVote()"></i>
-              <h3 class="text-center">{{f.votes}}</h3>
+              <h3 class="text-right" id="votes">{{f.votes}}</h3>
               <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()"></i>
             </div>
           </div>
