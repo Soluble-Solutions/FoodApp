@@ -1,0 +1,17 @@
+<ion-view view-title="Comments">
+  <ion-content>
+    <ion-list>
+      <!--Display Image of Post here-->
+      <ion-item ng-repeat="c in comments" href="#">
+        <div class="row text-left">
+          <div class="col col-10">
+            <b>{{c.id}}.</b>
+          </div>
+          <div class="col col-90">
+            <i>{{c.text}}</i>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

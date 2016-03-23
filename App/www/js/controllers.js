@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
     console.log("Switching to $state: app.details")
     $state.go('app.details');
   }
-  
+
   $scope.upVote = function() {
     var data = $.param({
             json: JSON.stringify({
