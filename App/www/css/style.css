@@ -1,0 +1,56 @@
+#menu_right,
+#menu_left,
+#filterItem {
+  background-color:	#404040;
+}
+
+#comments {
+  background-color:#F8F8F8;
+}
+
+#feedItem {
+  border-bottom: none;
+  padding:0;
+}
+
+#feedItemImage {
+  max-height: 30rem;
+}
+
+.bar {
+  background-color:#236B8E;
+  color:white;
+}
+
+.title {
+  color:white;
+}
+
+i.button.button-icon.icon.ion-chevron-up:hover{
+  color: #33cd5f;
+}
+
+i.button.button-icon.icon.ion-chevron-up{
+  position: absolute;
+  bottom: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 3rem;
+}
+
+i.button.button-icon.icon.ion-chevron-up:before{
+  position: relative;
+  left: 1.25rem;
+}
+
+i.button.button-icon.icon.ion-chevron-down{
+  position: absolute;
+  top: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+
+}
+
+
+i.button.button-icon.icon.ion-chevron-down:hover{
+  color: red;
+}
