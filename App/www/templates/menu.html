@@ -1,6 +1,15 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
     <ion-nav-bar class="bar" id="headerNavBar">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="newPost()">
+        </button>
+      </ion-nav-buttons>
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-ios-settings" menu-toggle="left">
       <ion-nav-back-button id="backButton">
       </ion-nav-back-button>
 
