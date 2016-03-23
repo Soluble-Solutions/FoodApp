@@ -53,7 +53,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('FeedCtrl', function($scope, $http, $state) {
-  $scope.feedData = {};
+  $scope.feedData = [];
 
   $http.get("http://private-5fb8c-foodapp322.apiary-mock.com/index")
   .then(function(response) {
@@ -101,6 +101,7 @@ angular.module('starter.controllers', [])
   }
 
 })
+
 
 .controller('DetailsCtrl', function($scope) {
 
