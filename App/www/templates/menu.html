@@ -123,27 +123,26 @@
     </ion-header-bar>
     <ion-content>
       <div class="list">
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Dining Halls
-          </div>
-          <select>
-            <option id="filterItem" ng-repeat="d in diningHalls" ng-model="d.checked" ng-checked="d.checked">
-              {{ d.text }}
-            </option>
-          </select>
-        </label>
+        <div class="item item-divider">
+          Dining Hall
+        </div>
+        <ion-radio id="filterItem" ng-repeat="d in diningHalls" ng-model="d.checked" ng-checked="d.checked">
+          {{ d.text }}
+        </ion-radio>
 
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Stations
-          </div>
-          <select>
-            <option id="filterItem" ng-repeat="s in stations" ng-model="s.checked" ng-checked="s.checked">
-              {{ s.text }}
-            </option>
-          </select>
-        </label>
+        <div class="item item-divider">
+          Stations
+        </div>
+
+        <ion-checkbox class="item" id="filterItem" ng-repeat="s in stations"
+            ng-model="s.checked"
+            ng-checked="s.checked">
+          {{ s.text }}
+        </ion-checkbox>
+
+        <div class="item item-divider">
+          Tags
+        </div>
 
         <ion-checkbox class="item" id="filterItem" ng-repeat="f in filters"
             ng-model="f.checked"
