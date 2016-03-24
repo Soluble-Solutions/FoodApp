@@ -117,8 +117,8 @@
 <script id="contact-modal.html" type="text/ng-template" class="filterModal">
   <div class="modal">
     <ion-header-bar>
-      <button class="button button-icon button-clear ion-close"
-        ng-click="closeModal()" id="navBarButton" side="right"></button>
+      <button class="button button-icon button-clear"
+        ng-click="closeModal()" id="navBarButton">close</button>
       <h1 class="title">Filter Results</h1>
     </ion-header-bar>
 
@@ -129,18 +129,13 @@
             </button>
           <h2>Dining Hall</h2>
         </div>
-        <li class="item item-toggle"
-              ng-repeat="d in diningHalls"
-              ng-model="d.checked"
-              ng-show="displayHalls">
-           {{d.text}}
-           <label class="toggle toggle-positive">
-             <input type="checkbox" ng-checked="d.checked">
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </li>
+        <ion-checkbox class="item" id="filterItem"
+            ng-repeat="d in diningHalls"
+            ng-model="d.checked"
+            ng-checked="d.checked"
+            ng-show="displayHalls">
+          {{ d.text }}
+        </ion-checkbox>
 
         <div class="item item-stable item-icon-right"   ng-click="toggleStations()">
           <button class="icon button button-icon button-clear ion-plus">
@@ -166,8 +161,13 @@
             ng-show="displayTags">
           {{ f.text }}
         </ion-checkbox>
-        <button class="button button-full button-dark" ng-click="closeModal()">Apply</button>
       </div>
     </ion-content>
+
+    <button>
+      <ion-footer-bar class="bar bar-footer bar-dark" ng-click="closeModal()">
+        <h3 class="title">Apply</h3>
+      </ion-footer-bar>
+    </button>
   </div>
 </script>

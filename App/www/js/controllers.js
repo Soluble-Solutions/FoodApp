@@ -26,7 +26,7 @@ angular.module('starter.controllers', [])
       {text:"Umph", checked:true}
     ];
 
-    $scope.displayHalls = false;
+    $scope.displayHalls = true;
     $scope.toggleHalls = function() {
       $scope.displayHalls = $scope.displayHalls === false ? true: false;
     };
