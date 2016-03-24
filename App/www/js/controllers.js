@@ -104,12 +104,15 @@ angular.module('starter.controllers', [])
   $scope.downvote = $scope.votes-1;
 
   $scope.upVote = function() {
+    console.log("upVote() called!");
     // var data = params({
     //         json: JSON.stringify({
     //             votes: $scope.upvote
     //         })
     // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {votes: $scope.upvote}).success(function(data,status){
+    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
+      votes: $scope.upvote
+    }).success(function(data,status){
       $scope.votes = data;
       console.log($scope.votes);
     }).error(function(data, status){
@@ -121,12 +124,15 @@ angular.module('starter.controllers', [])
 
 
   $scope.downVote = function() {
+    console.log("downVote() called!");
     // var data = params({
     //         json: JSON.stringify({
     //             votes: $scope.downvote
     //         })
     // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {votes: $scope.downvote}).success(function(data,status){
+    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
+      votes: $scope.downvote
+    }).success(function(data,status){
       $scope.votes = data;
       console.log($scope.votes);
     }).error(function(data, status){

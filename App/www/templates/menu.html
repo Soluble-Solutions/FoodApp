@@ -117,9 +117,11 @@
 <script id="contact-modal.html" type="text/ng-template" class="filterModal">
   <div class="modal">
     <ion-header-bar>
-      <h1 class="title">Filters</h1>
       <button class="button button-icon button-clear ion-close"
-          ng-click="closeModal()" id="navBarButton" side="right"></button>
+        ng-click="closeModal()" id="navBarButton" side="right"></button>
+      <h1 class="title">Filter Results</h1>
+      <button class="button button-icon button-clear"
+        ng-click="closeModal()" id="navBarButton" side="right">Apply</button>
     </ion-header-bar>
     <ion-content>
       <div class="list">
@@ -149,8 +151,8 @@
             ng-checked="f.checked">
           {{ f.text }}
         </ion-checkbox>
+        <button class="button button-full button-dark" ng-click="closeModal()">Apply</button>
       </div>
-      <button class="button button-full button-dark" ng-click="closeModal()">Apply</button>
     </ion-content>
   </div>
 </script>
