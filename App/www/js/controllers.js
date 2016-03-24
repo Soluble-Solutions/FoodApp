@@ -1,25 +1,65 @@
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
-    $scope.filters = [
-      {text:"Arnold", checked:false},
-      {text:"Umph", checked:true},
-      {text:"Hot", checked:true},
-      {text:"Cold", checked:false},
-      {text:"Vegetarian", checked:true},
-      {text:"Vegan", checked:true},
-      {text:"Bakery", checked:false},
-      {text:"Grill", checked:true},
-      {text:"Pizza", checked:false},
-      {text:"Deli", checked:false},
-      {text:"Home_zone", checked:false},
-      {text:"Mongolian_grill", checked:false},
-      {text:"Produce", checked:false},
-      {text:"Soup", checked:false},
-      {text:"Tex_Mex", checked:false},
-      {text:"Healthy_on_the_Hilltop", checked:false},
-      {text:"International", checked:false}
+  $ionicModal.fromTemplateUrl('contact-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+    $scope.modal = modal
+    })
+
+    $scope.openModal = function() {
+      console.log("openModal called!");
+    $scope.modal.show();
+    }
+
+    $scope.closeModal = function() {
+    $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+    });
+
+    $scope.diningHalls = [
+      {text:"Arnold", checked:true},
+      {text:"Umph", checked:true}
     ];
+
+    $scope.displayHalls = false;
+    $scope.toggleHalls = function() {
+      $scope.displayHalls = $scope.displayHalls === false ? true: false;
+    };
+
+    $scope.stations = [
+      {text:"Bakery", checked:true},
+      {text:"Grill", checked:true},
+      {text:"Pizza", checked:true},
+      {text:"Deli", checked:true},
+      {text:"Home_zone", checked:true},
+      {text:"Mongolian_grill", checked:true},
+      {text:"Produce", checked:true},
+      {text:"Soup", checked:true},
+      {text:"Tex_Mex", checked:true},
+      {text:"Healthy_on_the_Hilltop", checked:true},
+      {text:"International", checked:true}
+    ];
+
+    $scope.displayStations = false;
+    $scope.toggleStations = function() {
+      $scope.displayStations = $scope.displayStations === false ? true: false;
+    };
+
+    $scope.filters = [
+      {text:"Hot", checked:true},
+      {text:"Cold", checked:true},
+      {text:"Vegetarian", checked:true},
+      {text:"Vegan", checked:true}
+    ];
+    $scope.displayTags = false;
+    $scope.toggleTags = function() {
+      $scope.displayTags = $scope.displayTags === false ? true: false;
+    };
 
     $scope.newPost = function() {
       console.log("Switching to $state: app.post");
@@ -60,6 +100,7 @@ angular.module('starter.controllers', [])
       $scope.feedData = response.data;
       $scope.status = response.status;
       $scope.statusText = response.statusText;
+      $scope.votes = $scope.feedData[0].votes;
 
       //DEBUGGING//
       console.log("Status = " + $scope.statusText);
@@ -77,12 +118,15 @@ angular.module('starter.controllers', [])
   $scope.downvote = $scope.votes-1;
 
   $scope.upVote = function() {
+    console.log("upVote() called!");
     // var data = params({
     //         json: JSON.stringify({
     //             votes: $scope.upvote
     //         })
     // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {votes: $scope.upvote}).success(function(data,status){
+    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
+      votes: $scope.upvote
+    }).success(function(data,status){
       $scope.votes = data;
       console.log($scope.votes);
     }).error(function(data, status){
@@ -94,12 +138,15 @@ angular.module('starter.controllers', [])
 
 
   $scope.downVote = function() {
+    console.log("downVote() called!");
     // var data = params({
     //         json: JSON.stringify({
     //             votes: $scope.downvote
     //         })
     // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {votes: $scope.downvote}).success(function(data,status){
+    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
+      votes: $scope.downvote
+    }).success(function(data,status){
       $scope.votes = data;
       console.log($scope.votes);
     }).error(function(data, status){
