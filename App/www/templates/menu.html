@@ -120,35 +120,50 @@
       <button class="button button-icon button-clear ion-close"
         ng-click="closeModal()" id="navBarButton" side="right"></button>
       <h1 class="title">Filter Results</h1>
-      <button class="button button-icon button-clear"
-        ng-click="closeModal()" id="navBarButton" side="right">Apply</button>
     </ion-header-bar>
+
     <ion-content>
       <div class="list">
-        <div class="item item-divider">
-          Dining Hall
+        <div class="item item-stable item-icon-right"  ng-click="toggleHalls()">
+          <button class="icon button button-icon button-clear ion-plus">
+            </button>
+          <h2>Dining Hall</h2>
         </div>
-        <ion-radio id="filterItem" ng-repeat="d in diningHalls" ng-model="d.checked" ng-checked="d.checked">
-          {{ d.text }}
-        </ion-radio>
+        <li class="item item-toggle"
+              ng-repeat="d in diningHalls"
+              ng-model="d.checked"
+              ng-show="displayHalls">
+           {{d.text}}
+           <label class="toggle toggle-positive">
+             <input type="checkbox" ng-checked="d.checked">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
 
-        <div class="item item-divider">
-          Stations
+        <div class="item item-stable item-icon-right"   ng-click="toggleStations()">
+          <button class="icon button button-icon button-clear ion-plus">
+            </button>
+          <h2>Stations</h2>
         </div>
-
-        <ion-checkbox class="item" id="filterItem" ng-repeat="s in stations"
+        <ion-checkbox class="item" id="filterItem"
+            ng-repeat="s in stations"
             ng-model="s.checked"
-            ng-checked="s.checked">
+            ng-checked="s.checked"
+            ng-show="displayStations">
           {{ s.text }}
         </ion-checkbox>
 
-        <div class="item item-divider">
-          Tags
+        <div class="item item-stable item-icon-right"  ng-click="toggleTags()">
+          <button class="icon button button-icon button-clear ion-plus">
+            </button>
+          <h2>Tags</h2>
         </div>
-
         <ion-checkbox class="item" id="filterItem" ng-repeat="f in filters"
             ng-model="f.checked"
-            ng-checked="f.checked">
+            ng-checked="f.checked"
+            ng-show="displayTags">
           {{ f.text }}
         </ion-checkbox>
         <button class="button button-full button-dark" ng-click="closeModal()">Apply</button>
