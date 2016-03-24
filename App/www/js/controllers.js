@@ -1,13 +1,32 @@
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
-    $scope.filters = [
+  $ionicModal.fromTemplateUrl('contact-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+    $scope.modal = modal
+    })
+
+    $scope.openModal = function() {
+      console.log("openModal called!");
+    $scope.modal.show();
+    }
+
+    $scope.closeModal = function() {
+    $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+    });
+
+    $scope.diningHalls = [
       {text:"Arnold", checked:false},
-      {text:"Umph", checked:true},
-      {text:"Hot", checked:true},
-      {text:"Cold", checked:false},
-      {text:"Vegetarian", checked:true},
-      {text:"Vegan", checked:true},
+      {text:"Umph", checked:true}
+    ];
+
+    $scope.stations = [
       {text:"Bakery", checked:false},
       {text:"Grill", checked:true},
       {text:"Pizza", checked:false},
@@ -19,6 +38,13 @@ angular.module('starter.controllers', [])
       {text:"Tex_Mex", checked:false},
       {text:"Healthy_on_the_Hilltop", checked:false},
       {text:"International", checked:false}
+    ];
+
+    $scope.filters = [
+      {text:"Hot", checked:true},
+      {text:"Cold", checked:false},
+      {text:"Vegetarian", checked:true},
+      {text:"Vegan", checked:true}
     ];
 
     $scope.newPost = function() {
@@ -60,6 +86,7 @@ angular.module('starter.controllers', [])
       $scope.feedData = response.data;
       $scope.status = response.status;
       $scope.statusText = response.statusText;
+      $scope.votes = $scope.feedData[0].votes;
 
       //DEBUGGING//
       console.log("Status = " + $scope.statusText);
