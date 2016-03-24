@@ -27,7 +27,6 @@ $app->get('/index', function ($request, $response, $args) {
       $returnArr['time_stamp'] = $data['time_stamp'];
       $returnArr['image'] = $data['image'];
       $returnArr['dh_id'] = $data['dh_id'];
-      $returnArr['comment_id'] = $data['comment_id'];
       $returnArr['station_id'] = $data['station_id'];
 
     }
