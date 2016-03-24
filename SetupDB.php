@@ -21,7 +21,7 @@ $dbname = "foodapp";
 
   $sql = 'CREATE TABLE IF NOT EXISTS Attribute
   (
-    attribute_id INT  NOT NULL  AUTO_INCREMENT,
+    attribute_id INT  NOT NULL,
     name VARCHAR(45)  NOT NULL,
     CONSTRAINT Attribute_pk PRIMARY KEY (attribute_id)
   );
@@ -33,6 +33,7 @@ $dbname = "foodapp";
     votes INT  NOT NULL,
     time_stamp DateTime  NOT NULL,
     image VARCHAR(100)  NOT NULL,
+    dh_id INT NOT NULL,
     station_id INT  NOT NULL,
     CONSTRAINT entry_id PRIMARY KEY (entry_id)
   );
@@ -49,16 +50,14 @@ $dbname = "foodapp";
 
   CREATE TABLE IF NOT EXISTS Dining_Hall
   (
-    dh_id INT  NOT NULL  AUTO_INCREMENT,
+    dh_id INT  NOT NULL,
     name VARCHAR(45)  NOT NULL,
-    entry_id INT  NOT NULL,
-    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id),
-    CONSTRAINT Location_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
+    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id)
   );
 
   CREATE TABLE IF NOT EXISTS Entry_Attributes
   (
-    entry_id INT  NOT NULL  AUTO_INCREMENT,
+    entry_id INT  NOT NULL,
     attribute_id INT  NOT NULL,
     CONSTRAINT Entry_Attributes_pk PRIMARY KEY (entry_id,attribute_id),
     CONSTRAINT Entry_Attributes_Attribute_fk FOREIGN KEY (attribute_id) REFERENCES Attribute (attribute_id),
@@ -67,7 +66,7 @@ $dbname = "foodapp";
 
   CREATE TABLE IF NOT EXISTS Station
   (
-    station_id INT  NOT NULL  AUTO_INCREMENT,
+    station_id INT  NOT NULL,
     name VARCHAR(45)  NOT NULL,
     CONSTRAINT Station_pk PRIMARY KEY (station_id)
   );
@@ -80,6 +79,50 @@ $dbname = "foodapp";
     CONSTRAINT DiningHall_Station_Dining_Hall_fk FOREIGN KEY (dh_id) REFERENCES Dining_Hall (dh_id),
     CONSTRAINT DiningHall_Station_Station_fk FOREIGN KEY (station_id) REFERENCES Station (station_id)
   );';
+
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $sql = "INSERT IGNORE into Attribute (attribute_id, name) values (1, 'Hot');
+  INSERT IGNORE into Attribute (attribute_id, name) values (2, 'Cold');
+  INSERT IGNORE into Attribute (attribute_id, name) values (3, 'Vegetarian');
+  INSERT IGNORE into Attribute (attribute_id, name) values (4, 'Vegan');
+  INSERT IGNORE into Station (station_id, name) values (1, 'Bakery');
+  INSERT IGNORE into Station (station_id, name) values (2, 'Griz');
+  INSERT IGNORE into Station (station_id, name) values (3, 'Bakery');
+  INSERT IGNORE into Station (station_id, name) values (4, 'Grill');
+  INSERT IGNORE into Station (station_id, name) values (5, 'Pizza');
+  INSERT IGNORE into Station (station_id, name) values (6, 'Deli');
+  INSERT IGNORE into Station (station_id, name) values (7, 'Home Zone');
+  INSERT IGNORE into Station (station_id, name) values (8, 'Mongolian Grill');
+  INSERT IGNORE into Station (station_id, name) values (9, 'Produce');
+  INSERT IGNORE into Station (station_id, name) values (10, 'Soup');
+  INSERT IGNORE into Station (station_id, name) values (11, 'Tex Mex');
+  INSERT IGNORE into Station (station_id, name) values (12, 'Health On The Hilltop');
+  INSERT IGNORE into Station (station_id, name) values (13, 'International');
+  INSERT IGNORE into Station (station_id, name) values (14 'Salad Bar');
+  INSERT IGNORE into Dining_Hall (dh_id, name) values (15, 'Arnold');
+  INSERT IGNORE into Dining_Hall (dh_id, name) values (16, 'Umph');
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 1);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 2);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 3);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 4);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 5);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 7);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 8);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 10);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 11);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 12);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 1);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 2);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 3);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 4);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 5);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 6);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 7);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 8);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 9);
+  INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (2, 12);";
 
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
