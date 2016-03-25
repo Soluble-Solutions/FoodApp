@@ -127,10 +127,10 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = "INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('aliquet', 76, '2010-07-14 19:00', 'http:/dummyimage.com/183x191.gif/ff4444/ffffff', 1, 4);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id,  station_id) values ('purus', 38, '2008-05-14 20:00', 'http:/dummyimage.com/184x163.png/cc0000/ffffff', 2, 12);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('in', 91, '2012-05-14 08:00', 'http:/dummyimage.com/158x103.jpg/5fa2dd/ffffff', 1, 1);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('etiam', 61, '2009-12-14 17:00', 'http:/dummyimage.com/159x243.png/cc0000/ffffff', 2, 5);
+  $sql = "INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('aliquet', 76, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 4);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id,  station_id) values ('purus', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('in', 91, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('etiam', 61, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 5);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (1, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (2, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (3, 2);
