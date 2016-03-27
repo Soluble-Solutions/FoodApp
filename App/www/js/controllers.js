@@ -14,11 +14,12 @@ angular.module('starter.controllers', [])
     }
 
     $scope.closeModal = function() {
+      console.log("closeModal() called");
     $scope.modal.hide();
     };
 
     $scope.$on('$destroy', function() {
-    $scope.modal.remove();
+      $scope.modal.remove();
     });
 
     $scope.diningHalls = [
@@ -28,6 +29,7 @@ angular.module('starter.controllers', [])
 
     $scope.displayHalls = true;
     $scope.toggleHalls = function() {
+      console.log("toggleHalls() called");
       $scope.displayHalls = $scope.displayHalls === false ? true: false;
     };
 
@@ -47,6 +49,7 @@ angular.module('starter.controllers', [])
 
     $scope.displayStations = false;
     $scope.toggleStations = function() {
+      console.log("toggleStations() called");
       $scope.displayStations = $scope.displayStations === false ? true: false;
     };
 
@@ -58,11 +61,12 @@ angular.module('starter.controllers', [])
     ];
     $scope.displayTags = false;
     $scope.toggleTags = function() {
+      console.log("toggleTags() called");
       $scope.displayTags = $scope.displayTags === false ? true: false;
     };
 
     $scope.newPost = function() {
-      console.log("Switching to $state: app.post");
+      console.log("newPost() called");
       $state.go('app.post');
     }
 
@@ -70,7 +74,7 @@ angular.module('starter.controllers', [])
 
 .controller('PostCtrl', function($scope) {
   $scope.takeImage = function() {
-    console.log("takeImage() called...");
+    console.log("takeImage() called");
     var options = {
         quality: 80,
         destinationType: Camera.DestinationType.DATA_URL,
@@ -108,6 +112,8 @@ angular.module('starter.controllers', [])
       console.log($scope.feedData);
       console.log($scope.votes);
   });
+
+  console.log("Passed $http.get() call!");
 
   $scope.openDetails = function() {
     console.log("Switching to $state: app.details")
