@@ -70,7 +70,7 @@ $app->get('/index', function ($request, $response, $args) {
     }
 });
 $app->put('/index',function($request,$response,$args)
-{
+{#CHANGE TO RECEIVE TWO PARAMETERS
   $db = $this->dbConn;
   $entry_id = $request->getAttribute('entry_id');
   //$votes = $request->getAttribute('votes');
@@ -87,26 +87,26 @@ $app->post('/entry',function($request,$response,$args)
   //$entry_id = $request->getAttribute('entry_id'); //??
   $dh_id = $request->getAttribute('dh_id');//??
   $station_id = $request->getAttribute('station_id');//??
-  $attribute_id = $request->getAttribute('attribute_id');//??
+  $attribute_id = $request->getAttribute('attribute_id');//NEED TO GET A JSON OBJ
   $image = $request->getAttribute('image');
   $title = $request->getAttribute('title');
   $comment = $request->getAttribute('comment');
-  $time_stamp = $request->getAttribute('time_stamp');
-  $votes = $request->getAttribute('votes');
+  $time_stamp = $request->getAttribute('time_stamp'); //REMOVE
+  $votes = $request->getAttribute('votes'); //REMOVE
   //$dh_name = $request->getAttribute('Dining_Hall.name');//???
   //$s_name = $request->getAttribute('Station.name');//???
   //$a_name = $request->getAttribute('Attribute.name');//???
   $sql = "INSERT INTO Entry (image,title,time_stamp,votes,dh_id,station_id) VALUES ('$image','$title','$time_stamp','$votes','$dh_id','$station_id');
-  INSERT INTO Comment (comment,time_stamp) VALUES ('$comment','$time_stamp');
+  INSERT INTO Comment (comment,time_stamp) VALUES ('$comment','$time_stamp'); #ENTER COMMENT IF NOT NULL
   INSERT INTO DiningHall_Station (dh_id,station_id) VALUES ('$dh_id','$station_id');
-  INSERT INTO Entry_Attributes (attribute_id) VALUES ('$attribute_id');
+  INSERT INTO Entry_Attributes (attribute_id) VALUES ('$attribute_id'); #GET Entry_id from first line (based on image and time_stamp )and then insert it here
   ";
   $q = $db->query($sql);
 });
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
-    $sql = "SELECT e.image,e.votes,a.name
+    $sql = "SELECT e.image,e.votes,a.name #ADD COMMENTS AND USE SORT BY
             FROM Entry e
             INNER JOIN Entry_Attributes ea
             ON e.entry_id = '$entry_id'
@@ -146,16 +146,16 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
 });
 $app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
-  $time_stamp = $request->getAttribute('time_stamp');
+  $time_stamp = $request->getAttribute('time_stamp'); #REMOVE
   $comment = $request->getAttribute('comment');
   $entry_id = $request->getAttribute('entry_id');
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp','$entry_id');";
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp','$entry_id');"; #now()
   $db->query($sql);
 
 });
 $app->post('/tags',function($request,$response,$args)
 {
-
+  #return a JSON object of all the IDs
 });
 
 /*$app->get('/goodbye', function($request, $response, $args){
