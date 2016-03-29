@@ -96,29 +96,24 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 })
 
-.controller('FeedCtrl', function($scope, $http, $state) {
-  $scope.feedData = [];
+.factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
+  return {data: {}};
+})
 
-  $http.get("http://52.37.14.110/index")
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
+
+  $http.get("http://private-19541c-foodapptesting.apiary-mock.com/index")
   .then(function(response) {
-      $scope.feedData = response.data;
-      $scope.status = response.status;
-      $scope.statusText = response.statusText;
-      $scope.votes = $scope.feedData[0].votes;
+      FeedData.data = response.data;
+      $scope.feedData = FeedData.data;
+      /*$scope.votes = $scope.feedData[0].votes;*/
 
       //DEBUGGING//
-      console.log("Status = " + $scope.statusText);
+      console.log("Status = " + response.statusText);
       console.log(response);
       console.log($scope.feedData);
-      console.log($scope.votes);
+      /*console.log($scope.votes);*/
   });
-
-  console.log("Passed $http.get() call!");
-
-  $scope.openDetails = function() {
-    console.log("Switching to $state: app.details")
-    $state.go('app.details');
-  }
 
   $scope.upvote = $scope.votes+1;
   $scope.downvote = $scope.votes-1;
@@ -164,8 +159,12 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($scope) {
-
+.controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
+  $scope.feedData = FeedData.data;
+  $scope.selectedID = $stateParams.entry_id;
+  console.log("Reached DetailsCtrl");
+  console.log($scope.feedData);
+  console.log($stateParams.entry_id);
   //TEST INFORMATION//
   $scope.comments = [
     {id: 1, text: "This sucked!"},

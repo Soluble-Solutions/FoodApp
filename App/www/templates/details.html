@@ -1,21 +1,36 @@
 <ion-view view-title="Comments">
   <ion-content>
     <ion-list>
-
       <!--Display title of the post here-->
-
-      <!--Display Image of Post here-->
-
-      <ion-item class="item item-text-wrap" ng-repeat="c in comments">
-        <div class="row text-left">
-          <div class="col col-10">
-            <b>{{c.id}}.</b>
-          </div>
-          <div class="col col-90">
-            <i>{{c.text}}</i>
+      <div ng-repeat="f in feedData | filter:{entry_id:selectedID}">
+        <div class="item item-icon-right" id="feedItemTitle">
+          <h2><b>{{f.title}}</b></h2>
+          <p>@ Umph - The Grill</p>
+          <div class="icon">
+            <div class="col">
+              <i class="button button-icon icon ion-chevron-up" ng-click="upVote()"></i>
+              <h2 class="text-right" id="votes">{{f.votes}}</h2>
+              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()"></i>
+            </div>
           </div>
         </div>
+        <!--Display Image of Post here-->
+        <div class="item item-image" id="feedItemImage">
+          <img ng-src={{f.image}}>
+        </div>
+        <!--Display comments of post here-->
+        <ion-item class="item item-text-wrap" ng-repeat="c in comments">
+          <div class="row text-left">
+            <div class="col col-10">
+              <b>{{c.id}}.</b>
+            </div>
+            <div class="col col-90">
+              <i>{{c.text}}</i>
+            </div>
+          </div>
+          
       </ion-item>
+      <!--end comment section-->
     </ion-list>
   </ion-content>
 </ion-view>

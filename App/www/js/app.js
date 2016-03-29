@@ -43,7 +43,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   })
 
   .state('app.details', {
-    url: '/feed/:id',
+    url: '/feed/:entry_id',
     views: {
       'menuContent': {
         templateUrl: 'templates/details.html',
