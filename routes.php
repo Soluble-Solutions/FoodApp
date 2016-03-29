@@ -12,8 +12,9 @@ $app->get('/index', function ($request, $response, $args) {
             FROM Entry'; #ORDER BY votes DESC
     $db = $this->dbConn;
     $q = $db->query($sql);
-    $check = $q->setFetchMode(PDO::FETCH_ASSOC);
-    $returnArr = array();
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    return $response->write(json_encode($check));
+    /*$returnArr = array();
     foreach($q as $row){
       $returnArr['entry_id'] = $row['entry_id'];
       $returnArr['title'] = $row['title'];
@@ -22,10 +23,11 @@ $app->get('/index', function ($request, $response, $args) {
       $returnArr['image'] = $row['image'];
       $returnArr['dh_id'] = $row['dh_id'];
       $returnArr['station_id'] = $row['station_id'];
-      echo json_encode($returnArr);
+      echo json_encode($returnArr);*/
+
     }
 
-  }
+  #}
     /*
     if($check){
       //$response->setStatus(200);
@@ -37,11 +39,11 @@ $app->get('/index', function ($request, $response, $args) {
       throw new PDOException('No records found.');
     }
   }*/
-    catch(PDOException $e){
-      $this->notFoundHandler; //404
-      //$app->$response->setStatus(404);
-      //echo "Error: ".$e.getMessage();
-    }
+  catch(PDOException $e){
+    $this->notFoundHandler; //404
+    //$app->$response->setStatus(404);
+    //echo "Error: ".$e.getMessage();
+  }
 });
 
 $app->put('/index',function($request,$response,$args)
@@ -101,8 +103,9 @@ $app->post('/entry',function($request,$response,$args)
 
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
-    $data = $request->getParsedBody();
-    $entry_id = $data['entry_id'];
+    #$data = $request->getParsedBody();
+    #$entry_id = $data['entry_id'];
+    $entry_id = $_GET;
     $sql = "SELECT e.image,e.votes #ADD COMMENTS AND USE SORT BY
             FROM Entry e
             WHERE e.entry_id = '$entry_id'
