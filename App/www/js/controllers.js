@@ -102,7 +102,7 @@ angular.module('starter.controllers', [])
 
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
 
-  $http.get("http://private-19541c-foodapptesting.apiary-mock.com/index")
+  $http.get("http://52.37.14.110/index")
   .then(function(response) {
       FeedData.data = response.data;
       $scope.feedData = FeedData.data;
