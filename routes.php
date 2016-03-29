@@ -103,9 +103,10 @@ $app->post('/entry',function($request,$response,$args)
 
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
+
     #$data = $request->getParsedBody();
     #$entry_id = $data['entry_id'];
-    $entry_id = $_GET;
+    /*$entry_id = $_GET;
     $sql = "SELECT e.image,e.votes #ADD COMMENTS AND USE SORT BY
             FROM Entry e
             WHERE e.entry_id = '$entry_id'
@@ -133,21 +134,18 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     foreach($q as $row){
       $returnArr['name'] = $row['name'];
       echo json_encode($returnArr);
-    }
-
+    }*/
+    $entry_id = $request->getAttribute('entry_id');
     $sql = "SELECT c.comment
             FROM Comment c
             INNER JOIN Entry e
             ON e.entry_id = c.entry_id
             AND e.entry_id = '$entry_id'
             ;";
+    $db = $this->dbConn;
     $q = $db->query($sql);
-
-    foreach($q as $row){
-      $returnArr['comment'] = $row['comment'];
-      echo json_encode($returnArr);
-    }
-
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    return $response->write(json_encode($check));
   }
   catch(PDOException $e){
     $this->notFoundHandler; //404
