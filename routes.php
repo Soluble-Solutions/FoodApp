@@ -73,8 +73,11 @@ $app->put('/index',function($request,$response,$args)
 {#CHANGE TO RECEIVE TWO PARAMETERS
   $db = $this->dbConn;
   $entry_id = $request->getAttribute('entry_id');
+  $votes = $request->getAttribute('votes');
   //$votes = $request->getAttribute('votes');
-  $sql = "UPDATE Entry SET votes = votes + 1 WHERE entry_id = '$entry_id'";
+  //$votes = $request->getAttribute('votes');
+  $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
+  //$sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
   $db->query($sql);
   /* try{
     $sql = '';
@@ -119,7 +122,7 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     $returnArr['image'] = $data['image'];
     $returnArr['votes'] = $data['votes'];
     echo json_encode($returnArr);
-    $sql = "SELECT a.name 
+    $sql = "SELECT a.name
             FROM Entry e
             INNER JOIN Entry_Attributes ea
             ON e.entry_id = '$entry_id'
@@ -132,36 +135,36 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     //$check = $q->setFetchMode(PDO::FETCH_ASSOC);
     //$row = $q->fetchAll();
   //  $returnArr = array();
-    
-    
-     foreach($q as $row){  
+
+
+     foreach($q as $row){
     $returnArr['name'] = $row['name'];
      echo json_encode($returnArr);
   }
 
 
-    
+
     $sql = "SELECT c.comment
             FROM Comment c
             INNER JOIN Entry e
-            ON e.entry_id = c.entry_id 
+            ON e.entry_id = c.entry_id
             AND e.entry_id = '$entry_id'
             ;";
     $q = $db->query($sql);
     //$check = $q->setFetchMode(PDO::FETCH_ASSOC);
    // $row = $q->fetchAll();
     //$returnArr = array();
-   
-    
-    foreach($q as $row){  
+
+
+    foreach($q as $row){
       $returnArr['comment'] = $row['comment'];
-      
+
       echo json_encode($returnArr);
     }
 
-    
-    
-    
+
+
+
   }
   catch(PDOException $e){
     $this->notFoundHandler; //404
@@ -173,8 +176,8 @@ $app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
   $comment = $request->getAttribute('comment');
   $entry_id = $request->getAttribute('entry_id');
-  echo json_encode($comment);
-  echo json_encode($entry_id);
+  //echo json_encode($comment);
+  //echo json_encode($entry_id);
   $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
   $db->query($sql);
 });
