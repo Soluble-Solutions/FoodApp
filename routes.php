@@ -171,10 +171,11 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
 });
 $app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
-
   $comment = $request->getAttribute('comment');
   $entry_id = $request->getAttribute('entry_id');
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),$entry_id');"; #now()
+  echo json_encode($comment);
+  echo json_encode($entry_id);
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
   $db->query($sql);
 });
 $app->post('/tags',function($request,$response,$args)
