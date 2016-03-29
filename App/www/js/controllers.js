@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngAnimate'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
@@ -99,7 +99,7 @@ angular.module('starter.controllers', [])
 .controller('FeedCtrl', function($scope, $http, $state) {
   $scope.feedData = [];
 
-  $http.get("http://private-5fb8c-foodapp322.apiary-mock.com/index")
+  $http.get("http://52.37.14.110/index")
   .then(function(response) {
       $scope.feedData = response.data;
       $scope.status = response.status;

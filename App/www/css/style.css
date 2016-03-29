@@ -36,6 +36,20 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   color: #236B8E;
 }
 
+/*.ng-hide-remove, .ng-hide-add{
+  transition: 0s linear all;
+}
+
+.ng-hide-add-active, .ng-hide-remove-active{
+  transition: .5s ease;
+}*/
+
+/*.ng-hide-add, .ng-hide-remove {
+  transition: all ease .3s;
+  transition-timing-function: ease-in;
+
+}*/
+
 #navBarButton,
 #backButton {
   color:white;
