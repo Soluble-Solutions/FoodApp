@@ -36,13 +36,13 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   color: #236B8E;
 }
 
-.ng-hide-remove, .ng-hide-add{
+/*.ng-hide-remove, .ng-hide-add{
   animation: 2s ease;
 }
 
 .ng-hide-add-active, .ng-hide-remove-active{
   animation: 1s ease;
-}
+}*/
 
 #navBarButton,
 #backButton {
