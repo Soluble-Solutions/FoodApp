@@ -72,8 +72,11 @@ $app->get('/index', function ($request, $response, $args) {
 $app->put('/index',function($request,$response,$args)
 {#CHANGE TO RECEIVE TWO PARAMETERS
   $db = $this->dbConn;
-  $entry_id = $request->getAttribute('entry_id');
-  $votes = $request->getAttribute('votes');
+  $data = $request->getParsedBody();
+  $entry_id = $data['entry_id'];
+  $votes = $data['votes'];
+  //$entry_id = $request->getAttribute('entry_id');
+  //$votes = $request->getAttribute('votes');
   //$votes = $request->getAttribute('votes');
   //$votes = $request->getAttribute('votes');
   $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
