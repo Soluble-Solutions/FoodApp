@@ -72,30 +72,6 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PostCtrl', function($scope) {
-  $scope.takeImage = function() {
-    console.log("takeImage() called");
-    var options = {
-        quality: 80,
-        destinationType: Camera.DestinationType.DATA_URL,
-        sourceType: Camera.PictureSourceType.CAMERA,
-        allowEdit: true,
-        encodingType: Camera.EncodingType.JPEG,
-        targetWidth: 250,
-        targetHeight: 250,
-        popoverOptions: CameraPopoverOptions,
-        saveToPhotoAlbum: false
-    };
-
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-        $scope.srcImage = "data:image/jpeg;base64," + imageData;
-    }, function(err) {
-        // error
-    });
-  }
-
-})
-
 .controller('FeedCtrl', function($scope, $http, $state) {
   $scope.feedData = [];
 
@@ -164,7 +140,9 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('DetailsCtrl', function($scope) {
+.controller('DetailsCtrl', function($scope, $stateParams) {
+  $scope.selectedID=$stateParams.id;
+  console.log($scope.selectedID);
 
   //TEST INFORMATION//
   $scope.comments = [
@@ -172,5 +150,29 @@ angular.module('starter.controllers', [])
     {id: 2, text: "Idk what you're talking about^ I thought this was great"},
     {id: 3, text: "I don't know how people eat here..."}
   ];
+
+})
+
+.controller('PostCtrl', function($scope) {
+  $scope.takeImage = function() {
+    console.log("takeImage() called");
+    var options = {
+        quality: 80,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 250,
+        targetHeight: 250,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+        $scope.srcImage = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+        // error
+    });
+  }
 
 })
