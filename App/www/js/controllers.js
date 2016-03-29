@@ -96,18 +96,20 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('FeedCtrl', function($scope, $http, $state) {
-  $scope.feedData = [];
+.factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
+  return {data: {}};
+})
+
+.controller('FeedCtrl', function($scope, $http, $state, FeedData) {
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
-      $scope.feedData = response.data;
-      $scope.status = response.status;
-      $scope.statusText = response.statusText;
+      FeedData.data = response.data;
+      $scope.feedData = FeedData.data;
       /*$scope.votes = $scope.feedData[0].votes;*/
 
       //DEBUGGING//
-      console.log("Status = " + $scope.statusText);
+      console.log("Status = " + response.statusText);
       console.log(response);
       console.log($scope.feedData);
       /*console.log($scope.votes);*/
@@ -164,8 +166,11 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('DetailsCtrl', function($scope) {
-
+.controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
+  $scope.feedData = FeedData.data;
+  $scope.selectedID = $stateParams.entry_id;
+  console.log($scope.feedData);
+  console.log($scope.selectedID);
   //TEST INFORMATION//
   $scope.comments = [
     {id: 1, text: "This sucked!"},
