@@ -3,18 +3,18 @@
     <div class="list">
       <div ng-repeat="f in feedData" id="feedItem">
         <div class="item item-icon-right" id="feedItemTitle">
-          <h2><b>{{f.url}}</b></h2>
+          <h2><b>{{feedData.title}}</b></h2>
           <p>@ Umph - The Grill</p>
           <div class="icon">
             <div class="col">
               <i class="button button-icon icon ion-chevron-up" ng-click="upVote()"></i>
-              <h2 class="text-right" id="votes">{{f.votes}}</h2>
+              <h2 class="text-right" id="votes">{{feedData.votes}}</h2>
               <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()"></i>
             </div>
           </div>
         </div>
         <div class="item item-image" id="feedItemImage">
-          <img ng-src={{f.image}}>
+          <img ng-src={{feedData.image}}>
         </div>
         <a class="item item-icon-left" href="#" ng-click="openDetails()" id="feedItemDetails">
           <i class="icon ion-drag"></i>

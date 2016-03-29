@@ -99,18 +99,18 @@ angular.module('starter.controllers', [])
 .controller('FeedCtrl', function($scope, $http, $state) {
   $scope.feedData = [];
 
-  $http.get("http://private-5fb8c-foodapp322.apiary-mock.com/index")
+  $http.get("http://52.37.14.110/index")
   .then(function(response) {
       $scope.feedData = response.data;
       $scope.status = response.status;
       $scope.statusText = response.statusText;
-      $scope.votes = $scope.feedData[0].votes;
+      /*$scope.votes = $scope.feedData[0].votes;*/
 
       //DEBUGGING//
       console.log("Status = " + $scope.statusText);
       console.log(response);
       console.log($scope.feedData);
-      console.log($scope.votes);
+      /*console.log($scope.votes);*/
   });
 
   console.log("Passed $http.get() call!");
