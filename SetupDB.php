@@ -19,7 +19,7 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = 'CREATE TABLE IF NOT EXISTS Attribute
+  $sql = "CREATE TABLE IF NOT EXISTS Attribute
   (
     attribute_id INT  NOT NULL,
     name VARCHAR(45)  NOT NULL,
@@ -48,13 +48,6 @@ $dbname = "foodapp";
     CONSTRAINT Comment_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
   );
 
-  CREATE TABLE IF NOT EXISTS Dining_Hall
-  (
-    dh_id INT  NOT NULL,
-    name VARCHAR(45)  NOT NULL,
-    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id)
-  );
-
   CREATE TABLE IF NOT EXISTS Entry_Attributes
   (
     entry_id INT  NOT NULL,
@@ -62,6 +55,13 @@ $dbname = "foodapp";
     CONSTRAINT Entry_Attributes_pk PRIMARY KEY (entry_id,attribute_id),
     CONSTRAINT Entry_Attributes_Attribute_fk FOREIGN KEY (attribute_id) REFERENCES Attribute (attribute_id),
     CONSTRAINT Entry_Attributes_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS Dining_Hall
+  (
+    dh_id INT  NOT NULL,
+    name VARCHAR(45)  NOT NULL,
+    CONSTRAINT Dining_Hall_pk PRIMARY KEY (dh_id)
   );
 
   CREATE TABLE IF NOT EXISTS Station
@@ -78,7 +78,7 @@ $dbname = "foodapp";
     CONSTRAINT DiningHall_Station_pk PRIMARY KEY (dh_id,station_id),
     CONSTRAINT DiningHall_Station_Dining_Hall_fk FOREIGN KEY (dh_id) REFERENCES Dining_Hall (dh_id),
     CONSTRAINT DiningHall_Station_Station_fk FOREIGN KEY (station_id) REFERENCES Station (station_id)
-  );';
+  );";
 
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -100,9 +100,13 @@ $dbname = "foodapp";
   INSERT IGNORE into Station (station_id, name) values (11, 'Tex Mex');
   INSERT IGNORE into Station (station_id, name) values (12, 'Health On The Hilltop');
   INSERT IGNORE into Station (station_id, name) values (13, 'International');
-  INSERT IGNORE into Station (station_id, name) values (14 'Salad Bar');
-  INSERT IGNORE into Dining_Hall (dh_id, name) values (15, 'Arnold');
-  INSERT IGNORE into Dining_Hall (dh_id, name) values (16, 'Umph');
+  INSERT IGNORE into Station (station_id, name) values (14 'Salad Bar');";
+
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $sql = "INSERT IGNORE into Dining_Hall (dh_id, name) values (2, 'Arnold');
+  INSERT IGNORE into Dining_Hall (dh_id, name) values (1, 'Umph');
   INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 1);
   INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 2);
   INSERT IGNORE into DiningHall_Station (dh_id, station_id) values (1, 3);
