@@ -84,24 +84,42 @@ $app->put('/index',function($request,$response,$args)
 $app->post('/entry',function($request,$response,$args)
 {
   $db = $this->dbConn;
-  //$entry_id = $request->getAttribute('entry_id'); //??
   $dh_id = $request->getAttribute('dh_id');//??
   $station_id = $request->getAttribute('station_id');//??
   $attribute_id = $request->getAttribute('attribute_id');//NEED TO GET A JSON OBJ
   $image = $request->getAttribute('image');
   $title = $request->getAttribute('title');
   $comment = $request->getAttribute('comment');
-  $time_stamp = $request->getAttribute('time_stamp'); //REMOVE
-  $votes = $request->getAttribute('votes'); //REMOVE
-  //$dh_name = $request->getAttribute('Dining_Hall.name');//???
-  //$s_name = $request->getAttribute('Station.name');//???
-  //$a_name = $request->getAttribute('Attribute.name');//???
-  $sql = "INSERT INTO Entry (image,title,time_stamp,votes,dh_id,station_id) VALUES ('$image','$title','$time_stamp','$votes','$dh_id','$station_id');
-  INSERT INTO Comment (comment,time_stamp) VALUES ('$comment','$time_stamp'); #ENTER COMMENT IF NOT NULL
-  INSERT INTO DiningHall_Station (dh_id,station_id) VALUES ('$dh_id','$station_id');
-  INSERT INTO Entry_Attributes (attribute_id) VALUES ('$attribute_id'); #GET Entry_id from first line (based on image and time_stamp )and then insert it here
-  ";
-  $q = $db->query($sql);
+  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id) VALUES ('$image','$title',now(),'$dh_id','$station_id');
+  INSERT INTO DiningHall_Station (dh_id,station_id) VALUES ('$dh_id','$station_id'); ";
+
+  $db->query($sql);
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  #GET Entry_id from first line (based on image)
+  $sql = "SELECT entry_id
+          FROM Entry
+          WHERE image = '$image';";
+
+  $entry_id = $db->query($sql);
+
+  if(!empty($comment))
+  {
+    $sql ="INSERT INTO Comment (comment,time_stamp) VALUES ('$comment',now());";
+    $q = $db->query($sql);
+  }
+
+  $attributes = json_decode($attribute_id, TRUE);
+
+  #foreach($attribute_id as $attribute)
+  for($i=0; $i<count($attributes); $i++)
+  {
+    $sql = "INSERT INTO Attributes (attribute_id) VALUES ('$attributes[$i]');
+    INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributes[$i]');";
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  }
+
 });
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
