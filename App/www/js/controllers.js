@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngAnimate'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
