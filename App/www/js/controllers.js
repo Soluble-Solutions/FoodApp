@@ -100,9 +100,9 @@ angular.module('starter.controllers', [])
   return {data: {}};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
 
-  $http.get("http://52.37.14.110/index")
+  $http.get("http://private-19541c-foodapptesting.apiary-mock.com/index")
   .then(function(response) {
       FeedData.data = response.data;
       $scope.feedData = FeedData.data;
@@ -114,13 +114,6 @@ angular.module('starter.controllers', [])
       console.log($scope.feedData);
       /*console.log($scope.votes);*/
   });
-
-  console.log("Passed $http.get() call!");
-
-  $scope.openDetails = function() {
-    console.log("Switching to $state: app.details")
-    $state.go('app.details');
-  }
 
   $scope.upvote = $scope.votes+1;
   $scope.downvote = $scope.votes-1;
@@ -169,8 +162,9 @@ angular.module('starter.controllers', [])
 .controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
+  console.log("Reached DetailsCtrl");
   console.log($scope.feedData);
-  console.log($scope.selectedID);
+  console.log($stateParams.entry_id);
   //TEST INFORMATION//
   $scope.comments = [
     {id: 1, text: "This sucked!"},
