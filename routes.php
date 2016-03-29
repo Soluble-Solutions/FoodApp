@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 // Routes
 $servername = "localhost";
