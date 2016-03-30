@@ -44,6 +44,21 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   animation: 1s ease;
 }*/
 
+#commentBox{
+  width: 40%;
+  height: 3rem;
+}
+
+#submitC{
+  width: 20%;
+  background-color: #236B8E;
+  height: 3.5rem;
+}
+
+#submitText{
+  color: white;
+}
+
 #navBarButton,
 #backButton {
   color:white;
