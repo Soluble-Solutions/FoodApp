@@ -31,9 +31,13 @@
 
       </ion-item>
 
-      <form class="item row" ng-submit="submitComment()" ng-controller="DetailsCtrl">
-        <input type = "text" id = "commentSubmit" ng-model="newComment"/>
-        <input type = "submit" value =  "Submit"/>
+      <form class="item item-input-inset" id = "newCommentForm" ng-submit="submitComment()" ng-controller="DetailsCtrl">
+          <label class="item-input-wrapper">
+            <input type="text" ng-model = "newComment" placeholder="Post a new comment!" id="commentBox">
+          </label>
+          <button class="button button-medium" ng-submit="submitComment()" ng-controller="DetailsCtrl" id = "submitC">
+            <p id="submitText">Post</p>
+          </button>
       </form>
       <!--end comment section-->
     </ion-list>
