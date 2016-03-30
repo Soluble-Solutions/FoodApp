@@ -162,14 +162,22 @@ angular.module('starter.controllers', ['ngAnimate'])
 .controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
-  console.log("Reached DetailsCtrl");
-  console.log($scope.feedData);
-  console.log($stateParams.entry_id);
-  //TEST INFORMATION//
   $scope.comments = [
     {id: 1, text: "This sucked!"},
     {id: 2, text: "Idk what you're talking about^ I thought this was great"},
     {id: 3, text: "I don't know how people eat here..."}
   ];
+  $scope.submitComment = function() {
+    if($scope.newComment){
+      $scope.comments.push(this.newComment);
+      $scope.newComment = '';
+      $state.go($state.current, {}, {reload: true});
+    }
+  }
+  console.log("Reached DetailsCtrl");
+  console.log($scope.feedData);
+  console.log($stateParams.entry_id);
+  //TEST INFORMATION//
+
 
 })
