@@ -72,9 +72,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 })
 
-.controller('FeedCtrl', function($scope, $http, $state) {
-  $scope.feedData = [];
-  
 .controller('PostCtrl', function($scope) {
   $scope.takeImage = function() {
     console.log("takeImage() called");
@@ -162,17 +159,10 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-<<<<<<< HEAD
-.controller('DetailsCtrl', function($scope, $stateParams) {
-  $scope.selectedID=$stateParams.id;
-  console.log($scope.selectedID);
 
-  //TEST INFORMATION//
-=======
 .controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
->>>>>>> stateParams
   $scope.comments = [
     {id: 1, text: "This sucked!"},
     {id: 2, text: "Idk what you're talking about^ I thought this was great"},
