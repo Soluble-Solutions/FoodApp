@@ -45,14 +45,14 @@ i.button.button-icon.icon.ion-chevron-down:hover{
 }*/
 
 #commentBox{
-  width: 60%;
-  margin-left: 5.5rem;
+  width: 40%;
   height: 3rem;
 }
 
 #submitC{
   width: 20%;
   background-color: #236B8E;
+  height: 3.5rem;
 }
 
 #submitText{
