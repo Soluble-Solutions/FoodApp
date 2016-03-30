@@ -28,8 +28,13 @@
               <i>{{c.text}}</i>
             </div>
           </div>
-          
+
       </ion-item>
+
+      <form class="item row" ng-submit="submitComment()" ng-controller="DetailsCtrl">
+        <input type = "text" id = "commentSubmit" ng-model="newComment"/>
+        <input type = "submit" value =  "Submit"/>
+      </form>
       <!--end comment section-->
     </ion-list>
   </ion-content>
