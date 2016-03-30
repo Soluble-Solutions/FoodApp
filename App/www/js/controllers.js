@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngAnimate'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
@@ -74,27 +74,49 @@ angular.module('starter.controllers', [])
 
 .controller('FeedCtrl', function($scope, $http, $state) {
   $scope.feedData = [];
+  
+.controller('PostCtrl', function($scope) {
+  $scope.takeImage = function() {
+    console.log("takeImage() called");
+    var options = {
+        quality: 80,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 250,
+        targetHeight: 250,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
 
-  $http.get("http://private-5fb8c-foodapp322.apiary-mock.com/index")
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+        $scope.srcImage = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+        // error
+    });
+  }
+
+})
+
+.factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
+  return {data: {}};
+})
+
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
+
+  $http.get("http://52.37.14.110/index")
   .then(function(response) {
-      $scope.feedData = response.data;
-      $scope.status = response.status;
-      $scope.statusText = response.statusText;
-      $scope.votes = $scope.feedData[0].votes;
+      FeedData.data = response.data;
+      $scope.feedData = FeedData.data;
+      /*$scope.votes = $scope.feedData[0].votes;*/
 
       //DEBUGGING//
-      console.log("Status = " + $scope.statusText);
+      console.log("Status = " + response.statusText);
       console.log(response);
       console.log($scope.feedData);
-      console.log($scope.votes);
+      /*console.log($scope.votes);*/
   });
-
-  console.log("Passed $http.get() call!");
-
-  $scope.openDetails = function() {
-    console.log("Switching to $state: app.details")
-    $state.go('app.details');
-  }
 
   $scope.upvote = $scope.votes+1;
   $scope.downvote = $scope.votes-1;
@@ -140,16 +162,34 @@ angular.module('starter.controllers', [])
 })
 
 
+<<<<<<< HEAD
 .controller('DetailsCtrl', function($scope, $stateParams) {
   $scope.selectedID=$stateParams.id;
   console.log($scope.selectedID);
 
   //TEST INFORMATION//
+=======
+.controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
+  $scope.feedData = FeedData.data;
+  $scope.selectedID = $stateParams.entry_id;
+>>>>>>> stateParams
   $scope.comments = [
     {id: 1, text: "This sucked!"},
     {id: 2, text: "Idk what you're talking about^ I thought this was great"},
     {id: 3, text: "I don't know how people eat here..."}
   ];
+  $scope.submitComment = function() {
+    if($scope.newComment){
+      $scope.comments.push(this.newComment);
+      $scope.newComment = '';
+      $state.go($state.current, {}, {reload: true});
+    }
+  }
+  console.log("Reached DetailsCtrl");
+  console.log($scope.feedData);
+  console.log($stateParams.entry_id);
+  //TEST INFORMATION//
+
 
 })
 

@@ -20,97 +20,6 @@
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
-  <!--
-  <ion-side-menu side="right">
-    <ion-header-bar class="bar-balanced">
-      <h1 class="title">New Post</h1>
-    </ion-header-bar>
-    <ion-content id="menu_left">
-      <ion-list>
-        <ion-item class="item" menu-close href="#/app/feed">
-          Create New Post here!
-        </ion-item>
-      </ion-list>
-      <h1 class="title">Create New</h1>
-    </ion-header-bar>
-    <ion-content id="menu_right">
-    </ion-content>
-  </ion-side-menu>
-
--->
-
-<!--
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar">
-      <h1 class="title">Results</h1>
-    </ion-header-bar>
--->
-
-
-<!--
-    <ion-content id="menu_right">
-      <ul class="list list-dark">
-        <li class="item item-toggle">
-           Umph
-           <label class="toggle toggle-balanced">
-             <input type="checkbox">
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </li>
-        <li class="item item-toggle">
-           Arnold
-           <label class="toggle toggle-balanced">
-             <input type="checkbox">
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </li>
-        <li class="item item-toggle">
-           Vegetarian
-           <label class="toggle toggle-balanced">
-             <input type="checkbox">
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </li>
-        <li class="item item-toggle">
-           Low-Calorie
-           <label class="toggle toggle-balanced">
-             <input type="checkbox">
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </li>
-        <li class="item item-toggle">
-           Vegan
-           <label class="toggle toggle-balanced">
-             <input type="checkbox">
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </li>
-      </ul>
--->
-
-<!--
-
-    <ion-content id="menu_left">
-      <div class="list">
-        <ion-checkbox class="item item-dark" id="filterItem" ng-repeat="f in filters"
-            ng-model="f.checked"
-            ng-checked="f.checked">
-          {{ f.text }}
-        </ion-checkbox>
-      </div>
-    </ion-content>
--->
-
   </ion-side-menu>
 </ion-side-menus>
 
@@ -171,3 +80,94 @@
     </button>
   </div>
 </script>
+
+<!--
+<ion-side-menu side="right">
+  <ion-header-bar class="bar-balanced">
+    <h1 class="title">New Post</h1>
+  </ion-header-bar>
+  <ion-content id="menu_left">
+    <ion-list>
+      <ion-item class="item" menu-close href="#/app/feed">
+        Create New Post here!
+      </ion-item>
+    </ion-list>
+    <h1 class="title">Create New</h1>
+  </ion-header-bar>
+  <ion-content id="menu_right">
+  </ion-content>
+</ion-side-menu>
+
+-->
+
+<!--
+<ion-side-menu side="left">
+  <ion-header-bar class="bar">
+    <h1 class="title">Results</h1>
+  </ion-header-bar>
+-->
+
+
+<!--
+  <ion-content id="menu_right">
+    <ul class="list list-dark">
+      <li class="item item-toggle">
+         Umph
+         <label class="toggle toggle-balanced">
+           <input type="checkbox">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+      <li class="item item-toggle">
+         Arnold
+         <label class="toggle toggle-balanced">
+           <input type="checkbox">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+      <li class="item item-toggle">
+         Vegetarian
+         <label class="toggle toggle-balanced">
+           <input type="checkbox">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+      <li class="item item-toggle">
+         Low-Calorie
+         <label class="toggle toggle-balanced">
+           <input type="checkbox">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+      <li class="item item-toggle">
+         Vegan
+         <label class="toggle toggle-balanced">
+           <input type="checkbox">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+    </ul>
+-->
+
+<!--
+
+  <ion-content id="menu_left">
+    <div class="list">
+      <ion-checkbox class="item item-dark" id="filterItem" ng-repeat="f in filters"
+          ng-model="f.checked"
+          ng-checked="f.checked">
+        {{ f.text }}
+      </ion-checkbox>
+    </div>
+  </ion-content>
+-->

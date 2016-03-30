@@ -1,9 +1,9 @@
 <ion-view view-title="F&#x21D5;&#x21D5;D">
   <ion-content id="feed">
     <div class="list">
-      <div ng-repeat="f in feedData" id="feedItem">
+      <div ng-repeat="f in feedData | orderBy:'-votes'" id="feedItem">
         <div class="item item-icon-right" id="feedItemTitle">
-          <h2><b>{{f.url}}</b></h2>
+          <h2><b>{{f.title}}</b></h2>
           <p>@ Umph - The Grill</p>
           <div class="icon">
             <div class="col">
@@ -13,12 +13,12 @@
             </div>
           </div>
         </div>
-        <div class="item item-image" id="feedItemImage">
+        <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
           <img ng-src={{f.image}}>
-        </div>
-        <a class="item item-icon-left" href="#" ng-click="openDetails()" id="feedItemDetails">
+        </a>
+        <a class="item item-icon-left" href="#/app/feed/{{f.entry_id}}" id="feedItemDetails">
           <i class="icon ion-drag"></i>
-          View Details<span class="badge badge-balanced">Top Ranked!</span>
+          View More<span class="badge badge-balanced">Top Ranked!</span>
         </a>
       </div>
     </div>
