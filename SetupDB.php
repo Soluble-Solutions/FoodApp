@@ -26,6 +26,18 @@ $dbname = "foodapp";
     CONSTRAINT Attribute_pk PRIMARY KEY (attribute_id)
   );
 
+  CREATE TABLE IF NOT EXISTS User
+  (
+    user_id INT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(45) NOT NULL,
+    salt VARCHAR(250) NOT NULL,
+    hash VARCHAR(45) NOT NULL,
+    email VARCHAR(100),
+    phone VARCHAR(15),
+    active TINYINT(1) NOT NULL,
+    CONSTRAINT user_id PRIMARY KEY (user_id)
+  );
+
   CREATE TABLE IF NOT EXISTS Entry
   (
     entry_id INT  NOT NULL  AUTO_INCREMENT,
@@ -35,6 +47,8 @@ $dbname = "foodapp";
     image VARCHAR(100)  NOT NULL,
     dh_id INT NOT NULL,
     station_id INT  NOT NULL,
+    user_id INT NOT NULL,
+    active TINYINT(1) NOT NULL,
     CONSTRAINT entry_id PRIMARY KEY (entry_id)
   );
 
@@ -44,6 +58,7 @@ $dbname = "foodapp";
     comment VARCHAR(200)  NOT NULL,
     time_stamp DateTime  NOT NULL,
     entry_id INT  NOT NULL,
+    user_id INT NOT NULL,
     CONSTRAINT Comment_pk PRIMARY KEY (comment_id),
     CONSTRAINT Comment_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
   );
@@ -131,10 +146,10 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = "INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('aliquet', 76, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 4);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id,  station_id) values ('purus', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('in', 91, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 1);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id) values ('etiam', 61, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 5);
+  $sql = "INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, active) values ('aliquet', 76, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 4, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id,  station_id, active) values ('purus', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, active) values ('in', 91, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 1, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, active) values ('etiam', 61, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 5, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (1, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (2, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (3, 2);
