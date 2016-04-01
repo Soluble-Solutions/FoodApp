@@ -250,7 +250,7 @@ insert into User (username, salt, hash, email, phone, active) values ('Jeffrey',
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Pepperoni', 61, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 4, 3, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Noodles', 36, '2010-05-21 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 10, 4, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('haiku roll', 92, '2014-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 11, 7, 1);
-  insert into Entry_Attributes (entry_id, attribute_id) values (1, 1);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (1, 1);
   insert into Entry_Attributes (entry_id, attribute_id) values (2, 2);
   insert into Entry_Attributes (entry_id, attribute_id) values (3, 1);
   insert into Entry_Attributes (entry_id, attribute_id) values (4, 2);
@@ -330,8 +330,12 @@ insert into User (username, salt, hash, email, phone, active) values ('Jeffrey',
   insert into Entry_Attributes (entry_id, attribute_id) values (28, 3);
   insert into Entry_Attributes (entry_id, attribute_id) values (29, 3);
   insert into Entry_Attributes (entry_id, attribute_id) values (30, 4);
-  insert into Entry_Attributes (entry_id, attribute_id) values (31, 4);
-  insert into Comment (comment, time_stamp, entry_id, user_id) values ('pellentesque', '2008-02-14 22:37', 1, 23);
+  insert into Entry_Attributes (entry_id, attribute_id) values (31, 4);)";
+
+  $conn->query($sql);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $sql = "INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('pellentesque', '2008-02-14 22:37', 1, 23);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('felis', '2008-02-14 7:12', 2, 40);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('habitasse platea dictumst', '2008-02-14 14:29', 3, 21);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('dignissim', '2008-10-14 20:41', 4, 38);
