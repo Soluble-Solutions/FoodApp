@@ -23,7 +23,7 @@ $app->get('/index', function ($request, $response, $args) {
 });
 
 $app->put('/index',function($request,$response,$args)
-{#CHANGE TO RECEIVE TWO PARAMETERS
+{
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
@@ -38,16 +38,15 @@ $app->post('/entry',function($request,$response,$args)
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $dh_id = $data['dh_id'];
-  $station_id = $data['station_id'];//??
-  $attribute_id =$data['attribute_id'];//NEED TO GET A JSON OBJ
+  $station_id = $data['station_id'];
+  $attribute_id =$data['attribute_id'];
   $image = $data['image'];
   $title = $data['title'];
   $comment = $data['comment'];
   $time_stamp = date("Y-m-d H:i:s");
-  #$active = 1;
+  $active = 1;
 
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id');";
-
+  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active');";
 
   $db->query($sql);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -106,9 +105,4 @@ $app->post('/comment',function($request,$response,$args){
 
   $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
   $db->query($sql);
-});
-
-$app->post('/tags',function($request,$response,$args)
-{
-  #return a JSON object of all the IDs
 });
