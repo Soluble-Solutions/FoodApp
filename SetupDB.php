@@ -98,7 +98,7 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = "INSERT into User (username, salt, hash, email, phone, active) values ('Ashley', 'ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'sd6zbvAaFKdyKtQruEa6N7rfLzvfhV', 'arichardson0@cmu.edu', '591-(481)352-2469', 1);
+  $sql = "INSERT into User (username, salt, hash, email, phone, active) values ('Ashley', 'ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1);
 INSERT into User (username, salt, hash, email, phone, active) values ('Larry', 'n7pGScbbaGT327HBbzZYkHaGL3GHv3', '2cZvydbk5D4Vkgf3jacTvvvdemZAtx', 'lramirez1@hatena.ne.jp', '62-(892)331-3167', 1);
 INSERT into User (username, salt, hash, email, phone, active) values ('Amanda', 'a95m4NpC3nyeM54RhTAR4n3Mn8pBAv', 'CWnxucn68vAVMBgEwCdP5WbSqCh6cf', 'ajames2@mozilla.org', '30-(851)903-0129', 1);
 insert into User (username, salt, hash, email, phone, active) values ('Pamela', 'QSzgbk7kwR84GX8DfSgbEPYvffAGBD', 'QXkZecUm6E2m7WJcQLs83py4QweHqT', 'pshaw3@hostgator.com', '52-(295)439-0433', 1);

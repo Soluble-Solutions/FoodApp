@@ -173,31 +173,63 @@ $app->post('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
     $data = $request->getParsedBody();
-    $username = $data['username'];
+    $email = $data['email']; //change to user?
     $password = $data['password'];
     $sql = "SELECT hash, salt, user_id
             FROM User
-            WHERE email = $email;";
+            WHERE email = '$email';";
     $q = $db->query($sql);
     $array = $q->fetch(PDO::FETCH_ASSOC);
-    $expected_hash = $arr['hash'];
-    $salt = $arr['salt'];
-    $user_id = $arr['user_id'];
+    $hash = $array['hash'];
+    $salt = $array['salt'];
+    $user_id = $array['user_id'];
     $active = 1;
+    $pass = "tester123";
+    $test_hash = crypt($pass,"ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP");
+    //echo $test_hash;
+    //echo "hash: ".$hash;
+    $test = crypt($password,$hash);
+    //echo "crypt($password,$hash): ".$test;
     if(hash_equals($hash,crypt($password,$hash))) // Valid
     {
+      //$this->logger->info("success=true");
       //SESSION STUFF
       $success = "true";
+      //echo $success;
       $str = array("success" => $success);
-      return $response->withJson($str,200);
+      return $response->write(json_encode($str));
+      //return $response->withJson($str,200);
       //return $response->write(json_encode($success)); //?
     }
     else
     {
+      $this->logger->info("success=false");
       $success = "false";
+      //echo $success;
       $str = array("success" => $success);
-      return $str;
+      return $response->write(json_encode($str));
+      //return $response->withJson($str,401);
     }
 
 
 });
+// from http://php.net/manual/en/function.hash-equals.php
+function hash_equals($str1,$str2)
+{
+  //echo "in";
+  /*$var = "IN";
+  if(!function_exists('hash_equals')) {
+    echo $var;
+    function hash_equals($str1, $str2) {*/
+      if(strlen($str1) != strlen($str2)) {
+        return false;
+      } else {
+        $res = $str1 ^ $str2;
+        $ret = 0;
+        for($i = strlen($res) - 1; $i >= 0; $i--) $ret |= ord($res[$i]);
+        return !$ret;
+      }
+    //}
+  //}
+}
+?>
