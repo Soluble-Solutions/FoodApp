@@ -14,31 +14,7 @@ $app->get('/index', function ($request, $response, $args) {
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
     return $response->write(json_encode($check));
-    /*$returnArr = array();
-    foreach($q as $row){
-      $returnArr['entry_id'] = $row['entry_id'];
-      $returnArr['title'] = $row['title'];
-      $returnArr['votes'] = $row['votes'];
-      $returnArr['time_stamp'] = $row['time_stamp'];
-      $returnArr['image'] = $row['image'];
-      $returnArr['dh_id'] = $row['dh_id'];
-      $returnArr['station_id'] = $row['station_id'];
-      echo json_encode($returnArr);*/
-
-    }
-
-  #}
-    /*
-    if($check){
-      //$response->setStatus(200);
-    //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      header('Content-type: application/json');
-      echo json_encode($q);
-      $db = null;
-    } else{
-      throw new PDOException('No records found.');
-    }
-  }*/
+  }
   catch(PDOException $e){
     $this->notFoundHandler; //404
     //$app->$response->setStatus(404);
@@ -67,9 +43,11 @@ $app->post('/entry',function($request,$response,$args)
   $image = $data['image'];
   $title = $data['title'];
   $comment = $data['comment'];
+  $time_stamp = date("Y-m-d H:i:s");
+  #$active = 1;
 
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id) VALUES ('$image','$title',now(),'$dh_id','$station_id');
-  INSERT INTO DiningHall_Station (dh_id,station_id) VALUES ('$dh_id','$station_id'); ";
+  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id');";
+
 
   $db->query($sql);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -77,24 +55,22 @@ $app->post('/entry',function($request,$response,$args)
   #GET Entry_id from first line (based on image)
   $sql = "SELECT entry_id
           FROM Entry
-          WHERE image = '$image';";
-
-  $entry_id = $db->query($sql);
-
-  /*if(!empty($comment))
+          WHERE image = '$image' AND time_stamp = '$time_stamp';";
+  $query = $db->query($sql);
+  $arr = $query->fetch(PDO::FETCH_ASSOC);
+  $entry_id = (int)$arr['entry_id'];
+  if(!empty($comment))
   {
-    $sql ="INSERT INTO Comment (comment,time_stamp) VALUES ('$comment',now());";
-    $q = $db->query($sql);
+    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp',$entry_id);";
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
-  #$attributes = json_decode($attribute_id, TRUE);
-
-
-  #foreach($attribute_id as $attribute)
-  for($i=0; $i<count($attribute_id['attribute']); $i++)
+  /*foreach($attribute_id as $attribute)
   {
-    $sql = "INSERT INTO Attributes (attribute_id) VALUES ('$attribute_id['attribute'][$i]');
-    INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributes_id['attribute'][$i]');";
+    $attributenum =(int)$attribute['attribute'];
+    $sql = "INSERT INTO Attribute (attribute_id) VALUES ('$attributenum');
+    INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
     $db->query($sql);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }*/
@@ -103,38 +79,6 @@ $app->post('/entry',function($request,$response,$args)
 
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
-
-    #$data = $request->getParsedBody();
-    #$entry_id = $data['entry_id'];
-    /*$entry_id = $_GET;
-    $sql = "SELECT e.image,e.votes #ADD COMMENTS AND USE SORT BY
-            FROM Entry e
-            WHERE e.entry_id = '$entry_id'
-            ;";
-    $db = $this->dbConn;
-    $q = $db->query($sql);
-    //$check = $q->setFetchMode(PDO::FETCH_ASSOC);
-    $row = $q->fetchAll();
-    $returnArr = array();
-    $data = $row[0];
-    $returnArr['image'] = $data['image'];
-    $returnArr['votes'] = $data['votes'];
-    echo json_encode($returnArr);
-    $sql = "SELECT a.name
-            FROM Entry e
-            INNER JOIN Entry_Attributes ea
-            ON e.entry_id = '$entry_id'
-            AND e.entry_id=ea.entry_id
-            INNER JOIN Attribute a
-            ON ea.attribute_id = a.attribute_id
-            ;";
-    $db = $this->dbConn;
-    $q = $db->query($sql);
-
-    foreach($q as $row){
-      $returnArr['name'] = $row['name'];
-      echo json_encode($returnArr);
-    }*/
     $entry_id = $request->getAttribute('entry_id');
     $sql = "SELECT c.comment
             FROM Comment c
