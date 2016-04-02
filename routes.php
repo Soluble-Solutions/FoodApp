@@ -5,138 +5,15 @@ $username = "admin";
 $password = "tester123";
 $dbname = "foodapp";
 
-//$app = new \Slim\App(); //
-//$app->get('/[{name}]', function ($request, $response, $args)
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
   try{
     $sql = 'SELECT *
             FROM Entry'; #ORDER BY votes DESC
     $db = $this->dbConn;
-
     $q = $db->query($sql);
-    $check = $q->setFetchMode(PDO::FETCH_ASSOC);
-    /*while($r = $q->fetch()){
-      echo
-    }*/
-    //$row = $q->fetchAll(); //
-    $returnArr = array();
-    foreach($q as $row){
-      //$returnArr['success'] ='True';
-      //$data = $row[$i];
-      $returnArr[$row['entry_id']] = $row['entry_id'];
-      $returnArr[$row['title']] = $row['title'];
-      //$returnArr['votes'] = $data['votes'];
-      //$returnArr['time_stamp'] = $data['time_stamp'];
-      //$returnArr['image'] = $data['image'];
-      //$returnArr['dh_id'] = $data['dh_id'];
-      //$returnArr['station_id'] = $data['station_id'];
-    }
-    /*if(sizeof($row)>=1){
-      //$returnArr['success'] ='True';
-      $data = $row[1];
-      $returnArr['entry_id'] = $data['entry_id'];
-      $returnArr['title'] = $data['title'];
-      $returnArr['votes'] = $data['votes'];
-      $returnArr['time_stamp'] = $data['time_stamp'];
-      $returnArr['image'] = $data['image'];
-      $returnArr['dh_id'] = $data['dh_id'];
-      $returnArr['station_id'] = $data['station_id'];
-
-    }
-    else{
-      $returnArr['success'] ='False';
-    }*/
-    $response->getBody()->write(json_encode($returnArr));
-    return $response;
-    //return $response->getBody()->write(json_encode($q));
-  }
-    /*
-    if($check){
-      //$response->setStatus(200);
-    //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      header('Content-type: application/json');
-      echo json_encode($q);
-      $db = null;
-    } else{
-      throw new PDOException('No records found.');
-    }
-
-  }*/
-    catch(PDOException $e){
-      $this->notFoundHandler; //404
-      //$app->$response->setStatus(404);
-      //echo "Error: ".$e.getMessage();
-    }
-});
-$app->put('/index',function($request,$response,$args)
-{#CHANGE TO RECEIVE TWO PARAMETERS
-  $db = $this->dbConn;
-  $entry_id = $request->getAttribute('entry_id');
-  //$votes = $request->getAttribute('votes');
-  $sql = "UPDATE Entry SET votes = votes + 1 WHERE entry_id = '$entry_id'";
-  $db->query($sql);
-  /* try{
-    $sql = '';
-  }
-  */
-});
-$app->post('/entry',function($request,$response,$args)
-{
-  $db = $this->dbConn;
-  //$entry_id = $request->getAttribute('entry_id'); //??
-  $dh_id = $request->getAttribute('dh_id');//??
-  $station_id = $request->getAttribute('station_id');//??
-  $attribute_id = $request->getAttribute('attribute_id');//NEED TO GET A JSON OBJ
-  $image = $request->getAttribute('image');
-  $title = $request->getAttribute('title');
-  $comment = $request->getAttribute('comment');
-  $time_stamp = $request->getAttribute('time_stamp'); //REMOVE
-  $votes = $request->getAttribute('votes'); //REMOVE
-  //$dh_name = $request->getAttribute('Dining_Hall.name');//???
-  //$s_name = $request->getAttribute('Station.name');//???
-  //$a_name = $request->getAttribute('Attribute.name');//???
-  $sql = "INSERT INTO Entry (image,title,time_stamp,votes,dh_id,station_id) VALUES ('$image','$title','$time_stamp','$votes','$dh_id','$station_id');
-  INSERT INTO Comment (comment,time_stamp) VALUES ('$comment','$time_stamp'); #ENTER COMMENT IF NOT NULL
-  INSERT INTO DiningHall_Station (dh_id,station_id) VALUES ('$dh_id','$station_id');
-  INSERT INTO Entry_Attributes (attribute_id) VALUES ('$attribute_id'); #GET Entry_id from first line (based on image and time_stamp )and then insert it here
-  ";
-  $q = $db->query($sql);
-});
-$app->get('/comment/{entry_id}', function ($request, $response, $args) {
-  try{
-    $entry_id = $request->getAttribute('entry_id');
-    $sql = "SELECT e.image,e.votes,a.name #ADD COMMENTS AND USE SORT BY
-            FROM Entry e
-            INNER JOIN Entry_Attributes ea
-            ON e.entry_id = '$entry_id'
-            INNER JOIN Attribute a
-            ON ea.attribute_id = a.attribute_id
-            ;";
-    /*$sql = 'SELECT e.image,e.votes,a.name
-            FROM Entry e
-            INNER JOIN Entry_Attributes ea
-            ON e.entry_id = ea.entry_id
-            INNER JOIN Attribute a
-            ON ea.attribute_id = a.attribute_id
-            UNION
-            SELECT c.comment
-            FROM Entry e
-            INNER JOIN Comment c
-            ON e.comment_id = c.comment_id
-            ;';*/
-    $db = $this->dbConn;
-
-    $q = $db->query($sql);
-    //$check = $q->setFetchMode(PDO::FETCH_ASSOC);
-    $row = $q->fetchAll();
-    $returnArr = array();
-    $data = $row[0];
-    $returnArr['image'] = $data['image'];
-    $returnArr['votes'] = $data['votes'];
-    $returnArr['name'] = $data['name'];
-    $response->getBody()->write(json_encode($returnArr));
-    return $response;
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    return $response->write(json_encode($check));
   }
   catch(PDOException $e){
     $this->notFoundHandler; //404
@@ -144,39 +21,157 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     //echo "Error: ".$e.getMessage();
   }
 });
-$app->post('/comment',function($request,$response,$args){
+
+$app->put('/index',function($request,$response,$args)
+{
   $db = $this->dbConn;
-  $time_stamp = $request->getAttribute('time_stamp'); #REMOVE
-  $comment = $request->getAttribute('comment');
-  $entry_id = $request->getAttribute('entry_id');
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp','$entry_id');"; #now()
+  $data = $request->getParsedBody();
+  $entry_id = $data['entry_id'];
+  $votes = $data['votes'];
+  $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
   $db->query($sql);
 
 });
+
+$app->post('/entry',function($request,$response,$args)
+{
+  $db = $this->dbConn;
+  $data = $request->getParsedBody();
+  $dh_id = $data['dh_id'];
+  $station_id = $data['station_id'];
+  $attribute_id =$data['attribute_id'];
+  $image = $data['image'];
+  $title = $data['title'];
+  $comment = $data['comment'];
+  $time_stamp = date("Y-m-d H:i:s");
+  $active = 1;
+
+  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active');";
+
+  $db->query($sql);
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  #GET Entry_id from first line (based on image)
+  $sql = "SELECT entry_id
+          FROM Entry
+          WHERE image = '$image' AND time_stamp = '$time_stamp';";
+  $query = $db->query($sql);
+  $arr = $query->fetch(PDO::FETCH_ASSOC);
+  $entry_id = (int)$arr['entry_id'];
+  if(!empty($comment))
+  {
+    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp',$entry_id);";
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  }
+
+  foreach($attribute_id as $attribute)
+  {
+    $attributenum =(int)$attribute['attribute'];
+    $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  }
+
+});
+
+$app->get('/comment/{entry_id}', function ($request, $response, $args) {
+  try{
+    $entry_id = $request->getAttribute('entry_id');
+    $sql = "SELECT c.comment
+            FROM Comment c
+            INNER JOIN Entry e
+            ON e.entry_id = c.entry_id
+            AND e.entry_id = '$entry_id'
+            ;";
+    $db = $this->dbConn;
+    $q = $db->query($sql);
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    return $response->write(json_encode($check));
+  }
+  catch(PDOException $e){
+    $this->notFoundHandler; //404
+    //$app->$response->setStatus(404);
+    //echo "Error: ".$e.getMessage();
+  }
+});
+
+$app->post('/comment',function($request,$response,$args){
+  $db = $this->dbConn;
+  $data = $request->getParsedBody();
+  $entry_id = $data['entry_id'];
+  $comment = $data['comment'];
+
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
+  $db->query($sql);
+});
+
 $app->post('/tags',function($request,$response,$args)
 {
   #return a JSON object of all the IDs
 });
 
-/*$app->get('/goodbye', function($request, $response, $args){
-  return $response->write("Time to go. Goodbye!");
-});
-$app->get('/comments', function($request, $response, $args){
-    // Sample log message
-    //$this->logger->info("Slim-Skeleton '/' route");
+$app->post('/login',function($request,$response,$args)
+{
     $db = $this->dbConn;
-    $strToReturn ='';
-    //$sql = 'SELECT * FROM foodpost';
-    //$result = $db->query('SELECT * FROM foodpost');
-    //while ($row = $result->fetch_assoc()){
-    //while ($row = mysql_fetch_array($result)){
-    //foreach($db->query('select * from foodpost') as $row) {
-    foreach($db->query('SELECT * FROM foodpost') as $row) {
-    	$strToReturn .= '<br />' . $row ['comment']. '<br /> '. $row['choice']. '<br/>'. $row['time'];
+    $data = $request->getParsedBody();
+    $email = $data['email']; //change to user?
+    $password = $data['password'];
+    $sql = "SELECT hash, salt, user_id
+            FROM User
+            WHERE email = '$email';";
+    $q = $db->query($sql);
+    $array = $q->fetch(PDO::FETCH_ASSOC);
+    $hash = $array['hash'];
+    $salt = $array['salt'];
+    $user_id = $array['user_id'];
+    $active = 1;
+    $pass = "tester123";
+    $test_hash = crypt($pass,"ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP");
+    //echo $test_hash;
+    //echo "hash: ".$hash;
+    $test = crypt($password,$hash);
+    //echo "crypt($password,$hash): ".$test;
+    if(hash_equals($hash,crypt($password,$hash))) // Valid
+    {
+      //$this->logger->info("success=true");
+      //SESSION STUFF
+      $success = "true";
+      //echo $success;
+      $str = array("success" => $success);
+      return $response->write(json_encode($str));
+      //return $response->withJson($str,200);
+      //return $response->write(json_encode($success)); //?
     }
-    return $response->write($strToReturn);
-    // Render index view
-    //return $this->renderer->render($response, 'index.phtml', $args);
+    else
+    {
+      $this->logger->info("success=false");
+      $success = "false";
+      //echo $success;
+      $str = array("success" => $success);
+      return $response->write(json_encode($str));
+      //return $response->withJson($str,401);
+    }
+
+
 });
-*/
-//http://192.168.56.103/practice.php
+// from http://php.net/manual/en/function.hash-equals.php
+function hash_equals($str1,$str2)
+{
+  //echo "in";
+  /*$var = "IN";
+  if(!function_exists('hash_equals')) {
+    echo $var;
+    function hash_equals($str1, $str2) {*/
+      if(strlen($str1) != strlen($str2)) {
+        return false;
+      } else {
+        $res = $str1 ^ $str2;
+        $ret = 0;
+        for($i = strlen($res) - 1; $i >= 0; $i--) $ret |= ord($res[$i]);
+        return !$ret;
+      }
+    //}
+  //}
+}
+?>
