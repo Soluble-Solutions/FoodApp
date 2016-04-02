@@ -14,31 +14,8 @@ $app->get('/index', function ($request, $response, $args) {
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
     return $response->write(json_encode($check));
-    /*$returnArr = array();
-    foreach($q as $row){
-      $returnArr['entry_id'] = $row['entry_id'];
-      $returnArr['title'] = $row['title'];
-      $returnArr['votes'] = $row['votes'];
-      $returnArr['time_stamp'] = $row['time_stamp'];
-      $returnArr['image'] = $row['image'];
-      $returnArr['dh_id'] = $row['dh_id'];
-      $returnArr['station_id'] = $row['station_id'];
-      echo json_encode($returnArr);*/
 
-    }
-
-  #}
-    /*
-    if($check){
-      //$response->setStatus(200);
-    //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      header('Content-type: application/json');
-      echo json_encode($q);
-      $db = null;
-    } else{
-      throw new PDOException('No records found.');
-    }
-  }*/
+  }
   catch(PDOException $e){
     $this->notFoundHandler; //404
     //$app->$response->setStatus(404);
@@ -81,23 +58,21 @@ $app->post('/entry',function($request,$response,$args)
           WHERE image = '$image' AND time_stamp = '$time_stamp';";
   $query = $db->query($sql);
   $arr = $query->fetch(PDO::FETCH_ASSOC);
-  $entry_id = $arr['entry_id'];
-
+  $entry_id = (int)$arr['entry_id'];
   if(!empty($comment))
   {
-    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),$entry_id);";
+    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp',$entry_id);";
     $db->query($sql);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
   foreach($attribute_id as $attribute)
-  #for($i=0; $i<count($attribute_id['attribute']); $i++)
   {
-    echo json_encode($attribute);
-    /*$sql = "INSERT INTO Attributes (attribute_id) VALUES (int('$attribute'));
-    INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attribute');";
+    $attributenum =(int)$attribute['attribute'];
+    $sql = "INSERT INTO Attribute (attribute_id) VALUES ('$attributenum');
+    INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
     $db->query($sql);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);*/
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
 });
