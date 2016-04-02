@@ -168,3 +168,36 @@ $app->post('/tags',function($request,$response,$args)
 {
   #return a JSON object of all the IDs
 });
+
+$app->post('/login',function($request,$response,$args)
+{
+    $db = $this->dbConn;
+    $data = $request->getParsedBody();
+    $username = $data['username'];
+    $password = $data['password'];
+    $sql = "SELECT hash, salt, user_id
+            FROM User
+            WHERE email = $email;";
+    $q = $db->query($sql);
+    $array = $q->fetch(PDO::FETCH_ASSOC);
+    $expected_hash = $arr['hash'];
+    $salt = $arr['salt'];
+    $user_id = $arr['user_id'];
+    $active = 1;
+    if(hash_equals($hash,crypt($password,$hash))) // Valid
+    {
+      //SESSION STUFF
+      $success = "true";
+      $str = array("success" => $success);
+      return $response->withJson($str,200);
+      //return $response->write(json_encode($success)); //?
+    }
+    else
+    {
+      $success = "false";
+      $str = array("success" => $success);
+      return $str;
+    }
+
+
+});
