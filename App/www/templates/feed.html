@@ -1,0 +1,26 @@
+<ion-view view-title="F&#x21D5;&#x21D5;D">
+  <ion-content id="feed">
+    <div class="list">
+      <div ng-repeat="f in feedData" id="feedItem">
+        <div class="item item-icon-right" id="feedItemTitle">
+          <h2>{{f.url}}</h2>
+          <p>@ Umph - Healthy on the Hilltop</p>
+          <div class="icon">
+            <div class="col">
+              <i class="button button-icon icon ion-chevron-up" ng-click="upVote()"></i>
+              <h3 class="text-right" id="votes">{{f.votes}}</h3>
+              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()"></i>
+            </div>
+          </div>
+        </div>
+        <div class="item item-image" id="feedItemImage">
+          <img ng-src={{f.image}}>
+        </div>
+        <a class="item item-icon-left" href="#" ng-click="openDetails()" id="feedItemDetails">
+          <i class="icon ion-drag"></i>
+          View Details<span class="badge badge-balanced">Top Ranked!</span>
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
