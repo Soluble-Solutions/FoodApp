@@ -65,14 +65,13 @@ $app->post('/entry',function($request,$response,$args)
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
-  /*foreach($attribute_id as $attribute)
+  foreach($attribute_id as $attribute)
   {
     $attributenum =(int)$attribute['attribute'];
-    $sql = "INSERT INTO Attribute (attribute_id) VALUES ('$attributenum');
-    INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
+    $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
     $db->query($sql);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  }*/
+  }
 
 });
 
