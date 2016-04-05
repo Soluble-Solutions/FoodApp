@@ -30,7 +30,7 @@ $dbname = "foodapp";
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(45) NOT NULL,
     salt VARCHAR(250) NOT NULL,
-    hash VARCHAR(45) NOT NULL,
+    hash VARCHAR(300) NOT NULL,
     email VARCHAR(100),
     phone VARCHAR(15),
     active TINYINT(1) NOT NULL

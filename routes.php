@@ -123,16 +123,21 @@ $app->post('/login',function($request,$response,$args)
     $q = $db->query($sql);
     $array = $q->fetch(PDO::FETCH_ASSOC);
     $hash = $array['hash'];
+    //echo $hash, "\n";
     $salt = $array['salt'];
+    //echo $salt, "\n";
     $user_id = $array['user_id'];
+
     $active = 1;
-    $pass = "tester123";
-    $test_hash = crypt($pass,"ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP");
+    //$pass = "tester123";
+    //$test_hash = crypt($pass,"ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP");
+
     //echo $test_hash;
     //echo "hash: ".$hash;
-    $test = crypt($password,$hash);
+    $test = crypt($password,$salt);
+    //echo $test;
     //echo "crypt($password,$hash): ".$test;
-    if(hash_equals($hash,crypt($password,$hash))) // Valid
+    if(hash_equals($hash,crypt($password,$salt))) // Valid
     {
       //$this->logger->info("success=true");
       //SESSION STUFF
@@ -149,11 +154,30 @@ $app->post('/login',function($request,$response,$args)
       $success = "false";
       //echo $success;
       $str = array("success" => $success);
-      return $response->write(json_encode($str));
+      //return $response->write(json_encode($str));
       //return $response->withJson($str,401);
     }
 
 
+});
+//Referenced from https://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
+$app->post('/registration',function($request,$response,$args)
+{
+  $db = $this->dbConn;
+  $data = $request->getParsedBody();
+  $username = $data['username'];
+  $password = $data['password'];
+  $email = $data['email'];
+  $phone = $data['phone'];
+  $active = 1; //? Needed?
+  $cost = 10;
+  $salt = strtr(base64_encode(mcrypt_create_iv(16,MCRYPT_DEV_URANDOM)),'+','.'); //generating a salt
+  $salt = sprintf("$2a$%02d$", $cost) . $salt; //Prefix for PHP verification purposes. 2a refers to Blowfish algorithm used
+  $hash = crypt($password,$salt);
+  //echo $hash;
+  $sql = "INSERT into User (username,salt,hash,email,phone,active) VALUES ('$username','$salt','$hash','$email','$phone','$active');";
+  $db->query($sql);
+  //echo $salt;
 });
 // from http://php.net/manual/en/function.hash-equals.php
 function hash_equals($str1,$str2)
