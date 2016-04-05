@@ -1,5 +1,16 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
+.controller('LoginCtrl', function($scope, $state) {
+  $scope.login = function() {
+    console.log("login called")
+    $state.go('app.feed')
+  }
+
+  $scope.signUp = function() {
+    
+  }
+})
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
     scope: $scope,
@@ -10,12 +21,12 @@ angular.module('starter.controllers', ['ngAnimate'])
 
     $scope.openModal = function() {
       console.log("openModal called!");
-    $scope.modal.show();
+      $scope.modal.show();
     }
 
     $scope.closeModal = function() {
       console.log("closeModal() called");
-    $scope.modal.hide();
+      $scope.modal.hide();
     };
 
     $scope.$on('$destroy', function() {

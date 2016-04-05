@@ -1,0 +1,38 @@
+<ion-view view-title="F&#x21D5;&#x21D5;D" name="login-view">
+  <ion-header-bar class="bar bar-header">
+    <h2 class="title">F&#x21D5;&#x21D5;D</h2>
+    <button class="button button-icon button-clear"
+          ng-click="signUp()" id="navBarButton">Sign Up</button>
+  </ion-header-bar>
+  <ion-content class="padding">
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="Email" ng-model="data.username">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="data.password">
+          </label>
+      </div>
+      <button class="button button-block button-dark" ng-click="login()">Login</button>
+  </ion-content>
+</ion-view>
+
+<script id="signUp-modal.html" type="text/ng-template" class="filterModal">
+  <div class="modal">
+    <ion-header-bar>
+      <button class="button button-icon button-clear"
+        ng-click="closeModal()" id="navBarButton">back</button>
+      <h1 class="title">Filters</h1>
+    </ion-header-bar>
+
+    <ion-content>
+
+    </ion-content>
+
+    <button>
+      <ion-footer-bar class="bar bar-footer bar-dark" ng-click="closeModal()">
+        <h3 class="title">Create Account</h3>
+      </ion-footer-bar>
+    </button>
+  </div>
+</script>
