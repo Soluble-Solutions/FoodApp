@@ -162,6 +162,7 @@ $app->post('/comment',function($request,$response,$args){
 
   $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
   $db->query($sql);
+  $response['messageDB'] = $sql->errorInfo();
 });
 
 $app->post('/tags',function($request,$response,$args)
@@ -173,7 +174,7 @@ $app->post('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
     $data = $request->getParsedBody();
-    $username = $data['username'];
+    $email = $data['email'];
     $password = $data['password'];
     $sql = "SELECT hash, salt, user_id
             FROM User

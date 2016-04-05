@@ -1,15 +1,30 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
-.controller('LoginCtrl', function($scope, $state) {
+.controller('LoginCtrl', function($scope, $state, $http) {
   $scope.login = function() {
-    console.log("login called")
-    $state.go('app.feed')
-  }
+    console.log("login called");
+    $http({
+      method: 'POST',
+      url: 'http://52.37.14.110/login',
+      params: {
+        username: $scope.email,
+        password: $scope.password
+      }
+    })
+    .then(function(response) {
+      if(response.success){
+        $state.go('app.feed');
+      }
+      else{
+        alert("Login failed");
+      }
+
+  })
 
   $scope.signUp = function() {
-    
+
   }
-})
+}})
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
