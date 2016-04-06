@@ -165,7 +165,6 @@ $app->post('/registration',function($request,$response,$args)
 {
   $db = $this->dbConn;
   $data = $request->getParsedBody();
-  $username = $data['username'];
   $password = $data['password'];
   $email = $data['email'];
   $phone = $data['phone'];
@@ -175,7 +174,7 @@ $app->post('/registration',function($request,$response,$args)
   $salt = sprintf("$2a$%02d$", $cost) . $salt; //Prefix for PHP verification purposes. 2a refers to Blowfish algorithm used
   $hash = crypt($password,$salt);
   //echo $hash;
-  $sql = "INSERT into User (username,salt,hash,email,phone,active) VALUES ('$username','$salt','$hash','$email','$phone','$active');";
+  $sql = "INSERT into User (salt,hash,email,phone,active) VALUES ('$salt','$hash','$email','$phone','$active');";
   $db->query($sql);
   //echo $salt;
 });
