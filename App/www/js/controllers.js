@@ -1,5 +1,6 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
+
 .controller('LoginCtrl', function($scope, $state, $ionicModal, $http) {
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
@@ -25,8 +26,23 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.login = function() {
     console.log("login called");
-    $state.go('app.feed');
-  }
+    $http({
+      method: 'POST',
+      url: 'http://52.37.14.110/login',
+      params: {
+        email: $scope.email,
+        password: $scope.password
+      }
+    })
+    .then(function(response) {
+      if(response.success){
+        $state.go('app.feed');
+      }
+      else{
+        alert("Login failed");
+      }
+
+  })
 
   $scope.signUp = function() {
     console.log("signUp() called");
@@ -42,8 +58,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.closeModal();
       $state.go('app.feed');
     });
-  }
-})
+
+}})
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
