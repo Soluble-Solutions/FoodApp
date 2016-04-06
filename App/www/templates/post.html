@@ -4,27 +4,16 @@
 
       <label class="item item-input item-stacked-label">
         <span class="input-label">Title</span>
-        <input type="text" placeholder="Give your post a name">
+        <input type="text" placeholder="Give your post a name" ng-model="newTitle">
       </label>
 
       <label class="item item-input item-stacked-label">
         <span class="input-label">Description</span>
-        <input type="text" placeholder="How'd you like it?">
-      </label>
-
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Dining Hall
-        </div>
-        <select>
-          <option>Umphry Lee</option>
-          <option>Arnold</option>
-          <option>Mac's Place</option>
-        </select>
+        <input type="text" placeholder="How'd you like it?" ng-model="newComment">
       </label>
 
       <div class="item item-icon-right"  ng-click="showTags()">
-        <button class="icon button button-icon button-clear ion-navicon">
+        <button class="icon button button-icon button-clear ion-chevron-down">
           </button>
         <h2>Tags</h2>
       </div>

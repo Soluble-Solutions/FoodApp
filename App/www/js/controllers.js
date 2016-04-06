@@ -165,13 +165,17 @@ angular.module('starter.controllers', ['ngAnimate'])
     {text:"Vegan", checked:false}
   ];
   $scope.displayTags = false;
+
   $scope.showTags = function() {
     console.log("toggleTags() called");
     $scope.displayTags = $scope.displayTags === false ? true: false;
   };
 
+
   $scope.submitData = function() {
     console.log("Submit Data called (1)")
+    console.log($scope.newDh_id);
+    console.log($scope.tags);
     var data = {
       title: $scope.newTitle,
       comment: $scope.newComment,
@@ -185,11 +189,9 @@ angular.module('starter.controllers', ['ngAnimate'])
       .success(function (response) {
           $scope.postResponse = response;
           console.log("Submit Data called (final)");
-          console.log(response);
       })
       .error(function (response) {
           $scope.postResponse = response;
-          console.log(response);
       });
   }
 })
