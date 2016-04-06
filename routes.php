@@ -169,6 +169,7 @@ $app->post('/registration',function($request,$response,$args)
   $password = $data['password'];
   $email = $data['email'];
   $phone = $data['phone'];
+  echo $phone;
   $active = 1; //? Needed?
   $cost = 10;
   $salt = strtr(base64_encode(mcrypt_create_iv(16,MCRYPT_DEV_URANDOM)),'+','.'); //generating a salt
@@ -178,15 +179,20 @@ $app->post('/registration',function($request,$response,$args)
   /*$sql = "INSERT into User (username,salt,hash,email,phone,active) VALUES ('$username','$salt','$hash','$email','$phone','$active');";
   $db->query($sql);
   //echo $salt;*/
-  $db = $this->dbConn;
-	$query = $db->prepare('INSERT INTO Users (username,salt,hash,email,phone,active) VALUES (:username, :salt, :hash, :email, :phone, :active)');
-  $query->bindParam(':username', $username);
+	$query = $db->prepare('INSERT INTO User (username,salt,hash,email,phone,active) VALUES (:username, "$salt", "$hash", :email, :phone, "$active")');
+  $query->execute(array(
+    'username' => $request->getParam('username'),
+    'email' => $request->getParam('email'),
+    'phone' => $request->getParam('phone')
+  ));
+  /*$query->bindParam(':username', $username);
   $query->bindParam(':salt', $salt);
   $query->bindParam(':hash', $hash);
   $query->bindParam(':phone', $phone);
   $query->bindParam(':email', $email);
   $query->bindParam(':active', $active);
-	$query->execute();
+	$query->execute();*/
+  return $response->withStatus(200);
 
 });
 // from http://php.net/manual/en/function.hash-equals.php
