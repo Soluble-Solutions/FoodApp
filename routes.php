@@ -114,18 +114,23 @@ $app->post('/tags',function($request,$response,$args)
 $app->post('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
-    $data = $request->getParsedBody();
-    $email = $data['email']; //change to user?
-    $password = $data['password'];
-    $sql = "SELECT hash, salt, user_id
+    //$data = $request->getParsedBody();
+    //$email = $data['email']; //change to user?
+    //$password = $data['password'];
+    $email = $request->getParam('email');
+    $query = $db->prepare('SELECT hash, salt, user_id
             FROM User
-            WHERE email = '$email';";
-    $q = $db->query($sql);
-    $array = $q->fetch(PDO::FETCH_ASSOC);
+            WHERE email = :email');
+    $query->bindParam(':email',$email);
+    $query->execute();
+    //$query->bindParam(':salt',$salt);
+    //$query->bindParam(':user_id',$user_id);
+    //$query->execute(array('email'=>$request->getParam('email')));
+    $array = $query->fetch(PDO::FETCH_ASSOC);
     $hash = $array['hash'];
-    //echo $hash, "\n";
+    echo $hash,"\n";
     $salt = $array['salt'];
-    //echo $salt, "\n";
+    echo $salt, "\n";
     $user_id = $array['user_id'];
 
     $active = 1;
@@ -134,10 +139,12 @@ $app->post('/login',function($request,$response,$args)
 
     //echo $test_hash;
     //echo "hash: ".$hash;
-    $test = crypt($password,$salt);
-    //echo $test;
+    //echo $request->getParam('password'), "\n";
+    $test = crypt($request->getParam('password'),$salt);
+    //$test = crypt($password,$salt);
+    echo $test;
     //echo "crypt($password,$hash): ".$test;
-    if(hash_equals($hash,crypt($password,$salt))) // Valid
+    if(hash_equals($array->hash,crypt($request->getParam('password'),$array->hash))) // Valid
     {
       //$this->logger->info("success=true");
       //SESSION STUFF
@@ -154,7 +161,7 @@ $app->post('/login',function($request,$response,$args)
       $success = "false";
       //echo $success;
       $str = array("success" => $success);
-      //return $response->write(json_encode($str));
+      return $response->write(json_encode($str));
       //return $response->withJson($str,401);
     }
 
@@ -169,21 +176,24 @@ $app->post('/registration',function($request,$response,$args)
   $password = $data['password'];
   $email = $data['email'];
   $phone = $data['phone'];
-  echo $phone;
   $active = 1; //? Needed?
   $cost = 10;
   $salt = strtr(base64_encode(mcrypt_create_iv(16,MCRYPT_DEV_URANDOM)),'+','.'); //generating a salt
   $salt = sprintf("$2a$%02d$", $cost) . $salt; //Prefix for PHP verification purposes. 2a refers to Blowfish algorithm used
   $hash = crypt($password,$salt);
+  echo $salt;
   //echo $hash;
   /*$sql = "INSERT into User (username,salt,hash,email,phone,active) VALUES ('$username','$salt','$hash','$email','$phone','$active');";
   $db->query($sql);
   //echo $salt;*/
-	$query = $db->prepare('INSERT INTO User (username,salt,hash,email,phone,active) VALUES (:username, "$salt", "$hash", :email, :phone, "$active")');
+	$query = $db->prepare("INSERT INTO User (username,salt,hash,email,phone,active) VALUES (:username, :salt, :hash, :email, :phone, :active)");
   $query->execute(array(
     'username' => $request->getParam('username'),
+    'salt'=> $salt,
+    'hash'=> $hash,
     'email' => $request->getParam('email'),
-    'phone' => $request->getParam('phone')
+    'phone' => $request->getParam('phone'),
+    'active'=> $active
   ));
   /*$query->bindParam(':username', $username);
   $query->bindParam(':salt', $salt);
