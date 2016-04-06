@@ -1,13 +1,47 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
-.controller('LoginCtrl', function($scope, $state) {
+.controller('LoginCtrl', function($scope, $state, $ionicModal, $http) {
+
+  $ionicModal.fromTemplateUrl('signUp-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-left'
+    }).then(function(modal) {
+    $scope.modal = modal
+    })
+
+    $scope.openModal = function() {
+      console.log("openModal called!");
+      $scope.modal.show();
+    }
+
+    $scope.closeModal = function() {
+      console.log("closeModal() called");
+      $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+
   $scope.login = function() {
-    console.log("login called")
-    $state.go('app.feed')
+    console.log("login called");
+    $state.go('app.feed');
   }
 
   $scope.signUp = function() {
-    
+    console.log("signUp() called");
+
+    $http.post("http://52.37.14.110/registration",{
+      username: $scope.newUsername,
+      phone: $scope.newPhone,
+      email: $scope.newEmail,
+      password: $scope.newPassword
+    })
+    .then(function(response) {
+      console.log(response);
+      $scope.closeModal();
+      $state.go('app.feed');
+    });
   }
 })
 
@@ -108,7 +142,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 .factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
-  return {data: {}};
+  return {data: []};
 })
 
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
@@ -170,26 +204,26 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($scope, FeedData, $stateParams) {
+.controller('DetailsCtrl', function($scope, FeedData, $stateParams, $state, $location) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
-  $scope.comments = [
-    {id: 1, text: "This sucked!"},
-    {id: 2, text: "Idk what you're talking about^ I thought this was great"},
-    {id: 3, text: "I don't know how people eat here..."}
-  ];
+  if(!$scope.comments){
+    $scope.comments = [];
+  }
+  $scope.comments = [];
   $scope.submitComment = function() {
-    console.log("in submitComment()")
-    if($scope.newComment){
-      $scope.comments.push(this.newComment);
+    console.log("submitComment() called");
+    console.log("with text: ");
+    console.log($scope.newComment);
+    if($scope.newComment != ''){
+      $scope.comments.push(
+        {id: $scope.selectedID, text: $scope.newComment}
+      );
       $scope.newComment = '';
-
+      console.log($scope.comments);
     }
+    //reload page
   }
   console.log("Reached DetailsCtrl");
-  console.log($scope.feedData);
-  console.log($stateParams.entry_id);
   //TEST INFORMATION//
-
-
 })

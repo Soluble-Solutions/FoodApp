@@ -2,15 +2,15 @@
   <ion-header-bar class="bar bar-header">
     <h2 class="title">F&#x21D5;&#x21D5;D</h2>
     <button class="button button-icon button-clear"
-          ng-click="signUp()" id="navBarButton">Sign Up</button>
+          ng-click="openModal()" id="navBarButton">Sign Up</button>
   </ion-header-bar>
   <ion-content class="padding">
       <div class="list list-inset">
           <label class="item item-input">
-              <input type="text" placeholder="Email" ng-model="data.username">
+              <input type="text" placeholder="Email" ng-model="email">
           </label>
           <label class="item item-input">
-              <input type="password" placeholder="Password" ng-model="data.password">
+              <input type="password" placeholder="Password" ng-model="password">
           </label>
       </div>
       <button class="button button-block button-dark" ng-click="login()">Login</button>
@@ -21,16 +21,29 @@
   <div class="modal">
     <ion-header-bar>
       <button class="button button-icon button-clear"
-        ng-click="closeModal()" id="navBarButton">back</button>
-      <h1 class="title">Filters</h1>
+        ng-click="closeModal()" id="navBarButton">close</button>
+      <h1 class="title">Sign Up</h1>
     </ion-header-bar>
 
     <ion-content>
-
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="Username" ng-model="newUsername">
+          </label>
+          <label class="item item-input">
+              <input type="text" placeholder="Phone Number" ng-model="newPhone">
+          </label>
+          <label class="item item-input">
+              <input type="email" placeholder="Email" ng-model="newEmail">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="newPassword">
+          </label>
+      </div>
     </ion-content>
 
     <button>
-      <ion-footer-bar class="bar bar-footer bar-dark" ng-click="closeModal()">
+      <ion-footer-bar class="bar bar-footer bar-dark" ng-click="signUp()">
         <h3 class="title">Create Account</h3>
       </ion-footer-bar>
     </button>
