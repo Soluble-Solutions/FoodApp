@@ -29,7 +29,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $http({
       method: 'POST',
       url: 'http://52.37.14.110/login',
-      params: {
+      data: {
         email: $scope.email,
         password: $scope.password
       }
@@ -48,11 +48,14 @@ angular.module('starter.controllers', ['ngAnimate'])
   $scope.signUp = function() {
     console.log("signUp() called");
 
-    $http.post("http://52.37.14.110/registration",{
-      username: $scope.newUsername,
-      phone: $scope.newPhone,
-      email: $scope.newEmail,
-      password: $scope.newPassword
+    $http({
+      method: 'POST',
+      url: "http://52.37.14.110/registration",
+      data: {
+        phone: $scope.newPhone,
+        email: $scope.newEmail,
+        password: $scope.newPassword
+      }
     })
     .then(function(response) {
       console.log(response);
