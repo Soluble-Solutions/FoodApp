@@ -7,7 +7,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       method: 'POST',
       url: 'http://52.37.14.110/login',
       params: {
-        username: $scope.email,
+        email: $scope.email,
         password: $scope.password
       }
     })
