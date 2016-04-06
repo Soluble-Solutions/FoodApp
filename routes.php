@@ -175,9 +175,19 @@ $app->post('/registration',function($request,$response,$args)
   $salt = sprintf("$2a$%02d$", $cost) . $salt; //Prefix for PHP verification purposes. 2a refers to Blowfish algorithm used
   $hash = crypt($password,$salt);
   //echo $hash;
-  $sql = "INSERT into User (username,salt,hash,email,phone,active) VALUES ('$username','$salt','$hash','$email','$phone','$active');";
+  /*$sql = "INSERT into User (username,salt,hash,email,phone,active) VALUES ('$username','$salt','$hash','$email','$phone','$active');";
   $db->query($sql);
-  //echo $salt;
+  //echo $salt;*/
+  $db = $this->dbConn;
+	$query = $db->prepare('INSERT INTO Users (username,salt,hash,email,phone,active) VALUES (:username, :salt, :hash, :email, :phone, :active)');
+  $query->bindParam(':username', $username);
+  $query->bindParam(':salt', $salt);
+  $query->bindParam(':hash', $hash);
+  $query->bindParam(':phone', $phone);
+  $query->bindParam(':email', $email);
+  $query->bindParam(':active', $active);
+	$query->execute();
+
 });
 // from http://php.net/manual/en/function.hash-equals.php
 function hash_equals($str1,$str2)
