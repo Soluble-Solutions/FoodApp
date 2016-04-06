@@ -156,6 +156,19 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
   }
 
+  $scope.displayTags = false;
+  $scope.toggleTags = function() {
+    console.log("toggleTags() called");
+    $scope.displayTags = $scope.displayTags === false ? true: false;
+  };
+
+  $scope.tags = [
+    {text:"Hot", checked:false},
+    {text:"Cold", checked:false},
+    {text:"Vegetarian", checked:false},
+    {text:"Vegan", checked:false}
+  ];
+
 })
 
 .factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
