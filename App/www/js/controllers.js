@@ -41,7 +41,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       else{
         alert("Login failed");
       }
-
     })
   }
 
@@ -137,7 +136,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 })
 
-.controller('PostCtrl', function($scope) {
+.controller('PostCtrl', function($scope, $http) {
   $scope.takeImage = function() {
     console.log("takeImage() called");
     var options = {
@@ -159,19 +158,40 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
   }
 
-  $scope.displayTags = false;
-  $scope.toggleTags = function() {
-    console.log("toggleTags() called");
-    $scope.displayTags = $scope.displayTags === false ? true: false;
-  };
-
   $scope.tags = [
     {text:"Hot", checked:false},
     {text:"Cold", checked:false},
     {text:"Vegetarian", checked:false},
     {text:"Vegan", checked:false}
   ];
+  $scope.displayTags = false;
+  $scope.showTags = function() {
+    console.log("toggleTags() called");
+    $scope.displayTags = $scope.displayTags === false ? true: false;
+  };
 
+  $scope.submitData = function() {
+    console.log("Submit Data called (1)")
+    var data = {
+      title: $scope.newTitle,
+      comment: $scope.newComment,
+      dh_id: $scope.newDh_id,
+      station_id: $scope.newStation_id,
+      attribute_id: $scope.attribute_id,
+      image: $scope.image
+    };
+    console.log("Submit Data called (2)")
+    $http.post('http://52.37.14.110/entry', data)
+      .success(function (response) {
+          $scope.postResponse = response;
+          console.log("Submit Data called (final)");
+          console.log(response);
+      })
+      .error(function (response) {
+          $scope.postResponse = response;
+          console.log(response);
+      });
+  }
 })
 
 .factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
@@ -214,7 +234,6 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
     //put request changing ranking in database to one more
   }
-
 
   $scope.downVote = function() {
     console.log("downVote() called!");
