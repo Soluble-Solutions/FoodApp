@@ -42,7 +42,8 @@ angular.module('starter.controllers', ['ngAnimate'])
         alert("Login failed");
       }
 
-  })
+    })
+  }
 
   $scope.signUp = function() {
     console.log("signUp() called");
@@ -58,8 +59,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.closeModal();
       $state.go('app.feed');
     });
-
-}})
+  }
+})
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
   $ionicModal.fromTemplateUrl('contact-modal.html', {
