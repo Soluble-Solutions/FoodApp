@@ -26,8 +26,8 @@
       </ion-item>
 
       <form class="item item-input-inset" id = "newCommentForm" ng-submit="submitComment()" ng-controller="DetailsCtrl">
-          <label class="item-input-wrapper col col-75">
-            <input type="text" ng-model = "newComment" placeholder="Post a new comment!" id="commentBox">
+          <label class="item-input-wrapper">
+            <input type="text" ng-model = "newComment" placeholder="Post a comment" id="commentBox">
           </label>
           <button class="button button-medium" ng-submit="submitComment()" ng-controller="DetailsCtrl" id = "submitC">
             <p id="submitText">Post</p>
