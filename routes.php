@@ -2,8 +2,6 @@
 // Routes
 $servername = "localhost";
 $username = "admin";
-$password = "tester123";
-$dbname = "foodapp";
 
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
@@ -150,11 +148,11 @@ $app->post('/login',function($request,$response,$args)
     }
     else
     {
-      $this->logger->info("success=false");
+     //$this->logger->info("success=false");
       $success = "false";
       //echo $success;
       $str = array("success" => $success);
-      //return $response->write(json_encode($str));
+      return $response->write(json_encode($str));
       //return $response->withJson($str,401);
     }
 
