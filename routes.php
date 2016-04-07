@@ -143,7 +143,8 @@ $app->post('/login',function($request,$response,$args)
       $db->query($sql);
       $success = "true";
       //echo $success;
-      $str = array("success" => $success);
+      $str = array("success" => $success, "user_id" => $user_id);
+      //echo $success;
       return $response->write(json_encode($str));
       //return $response->withJson($str,200);
       //return $response->write(json_encode($success)); //?
@@ -174,9 +175,35 @@ $app->post('/registration',function($request,$response,$args)
   $salt = sprintf("$2a$%02d$", $cost) . $salt; //Prefix for PHP verification purposes. 2a refers to Blowfish algorithm used
   $hash = crypt($password,$salt);
   //echo $hash;
-  $sql = "INSERT into User (salt,hash,email,phone,active) VALUES ('$salt','$hash','$email','$phone','$active');";
-  $db->query($sql);
-  //echo $salt;
+  $sql = "SELECT email FROM User WHERE email = '$email'";
+  $q = $db->query($sql);
+  $arr = $q->fetch(PDO::FETCH_ASSOC);
+  echo json_encode($arr);
+
+  if($arr == false)
+  {
+    $sql = "INSERT into User (salt,hash,email,phone,active) VALUES ('$salt','$hash','$email','$phone','$active');";
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = "SELECT user_id
+            FROM User
+            WHERE salt = '$salt' AND email = '$email'";
+    $q = $db->query($sql);
+    $array = $q->fetch(PDO::FETCH_ASSOC);
+    $user_id = (int)$array['user_id'];
+    $success = "true";
+    $str = array("success" => $success, "user_id" => $user_id);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else {
+    $success = "false";
+    $str = array("success" => $success);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+    //echo $salt;
 });
 // from http://php.net/manual/en/function.hash-equals.php
 function hash_equals($str1,$str2)
@@ -204,8 +231,31 @@ $app->put('/logout',function($request,$response,$args)
   $data = $request->getParsedBody();
   $user_id = $data['user_id'];
   $inactive = 0;
-  $sql = "UPDATE User SET active = $inactive  WHERE user_id = '$user_id'";
-  $db->query($sql);
+  echo json_encode($user_id);
+
+  $sql = "SELECT active FROM User WHERE user_id = '$user_id'";
+  $q = $db->query($sql);
+  $arr = $q->fetch(PDO::FETCH_ASSOC);
+  $currentactivity= (int)$arr['active'];
+  echo json_encode($currentactivity);
+
+  if($currentactivity == 1)
+  {
+    $sql = "UPDATE User SET active = $inactive  WHERE user_id = '$user_id'";
+    $db->query($sql);
+    $success = "true";
+    $str = array("success" => $success);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else {
+    $success = "false";
+    $str = array("success" => $success);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+
+
 
 });
 
