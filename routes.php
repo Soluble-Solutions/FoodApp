@@ -104,18 +104,13 @@ $app->post('/comment',function($request,$response,$args){
   $db->query($sql);
 });
 
-$app->post('/tags',function($request,$response,$args)
-{
-  #return a JSON object of all the IDs
-});
-
 $app->post('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
     $data = $request->getParsedBody();
     $email = $data['email']; //change to user?
     $password = $data['password'];
-    $sql = "SELECT hash, salt, user_id
+    $sql = "SELECT hash, salt, user_id, active
             FROM User
             WHERE email = '$email';";
     $q = $db->query($sql);
@@ -123,8 +118,8 @@ $app->post('/login',function($request,$response,$args)
     $hash = $array['hash'];
     //echo $hash, "\n";
     $salt = $array['salt'];
-    //echo $salt, "\n";
     $user_id = $array['user_id'];
+    $currentactivity= (int)$array['active'];
 
     $active = 1;
     //$pass = "tester123";
@@ -135,7 +130,16 @@ $app->post('/login',function($request,$response,$args)
     $test = crypt($password,$salt);
     //echo $test;
     //echo "crypt($password,$hash): ".$test;
-    if(hash_equals($hash,crypt($password,$salt))) // Valid
+    //echo json_encode($currentactivity);
+
+    if($currentactivity == 1) //already logged in
+    {
+      $success = "false";
+      //echo $success;
+      $str = array("success" => $success);
+      return $response->write(json_encode($str));
+    }
+    else if(hash_equals($hash,crypt($password,$salt))) // Valid
     {
       //$this->logger->info("success=true");
       //SESSION STUFF
@@ -149,7 +153,7 @@ $app->post('/login',function($request,$response,$args)
       //return $response->withJson($str,200);
       //return $response->write(json_encode($success)); //?
     }
-    else
+    else //incorrect password
     {
      //$this->logger->info("success=false");
       $success = "false";
@@ -178,9 +182,9 @@ $app->post('/registration',function($request,$response,$args)
   $sql = "SELECT email FROM User WHERE email = '$email'";
   $q = $db->query($sql);
   $arr = $q->fetch(PDO::FETCH_ASSOC);
-  echo json_encode($arr);
+  //echo json_encode($arr);
 
-  if($arr == false)
+  if($arr == false)//successful
   {
     $sql = "INSERT into User (salt,hash,email,phone,active) VALUES ('$salt','$hash','$email','$phone','$active');";
     $db->query($sql);
@@ -197,7 +201,7 @@ $app->post('/registration',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else {
+  else {//email account already in database
     $success = "false";
     $str = array("success" => $success);
     //echo $success;
@@ -231,15 +235,15 @@ $app->put('/logout',function($request,$response,$args)
   $data = $request->getParsedBody();
   $user_id = $data['user_id'];
   $inactive = 0;
-  echo json_encode($user_id);
+  //echo json_encode($user_id);
 
   $sql = "SELECT active FROM User WHERE user_id = '$user_id'";
   $q = $db->query($sql);
   $arr = $q->fetch(PDO::FETCH_ASSOC);
   $currentactivity= (int)$arr['active'];
-  echo json_encode($currentactivity);
+  //echo json_encode($currentactivity);
 
-  if($currentactivity == 1)
+  if($currentactivity == 1)//successful logout
   {
     $sql = "UPDATE User SET active = $inactive  WHERE user_id = '$user_id'";
     $db->query($sql);
@@ -248,7 +252,7 @@ $app->put('/logout',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else {
+  else {//user already logged out
     $success = "false";
     $str = array("success" => $success);
     //echo $success;
