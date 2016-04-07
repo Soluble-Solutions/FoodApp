@@ -139,6 +139,8 @@ $app->post('/login',function($request,$response,$args)
     {
       //$this->logger->info("success=true");
       //SESSION STUFF
+      $sql = "UPDATE User SET active = $active WHERE user_id = '$user_id'";
+      $db->query($sql);
       $success = "true";
       //echo $success;
       $str = array("success" => $success);
@@ -195,4 +197,16 @@ function hash_equals($str1,$str2)
     //}
   //}
 }
+
+$app->put('/logout',function($request,$response,$args)
+{
+  $db = $this->dbConn;
+  $data = $request->getParsedBody();
+  $user_id = $data['user_id'];
+  $inactive = 0;
+  $sql = "UPDATE User SET active = $inactive  WHERE user_id = '$user_id'";
+  $db->query($sql);
+
+});
+
 ?>
