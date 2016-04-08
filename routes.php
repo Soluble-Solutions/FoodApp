@@ -124,7 +124,7 @@ $app->post('/login',function($request,$response,$args)
     //echo $hash, "\n";
     $salt = $array['salt'];
     //echo $salt, "\n";
-    $user_id = $array['user_id'];
+    $user_id = (int)$array['user_id'];
 
     $active = 1;
     //$pass = "tester123";
@@ -143,7 +143,7 @@ $app->post('/login',function($request,$response,$args)
       $db->query($sql);
       $success = "true";
       //echo $success;
-      $str = array("success" => $success, "user_id" => $user_id);
+      $str = ["success" => $success, "user_id" => $user_id];
       //echo $success;
       return $response->write(json_encode($str));
       //return $response->withJson($str,200);
@@ -178,7 +178,7 @@ $app->post('/registration',function($request,$response,$args)
   $sql = "SELECT email FROM User WHERE email = '$email'";
   $q = $db->query($sql);
   $arr = $q->fetch(PDO::FETCH_ASSOC);
-  echo json_encode($arr);
+  //echo json_encode($arr);
 
   if($arr == false)
   {
@@ -191,9 +191,9 @@ $app->post('/registration',function($request,$response,$args)
             WHERE salt = '$salt' AND email = '$email'";
     $q = $db->query($sql);
     $array = $q->fetch(PDO::FETCH_ASSOC);
-    $user_id = (int)$array['user_id'];
+    $user_id = $array['user_id'];
     $success = "true";
-    $str = array("success" => $success, "user_id" => $user_id);
+    $str = array(0=>array("success" => $success),1=>array("user_id" => $user_id));
     //echo $success;
     return $response->write(json_encode($str));
   }
@@ -231,13 +231,13 @@ $app->put('/logout',function($request,$response,$args)
   $data = $request->getParsedBody();
   $user_id = $data['user_id'];
   $inactive = 0;
-  echo json_encode($user_id);
+  //echo json_encode($user_id);
 
   $sql = "SELECT active FROM User WHERE user_id = '$user_id'";
   $q = $db->query($sql);
   $arr = $q->fetch(PDO::FETCH_ASSOC);
   $currentactivity= (int)$arr['active'];
-  echo json_encode($currentactivity);
+  //echo json_encode($currentactivity);
 
   if($currentactivity == 1)
   {
