@@ -137,8 +137,9 @@ $app->post('/login',function($request,$response,$args)
     if($currentactivity == 1) //already logged in
     {
       $success = "false";
+      $messageDB = "already logged in";
       //echo $success;
-      $str = array("success" => $success);
+      $str = array("success" => $success, "messageDB" =>$messageDB);
       return $response->write(json_encode($str));
     }
     else if(hash_equals($hash,crypt($password,$salt))) // Valid
@@ -159,8 +160,9 @@ $app->post('/login',function($request,$response,$args)
     {
      //$this->logger->info("success=false");
       $success = "false";
+      $messageDB = "incorrect password";
       //echo $success;
-      $str = array("success" => $success);
+      $str = array("success" => $success, "messageDB" =>$messageDB);
       return $response->write(json_encode($str));
       //return $response->withJson($str,401);
     }
@@ -205,7 +207,8 @@ $app->post('/registration',function($request,$response,$args)
   }
   else {//email account already in database
     $success = "false";
-    $str = array("success" => $success);
+    $messageDB = "That email already exists.";
+    $str = array("success" => $success, "messageDB" =>$messageDB);
     //echo $success;
     return $response->write(json_encode($str));
   }
@@ -256,7 +259,8 @@ $app->put('/logout',function($request,$response,$args)
   }
   else {//user already logged out
     $success = "false";
-    $str = array("success" => $success);
+    $messageDB = "You have already logged out.";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
     //echo $success;
     return $response->write(json_encode($str));
   }
