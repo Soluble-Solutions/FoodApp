@@ -35,6 +35,7 @@ $app->post('/entry',function($request,$response,$args)
 {
   $db = $this->dbConn;
   $data = $request->getParsedBody();
+  $user_id = $data['user_id'];
   $dh_id = $data['dh_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
@@ -44,7 +45,7 @@ $app->post('/entry',function($request,$response,$args)
   $time_stamp = date("Y-m-d H:i:s");
   $active = 1;
 
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active');";
+  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
 
   $db->query($sql);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -58,7 +59,7 @@ $app->post('/entry',function($request,$response,$args)
   $entry_id = (int)$arr['entry_id'];
   if(!empty($comment))
   {
-    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp',$entry_id);";
+    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment','$time_stamp','$entry_id','$user_id');";
     $db->query($sql);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
@@ -97,10 +98,11 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
 $app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
   $data = $request->getParsedBody();
+  $user_id = $data['user_id'];
   $entry_id = $data['entry_id'];
   $comment = $data['comment'];
 
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
   $db->query($sql);
 });
 
