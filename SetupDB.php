@@ -106,7 +106,7 @@ $dbname = "foodapp";
   INSERT IGNORE into Station (station_id, station_name) values (9, 'Tex Mex');
   INSERT IGNORE into Station (station_id, station_name) values (10, 'Health On The Hilltop');
   INSERT IGNORE into Station (station_id, station_name) values (11, 'International');
-  INSERT IGNORE into Station (station_id, station_name) values (12 'Salad Bar');";
+  INSERT IGNORE into Station (station_id, station_name) values (12, 'Salad Bar');";
 
 
   $conn->query($sql);
@@ -137,5 +137,4 @@ $dbname = "foodapp";
 
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
   ?>
