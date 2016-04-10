@@ -104,7 +104,7 @@ $app->post('/comment',function($request,$response,$args){
   $db->query($sql);
 });
 
-$app->post('/login',function($request,$response,$args)
+$app->put('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
     $data = $request->getParsedBody();
