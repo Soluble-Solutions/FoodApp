@@ -1,7 +1,10 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
+.factory('User', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
+  return {id: []};
+})
 
-.controller('LoginCtrl', function($scope, $state, $ionicModal, $http) {
+.controller('LoginCtrl', function($scope, $state, $ionicModal, $http, User) {
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
     scope: $scope,
@@ -24,34 +27,49 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.modal.remove();
     });
 
+  $scope.form = {};
+
   $scope.login = function() {
     console.log("login() called");
+    console.log("DATA: ");
+    console.log("email: " + $scope.form.email + " & password: " + $scope.form.password);
     $http({
-      method: 'POST',
+      method: 'PUT',
       url: 'http://52.37.14.110/login',
       contentType: "application/json",
       data: {
-        email: $scope.email,
-        password: $scope.password
+        email: $scope.form.email,
+        password: $scope.form.password
       }
     })
     .then(function(response) {
-      console.log("<-- DATA -->");
-      console.log(response);
+      $scope.loginSuccess = response.data[0];
+      console.log($scope.loginSuccess);
+      if($scope.loginSuccess = "true"){
+        console.log("Login success!");
+        console.log(response);
+        User.data = response.data[1];
+        console.log(User.id);
+      }
+      if($scope.loginSuccess = "false") {
+        $scope.messageDB = response.data[1];
+        alert("Login Failed: " + $scope.messageDB);
+      }
     })
 
   }
 
   $scope.signUp = function() {
     console.log("signUp() called");
-
+    console.log("DATA: ");
+    console.log("email: " + $scope.form.newEmail + " & password: " + $scope.form.newPassword + " & phone: " + $scope.form.newPhone);
     $http({
       method: 'POST',
       url: "http://52.37.14.110/registration",
       data: {
-        phone: $scope.newPhone,
-        email: $scope.newEmail,
-        password: $scope.newPassword
+        phone: $scope.form.newPhone,
+        email: $scope.form.newEmail,
+        password: $scope.form.newPassword
       }
     })
     .then(function(response) {
