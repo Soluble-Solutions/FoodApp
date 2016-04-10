@@ -39,6 +39,7 @@ angular.module('starter.controllers', ['ngAnimate'])
         $state.go('app.feed');
       }
       else{
+        console.log(response);
         alert("Login failed");
       }
 
@@ -190,7 +191,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     //             votes: $scope.upvote
     //         })
     // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
+    $http.put("http://52.37.14.110/index", {
       votes: $scope.upvote
     }).success(function(data,status){
       $scope.votes = data;
@@ -210,7 +211,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     //             votes: $scope.downvote
     //         })
     // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
+    $http.put("http://52.37.14.110/index", {
       votes: $scope.downvote
     }).success(function(data,status){
       $scope.votes = data;
