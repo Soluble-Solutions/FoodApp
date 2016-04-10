@@ -25,23 +25,21 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
 
   $scope.login = function() {
-    console.log("login called");
+    console.log("login() called");
     $http({
       method: 'POST',
       url: 'http://52.37.14.110/login',
+      contentType: "application/json",
       data: {
         email: $scope.email,
         password: $scope.password
       }
     })
     .then(function(response) {
-      if(response.success){
-        $state.go('app.feed');
-      }
-      else{
-        alert("Login failed");
-      }
+      console.log("<-- DATA -->");
+      console.log(response);
     })
+
   }
 
   $scope.signUp = function() {
@@ -57,9 +55,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log(response);
-      $scope.closeModal();
-      $state.go('app.feed');
+      console.log("<-- DATA -->");
+      console.log(response.data);
     });
   }
 })
