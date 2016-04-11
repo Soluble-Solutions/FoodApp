@@ -325,6 +325,8 @@ angular.module('starter.controllers', ['ngAnimate'])
     url: $scope.commentURL
   }).then(function(response){
     $scope.comments = response.data;
+    $scope.upvote = response.data.votes + 1;
+    $scope.downvote = response.data.votes - 1;
     console.log($scope.comments);
   });
   if(!$scope.comments){
@@ -349,6 +351,40 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.newComment = '';
       console.log($scope.comments);
     }
+  }
+
+  $scope.upVote = function() {
+    console.log("upVote() called!");
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.upvote,
+        entry_id: $scope.selectedID
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
+    });
+    //put request changing ranking in database to one more
+  }
+
+  $scope.downVote = function() {
+    console.log("downVote() called!");
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.downvote,
+        entry_id: $scope.selectedID
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
+    });
+    //Put request changing ranking in database to one less
   }
   console.log("Reached DetailsCtrl");
   //TEST INFORMATION//
