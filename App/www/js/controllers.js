@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
-.factory('User', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
-  return {id: []};
+.factory('User', function(){
+  return {id: [], status: []};
 })
 
 .controller('LoginCtrl', function($scope, $state, $ionicModal, $http, User) {
@@ -49,14 +49,15 @@ angular.module('starter.controllers', ['ngAnimate'])
 
       if($scope.loginSuccess == "true") {
         User.id = response.data.user_id;
+        User.status="1";
         console.log("User.id: " + User.id);
+        console.log("User.status: " + User.status);
         $state.go("app.feed");
       } else {
         $scope.messageDB = response.data.messageDB;
         alert("Login Failed: " + $scope.messageDB);
       }
     })
-
   }
 
   $scope.signUp = function() {
@@ -73,13 +74,29 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log("<-- DATA -->");
       console.log(response.data);
+      $scope.loginSuccess = response.data.success;
+      console.log("Success: " + $scope.loginSuccess);
+      if($scope.loginSuccess == "true") {
+        User.id = response.data.user_id;
+        User.status="1";
+        console.log("User.id: " + User.id);
+        console.log("User.status: " + User.status);
+        $scope.closeModal();
+        $state.go("app.feed");
+      } else {
+        $scope.messageDB = response.data.messageDB;
+        alert("Login Failed: " + $scope.messageDB);
+      }
     });
   }
 })
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, $http, User) {
+  if(User.status=="0") {
+    $state.go("login");
+  }
+
   $ionicModal.fromTemplateUrl('contact-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -149,9 +166,40 @@ angular.module('starter.controllers', ['ngAnimate'])
       $state.go('app.post');
     }
 
+    $scope.logout = function() {
+      console.log("logout() called");
+      console.log("DATA: ");
+      console.log("user_id: " + User.id);
+      $http({
+        method: 'PUT',
+        url: 'http://52.37.14.110/logout',
+        contentType: "application/json",
+        data: {
+          user_id: User.id
+        }
+      })
+      .then(function(response) {
+        console.log(response.data);
+        $scope.loginSuccess = response.data.success;
+        console.log("Success: " + $scope.loginSuccess);
+
+        if($scope.loginSuccess == "true") {
+          console.log("Logged out");
+          User.status="0";
+          console.log("User.status: " + User.status);
+          User.id="";
+          console.log("User.id: " + User.id);
+          $state.go("login");
+        } else {
+          $scope.messageDB = response.data.messageDB;
+          alert("Logout Failed: " + $scope.messageDB);
+        }
+      })
+    }
+
 })
 
-.controller('PostCtrl', function($scope, $http) {
+.controller('PostCtrl', function($scope, $http, User) {
   $scope.takeImage = function() {
     console.log("takeImage() called");
     var options = {
@@ -209,7 +257,7 @@ angular.module('starter.controllers', ['ngAnimate'])
   }
 })
 
-.factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
+.factory('FeedData', function(){
   return {data: []};
 })
 
@@ -278,7 +326,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($scope, FeedData, $stateParams, $state, $location) {
+.controller('DetailsCtrl', function($scope, FeedData, $stateParams, $state, $location, User) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
   if(!$scope.comments){

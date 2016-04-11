@@ -10,14 +10,18 @@
         </button>
       </ion-nav-buttons>
       <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-ios-settings"
+      <!--  <button class="button button-icon button-clear ion-ios-settings"
               menu-toggle="left" ng-click="openModal()" id="navBarButton">
+        </button> -->
+        <button class="button button-clear"
+              menu-toggle="left" ng-click="logout()" id="navBarButton"> Logout
         </button>
       </ion-nav-buttons>
       <ion-nav-back-button id="backButton">
       </ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
+
   </ion-side-menu-content>
 
   </ion-side-menu>
