@@ -221,16 +221,16 @@ angular.module('starter.controllers', ['ngAnimate'])
   .then(function(response) {
       FeedData.data = response.data;
       $scope.feedData = FeedData.data;
-      /*$scope.votes = $scope.feedData[0].votes;*/
 
       //DEBUGGING//
       console.log("Status = " + response.statusText);
       console.log($scope.feedData);
-      /*console.log($scope.votes);*/
   });
 
   $scope.upvote = $scope.votes+1;
   $scope.downvote = $scope.votes-1;
+  console.log($scope.upvote);
+  console.log($scope.downvotevote);
 
   $scope.upVote = function() {
     console.log("upVote() called!");
@@ -239,14 +239,17 @@ angular.module('starter.controllers', ['ngAnimate'])
     //             votes: $scope.upvote
     //         })
     // });
-    $http.put("http://52.37.14.110/index", {
-      votes: $scope.upvote
-    }).success(function(data,status){
-      $scope.votes = data;
-      console.log($scope.votes);
-    }).error(function(data, status){
-      $scope.status = status;
-      console.log($scope.status);
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.upvote
+        //id: //$scope.entry_id
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
     });
     //put request changing ranking in database to one more
   }
@@ -258,14 +261,17 @@ angular.module('starter.controllers', ['ngAnimate'])
     //             votes: $scope.downvote
     //         })
     // });
-    $http.put("http://52.37.14.110/index", {
-      votes: $scope.downvote
-    }).success(function(data,status){
-      $scope.votes = data;
-      console.log($scope.votes);
-    }).error(function(data, status){
-      $scope.status = status;
-      console.log($scope.status);
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.downvote
+        //id: //$scope.entry_id
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
     });
     //Put request changing ranking in database to one less
   }
