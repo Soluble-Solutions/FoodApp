@@ -286,7 +286,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       method: 'PUT',
       url: "http://52.37.14.110/index",
       data: {
-        votes: $scope.upvote
+        votes: $scope.upvote,
         entry_id: $scope.entry_id
       }
     })
@@ -299,17 +299,12 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.downVote = function() {
     console.log("downVote() called!");
-    // var data = params({
-    //         json: JSON.stringify({
-    //             votes: $scope.downvote
-    //         })
-    // });
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
       data: {
-        votes: $scope.downvote
-        //id: //$scope.entry_id
+        votes: $scope.downvote,
+        entry_id: $scope.entry_id
       }
     })
     .then(function(response) {
@@ -321,25 +316,39 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($scope, FeedData, $stateParams, $state, $location, User) {
+.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, $window, User) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
+  $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
+  $http({
+    method: 'GET',
+    url: $scope.commentURL
+  }).then(function(response){
+    $scope.comments = response.data;
+    console.log($scope.comments);
+  });
   if(!$scope.comments){
     $scope.comments = [];
   }
-  $scope.comments = [];
   $scope.submitComment = function() {
     console.log("submitComment() called");
     console.log("with text: ");
     console.log($scope.newComment);
     if($scope.newComment != ''){
-      $scope.comments.push(
-        {id: $scope.selectedID, text: $scope.newComment}
-      );
+      $http({
+        method: 'POST',
+        url: "http://52.37.14.110/comment",
+        data: {
+          entry_id: $scope.selectedID,
+          comment: $scope.newComment
+        }
+      }).then(function(response){
+        console.log(response.data);
+        $window.location.reload(true);
+      });
       $scope.newComment = '';
       console.log($scope.comments);
     }
-    //reload page
   }
   console.log("Reached DetailsCtrl");
   //TEST INFORMATION//
