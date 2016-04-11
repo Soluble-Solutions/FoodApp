@@ -329,7 +329,8 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.entryData = response.data.entry[0];
     console.log("entryData: " + $scope.entryData);
     $scope.votes = $scope.entryData.votes;
-    $scope.upvote = $scope.votes + 1;
+    $scope.upvote = parseFloat($scope.votes) + 1;
+    console.log($scope.upvote);
     $scope.downvote = $scope.votes - 1;
     console.log(response.data);
   });
@@ -369,6 +370,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data);
+      $window.location.reload(true);
     });
     //put request changing ranking in database to one more
   }
@@ -386,6 +388,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data);
+      $window.location.reload(true);
     });
     //Put request changing ranking in database to one less
   }
