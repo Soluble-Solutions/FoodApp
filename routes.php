@@ -26,27 +26,39 @@ $app->put('/index',function($request,$response,$args)
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
   $votes = $data['votes'];
-  $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-  $db->query($sql);
-
-  if($votes == 1)//upvoting
+  //$sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
+  //$retr_votes= $db->query($sql);
+  $sql = "SELECT votes FROM Entry WHERE entry_id = '$entry_id'";
+  $result = $db->query($sql);
+  $arr = $result->fetch(PDO::FETCH_ASSOC);
+  $retr_votes = $arr['votes'];
+  if($retr_votes == $votes){
+    $success = "false";
+    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
+    $result = $db->query($sql);*/
+    $messageDB = "Number of votes hasn't changed";
+    $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else if(!empty($retr_votes))//
   {
     $success = "true";
-    $sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
-    $result = $db->query($sql);
-    $str = array("success" => $success, "votes" => $result);
+    $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
+    $db->query($sql);
+    $str = array("success" => $success, "votes" => $votes);
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else {//downvoting
-    $success = "true";
-    $sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
-    $result = $db->query($sql);
-    $str = array("success" => $success, "votes" => $result);
+  else{
+    $success = "false";
+    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
+    $result = $db->query($sql);*/
+    $messageDB = "Entry_id not found";
+    $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
     //echo $success;
     return $response->write(json_encode($str));
   }
-
 });
 
 $app->post('/entry',function($request,$response,$args)
