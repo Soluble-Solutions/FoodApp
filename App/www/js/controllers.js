@@ -8,7 +8,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
     scope: $scope,
-    animation: 'slide-in-left'
+    animation: 'slide-in-up'
     }).then(function(modal) {
     $scope.modal = modal
     })
