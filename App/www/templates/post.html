@@ -1,14 +1,17 @@
-<ion-view view-title="Create New">
+<ion-view view-title="New Post">
   <ion-content>
     <div class="list list-inset">
+
       <label class="item item-input item-stacked-label">
         <span class="input-label">Title</span>
-        <input type="text" placeholder="Give the plate a name">
+        <input type="text" placeholder="Give your post a name">
       </label>
+
       <label class="item item-input item-stacked-label">
         <span class="input-label">Description</span>
-        <input type="text" placeholder="How'd you like the food?">
+        <input type="text" placeholder="How'd you like it?">
       </label>
+
       <label class="item item-input item-select">
         <div class="input-label">
           Dining Hall
@@ -19,9 +22,28 @@
           <option>Mac's Place</option>
         </select>
       </label>
-      <button class="button button-full button-dark" href="#" ng-click="takeImage()">
-          <i class="icon ion-ios-camera"> (required)</i>
+
+      <div class="item item-icon-right"  ng-click="showTags()">
+        <button class="icon button button-icon button-clear ion-navicon">
+          </button>
+        <h2>Tags</h2>
+      </div>
+      <ion-checkbox class="item" id="filterItem" ng-repeat="t in tags"
+          ng-model="t.checked"
+          ng-checked="t.checked"
+          ng-show="displayTags">
+        {{ t.text }}
+      </ion-checkbox>
+
+      <button class="button button-full" id="cameraButton" ng-click="takeImage()">
+          <i class="icon ion-ios-camera" id="cameraIcon"> Add Photo</i>
       </button>
     </div>
   </ion-content>
+
+  <button>
+    <ion-footer-bar class="bar bar-footer bar-dark" ng-click="submitData()">
+      <h3 class="title">Submit</h3>
+    </ion-footer-bar>
+  </button>
 </ion-view>

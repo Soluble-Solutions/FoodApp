@@ -1,7 +1,10 @@
 angular.module('starter.controllers', ['ngAnimate'])
 
+.factory('User', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
+  return {id: []};
+})
 
-.controller('LoginCtrl', function($scope, $state, $ionicModal, $http) {
+.controller('LoginCtrl', function($scope, $state, $ionicModal, $http, User) {
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
     scope: $scope,
@@ -24,44 +27,54 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.modal.remove();
     });
 
+  $scope.form = {};
+
   $scope.login = function() {
-    console.log("login called");
+    console.log("login() called");
+    console.log("DATA: ");
+    console.log("email: " + $scope.form.email + " & password: " + $scope.form.password);
     $http({
-      method: 'POST',
+      method: 'PUT',
       url: 'http://52.37.14.110/login',
+      contentType: "application/json",
       data: {
-        email: $scope.email,
-        password: $scope.password
+        email: $scope.form.email,
+        password: $scope.form.password
       }
     })
     .then(function(response) {
-      if(response.success){
-        $state.go('app.feed');
-      }
-      else{
-        console.log(response);
-        alert("Login failed");
-      }
+      console.log(response.data);
+      $scope.loginSuccess = response.data.success;
+      console.log("Success: " + $scope.loginSuccess);
 
+      if($scope.loginSuccess == "true") {
+        User.id = response.data.user_id;
+        console.log("User.id: " + User.id);
+        $state.go("app.feed");
+      } else {
+        $scope.messageDB = response.data.messageDB;
+        alert("Login Failed: " + $scope.messageDB);
+      }
     })
+
   }
 
   $scope.signUp = function() {
     console.log("signUp() called");
-
+    console.log("DATA: ");
+    console.log("email: " + $scope.form.newEmail + " & password: " + $scope.form.newPassword + " & phone: " + $scope.form.newPhone);
     $http({
       method: 'POST',
       url: "http://52.37.14.110/registration",
       data: {
-        phone: $scope.newPhone,
-        email: $scope.newEmail,
-        password: $scope.newPassword
+        phone: $scope.form.newPhone,
+        email: $scope.form.newEmail,
+        password: $scope.form.newPassword
       }
     })
     .then(function(response) {
-      console.log(response);
-      $scope.closeModal();
-      $state.go('app.feed');
+      console.log("<-- DATA -->");
+      console.log(response.data);
     });
   }
 })
@@ -138,7 +151,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 })
 
-.controller('PostCtrl', function($scope) {
+.controller('PostCtrl', function($scope, $http) {
   $scope.takeImage = function() {
     console.log("takeImage() called");
     var options = {
@@ -160,13 +173,49 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
   }
 
+  $scope.tags = [
+    {text:"Hot", checked:false},
+    {text:"Cold", checked:false},
+    {text:"Vegetarian", checked:false},
+    {text:"Vegan", checked:false}
+  ];
+  $scope.displayTags = false;
+  $scope.showTags = function() {
+    console.log("toggleTags() called");
+    $scope.displayTags = $scope.displayTags === false ? true: false;
+  };
+
+  $scope.submitData = function() {
+    console.log("Submit Data called (1)")
+    var data = {
+      title: $scope.newTitle,
+      comment: $scope.newComment,
+      dh_id: $scope.newDh_id,
+      station_id: $scope.newStation_id,
+      attribute_id: $scope.attribute_id,
+      image: $scope.image
+    };
+    console.log("Submit Data called (2)")
+    $http.post('http://52.37.14.110/entry', data)
+      .success(function (response) {
+          $scope.postResponse = response;
+          console.log("Submit Data called (final)");
+          console.log(response);
+      })
+      .error(function (response) {
+          $scope.postResponse = response;
+          console.log(response);
+      });
+  }
 })
 
 .factory('FeedData', function(){                                          // This factory stores information as a singleton so multiple controllers can access it
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, User) {
+  console.log("Reached Feed.");
+  console.log("User.id: " + User.id);
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
@@ -176,7 +225,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
       //DEBUGGING//
       console.log("Status = " + response.statusText);
-      console.log(response);
       console.log($scope.feedData);
       /*console.log($scope.votes);*/
   });
@@ -202,7 +250,6 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
     //put request changing ranking in database to one more
   }
-
 
   $scope.downVote = function() {
     console.log("downVote() called!");
