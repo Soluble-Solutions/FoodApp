@@ -43,16 +43,16 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      $scope.loginSuccess = response.data[0];
-      console.log($scope.loginSuccess);
-      if($scope.loginSuccess = "true"){
-        console.log("Login success!");
-        console.log(response);
-        User.data = response.data[1];
-        console.log(User.id);
-      }
-      if($scope.loginSuccess = "false") {
-        $scope.messageDB = response.data[1];
+      console.log(response.data);
+      $scope.loginSuccess = response.data.success;
+      console.log("Success: " + $scope.loginSuccess);
+
+      if($scope.loginSuccess == "true") {
+        User.id = response.data.user_id;
+        console.log("User.id: " + User.id);
+        $state.go("app.feed");
+      } else {
+        $scope.messageDB = response.data.messageDB;
         alert("Login Failed: " + $scope.messageDB);
       }
     })
@@ -213,7 +213,9 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, User) {
+  console.log("Reached Feed.");
+  console.log("User.id: " + User.id);
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
@@ -223,7 +225,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
       //DEBUGGING//
       console.log("Status = " + response.statusText);
-      console.log(response);
       console.log($scope.feedData);
       /*console.log($scope.votes);*/
   });
