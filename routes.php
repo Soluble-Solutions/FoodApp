@@ -1,4 +1,5 @@
 <?php
+
 // Routes
 $servername = "localhost";
 $username = "admin";
