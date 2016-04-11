@@ -282,17 +282,12 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.upVote = function() {
     console.log("upVote() called!");
-    // var data = params({
-    //         json: JSON.stringify({
-    //             votes: $scope.upvote
-    //         })
-    // });
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.upvote
-        //id: //$scope.entry_id
+        entry_id: $scope.entry_id
       }
     })
     .then(function(response) {
