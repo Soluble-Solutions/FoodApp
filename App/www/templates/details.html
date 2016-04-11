@@ -2,21 +2,21 @@
   <ion-content>
     <ion-list>
       <!--Display title of the post here-->
-      <div ng-repeat="f in feedData | filter:{entry_id:selectedID}">
+      <div>
         <div class="item item-icon-right" id="feedItemTitle">
-          <h2><b>{{f.title}}</b></h2>
+          <h2><b ng-bind = "entryData.title"></b></h2>
           <p>@ Umph - The Grill</p>
           <div class="icon">
             <div class="col">
               <i class="button button-icon icon ion-chevron-up" ng-click="upVote()"></i>
-              <h2 class="text-right" id="votes">{{f.votes}}</h2>
+              <h2 class="text-right" id="votes">{{votes}}</h2>
               <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()"></i>
             </div>
           </div>
         </div>
         <!--Display Image of Post here-->
         <div class="item item-image" id="feedItemImage">
-          <img ng-src={{f.image}}>
+          <img ng-src={{entryData.image}}>
         </div>
         <!--Display comments of post here-->
         <ion-item class="item item-text-wrap" ng-repeat="c in comments">
