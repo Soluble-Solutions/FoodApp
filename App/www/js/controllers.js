@@ -261,7 +261,7 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, User) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
 
@@ -316,7 +316,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, $window, User) {
+.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
   $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
