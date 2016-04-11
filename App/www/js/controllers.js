@@ -324,10 +324,14 @@ angular.module('starter.controllers', ['ngAnimate'])
     method: 'GET',
     url: $scope.commentURL
   }).then(function(response){
-    $scope.comments = response.data;
-    $scope.upvote = response.data.votes + 1;
-    $scope.downvote = response.data.votes - 1;
-    console.log($scope.comments);
+    $scope.comments = response.data.comment;
+    $scope.entryData = [];
+    $scope.entryData = response.data.entry[0];
+    console.log("entryData: " + $scope.entryData);
+    $scope.votes = $scope.entryData.votes;
+    $scope.upvote = $scope.votes + 1;
+    $scope.downvote = $scope.votes - 1;
+    console.log(response.data);
   });
   if(!$scope.comments){
     $scope.comments = [];
