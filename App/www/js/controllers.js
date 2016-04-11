@@ -334,9 +334,6 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.downvote = $scope.votes - 1;
     console.log(response.data);
   });
-  if(!$scope.comments){
-    $scope.comments = [];
-  }
   $scope.submitComment = function() {
     console.log("submitComment() called");
     console.log("with text: ");
@@ -351,7 +348,20 @@ angular.module('starter.controllers', ['ngAnimate'])
         }
       }).then(function(response){
         console.log(response.data);
-        $window.location.reload(true);
+        $http({
+          method: 'GET',
+          url: $scope.commentURL
+        }).then(function(response){
+          $scope.comments = response.data.comment;
+          $scope.entryData = [];
+          $scope.entryData = response.data.entry[0];
+          console.log("entryData: " + $scope.entryData);
+          $scope.votes = $scope.entryData.votes;
+          $scope.upvote = parseFloat($scope.votes) + 1;
+          console.log($scope.upvote);
+          $scope.downvote = $scope.votes - 1;
+          console.log(response.data);
+        });
       });
       $scope.newComment = '';
       console.log($scope.comments);
@@ -370,7 +380,20 @@ angular.module('starter.controllers', ['ngAnimate'])
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data);
-      $window.location.reload(true);
+      $http({
+        method: 'GET',
+        url: $scope.commentURL
+      }).then(function(response){
+        $scope.comments = response.data.comment;
+        $scope.entryData = [];
+        $scope.entryData = response.data.entry[0];
+        console.log("entryData: " + $scope.entryData);
+        $scope.votes = $scope.entryData.votes;
+        $scope.upvote = parseFloat($scope.votes) + 1;
+        console.log($scope.upvote);
+        $scope.downvote = $scope.votes - 1;
+        console.log(response.data);
+      });
     });
     //put request changing ranking in database to one more
   }
@@ -388,7 +411,20 @@ angular.module('starter.controllers', ['ngAnimate'])
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data);
-      $window.location.reload(true);
+      $http({
+        method: 'GET',
+        url: $scope.commentURL
+      }).then(function(response){
+        $scope.comments = response.data.comment;
+        $scope.entryData = [];
+        $scope.entryData = response.data.entry[0];
+        console.log("entryData: " + $scope.entryData);
+        $scope.votes = $scope.entryData.votes;
+        $scope.upvote = parseFloat($scope.votes) + 1;
+        console.log($scope.upvote);
+        $scope.downvote = $scope.votes - 1;
+        console.log(response.data);
+      });
     });
     //Put request changing ranking in database to one less
   }
