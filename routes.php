@@ -29,6 +29,24 @@ $app->put('/index',function($request,$response,$args)
   $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
   $db->query($sql);
 
+  if($votes == 1)//upvoting
+  {
+    $success = "true";
+    $sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
+    $result = $db->query($sql);
+    $str = array("success" => $success, "votes" => $result);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else {//downvoting
+    $success = "true";
+    $sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
+    $result = $db->query($sql);
+    $str = array("success" => $success, "votes" => $result);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+
 });
 
 $app->post('/entry',function($request,$response,$args)
