@@ -104,7 +104,7 @@ $app->post('/comment',function($request,$response,$args){
   $db->query($sql);
 });
 
-$app->post('/login',function($request,$response,$args)
+$app->put('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
     $data = $request->getParsedBody();
@@ -150,7 +150,7 @@ $app->post('/login',function($request,$response,$args)
       $db->query($sql);
       $success = "true";
       //echo $success;
-      $str = array(0=>array("success" => $success),1=>array("user_id" => $user_id));
+      $str = array("success" => $success, "user_id" =>$user_id);
       //echo $success;
       return $response->write(json_encode($str));
       //return $response->withJson($str,200);
@@ -201,7 +201,7 @@ $app->post('/registration',function($request,$response,$args)
     $array = $q->fetch(PDO::FETCH_ASSOC);
     $user_id = (int)$array['user_id'];
     $success = "true";
-    $str = array(0=>array("success" => $success),1=>array("user_id" => $user_id));
+    $str = array("success" => $success, "user_id" =>$user_id);
     //echo $success;
     return $response->write(json_encode($str));
   }
