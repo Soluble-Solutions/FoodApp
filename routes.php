@@ -143,6 +143,9 @@ $app->post('/comment',function($request,$response,$args){
 
   $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
   $db->query($sql);
+  $success = "true";
+  $arr = array("success" => $success);
+  return $response->write(json_encode($arr));
 });
 
 $app->put('/login',function($request,$response,$args)
