@@ -20,7 +20,7 @@ $app->get('/index', function ($request, $response, $args) {
   }
 });
 
-$
+
 $app->put('/index',function($request,$response,$args)
 {
   $db = $this->dbConn;
