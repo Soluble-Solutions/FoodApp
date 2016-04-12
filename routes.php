@@ -138,10 +138,10 @@ $app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
-  $user_id = $data['user_id'];
+//  $user_id = $data['user_id'];
   $comment = $data['comment'];
 
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
   $db->query($sql);
 });
 
