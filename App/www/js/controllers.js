@@ -234,7 +234,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   };
 
   $scope.submitData = function() {
-    console.log("Submit Data called (1)")
     var data = {
       title: $scope.newTitle,
       comment: $scope.newComment,
@@ -243,7 +242,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       attribute_id: $scope.attribute_id,
       image: $scope.image
     };
-    console.log("Submit Data called (2)")
     $http.post('http://52.37.14.110/entry', data)
       .success(function (response) {
           $scope.postResponse = response;
