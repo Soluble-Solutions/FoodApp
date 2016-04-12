@@ -234,24 +234,21 @@ angular.module('starter.controllers', ['ngAnimate'])
   };
 
   $scope.submitData = function() {
-    var data = {
-      title: $scope.newTitle,
-      comment: $scope.newComment,
-      dh_id: $scope.newDh_id,
-      station_id: $scope.newStation_id,
-      attribute_id: $scope.attribute_id,
-      image: $scope.image
-    };
-    $http.post('http://52.37.14.110/entry', data)
-      .success(function (response) {
-          $scope.postResponse = response;
-          console.log("Submit Data called (final)");
-          console.log(response);
-      })
-      .error(function (response) {
-          $scope.postResponse = response;
-          console.log(response);
-      });
+    $http({
+      method: 'POST',
+      url: "http://52.37.14.110/entry",
+      data: {
+        title: $scope.newTitle,
+        comment: $scope.newComment,
+        dh_id: $scope.newDh_id,
+        station_id: $scope.newStation_id,
+        attribute_id: $scope.attribute_id,
+        image: $scope.image,
+        user_id: User.id
+      }
+    }).then(function(response){
+      console.log(response);
+    });
   }
 })
 
