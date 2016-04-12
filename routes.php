@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 45eafe8840205955d38e381f52d1e327beb9569e
 // Routes
 $servername = "localhost";
 $username = "admin";
