@@ -320,6 +320,7 @@ angular.module('starter.controllers', ['ngAnimate'])
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
   $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
+
   $http({
     method: 'GET',
     url: $scope.commentURL
@@ -334,6 +335,8 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.downvote = $scope.votes - 1;
     console.log(response.data);
   });
+
+
   $scope.submitComment = function() {
     console.log("submitComment() called");
     console.log("with text: ");
@@ -367,6 +370,9 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log($scope.comments);
     }
   }
+
+
+
   $scope.upVote = function() {
     console.log("upVote() called!");
     $http({
@@ -397,6 +403,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
     //put request changing ranking in database to one more
   }
+
 
   $scope.downVote = function() {
     console.log("downVote() called!");
@@ -429,5 +436,4 @@ angular.module('starter.controllers', ['ngAnimate'])
     //Put request changing ranking in database to one less
   }
   console.log("Reached DetailsCtrl");
-  //TEST INFORMATION//
 })
