@@ -350,12 +350,14 @@ angular.module('starter.controllers', ['ngAnimate'])
           comment: $scope.newComment
         }
       }).then(function(response){
+        console.log("<-- post success -->");
         console.log(response.data);
         $http({
           method: 'GET',
           url: $scope.commentURL
         }).then(function(response){
-          $scope.comments = response.data.comment;
+          console.log(response);
+          $scope.$parent.comments = response.data.comment;
           $scope.entryData = [];
           $scope.entryData = response.data.entry[0];
           console.log("entryData: " + $scope.entryData);
