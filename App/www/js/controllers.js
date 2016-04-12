@@ -259,7 +259,7 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, User) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
 
@@ -267,77 +267,173 @@ angular.module('starter.controllers', ['ngAnimate'])
   .then(function(response) {
       FeedData.data = response.data;
       $scope.feedData = FeedData.data;
-      /*$scope.votes = $scope.feedData[0].votes;*/
 
       //DEBUGGING//
       console.log("Status = " + response.statusText);
       console.log($scope.feedData);
-      /*console.log($scope.votes);*/
   });
 
   $scope.upvote = $scope.votes+1;
   $scope.downvote = $scope.votes-1;
+  console.log($scope.upvote);
+  console.log($scope.downvotevote);
 
   $scope.upVote = function() {
     console.log("upVote() called!");
-    // var data = params({
-    //         json: JSON.stringify({
-    //             votes: $scope.upvote
-    //         })
-    // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
-      votes: $scope.upvote
-    }).success(function(data,status){
-      $scope.votes = data;
-      console.log($scope.votes);
-    }).error(function(data, status){
-      $scope.status = status;
-      console.log($scope.status);
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.upvote,
+        entry_id: $scope.entry_id
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
     });
     //put request changing ranking in database to one more
   }
 
   $scope.downVote = function() {
     console.log("downVote() called!");
-    // var data = params({
-    //         json: JSON.stringify({
-    //             votes: $scope.downvote
-    //         })
-    // });
-    $http.post("http://private-5fb8c-foodapp322.apiary-mock.com/index", {
-      votes: $scope.downvote
-    }).success(function(data,status){
-      $scope.votes = data;
-      console.log($scope.votes);
-    }).error(function(data, status){
-      $scope.status = status;
-      console.log($scope.status);
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.downvote,
+        entry_id: $scope.entry_id
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
     });
     //Put request changing ranking in database to one less
   }
 })
 
 
-.controller('DetailsCtrl', function($scope, FeedData, $stateParams, $state, $location, User) {
+.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
-  if(!$scope.comments){
-    $scope.comments = [];
-  }
-  $scope.comments = [];
+  $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
+
+  $http({
+    method: 'GET',
+    url: $scope.commentURL
+  }).then(function(response){
+    $scope.comments = response.data.comment;
+    $scope.entryData = [];
+    $scope.entryData = response.data.entry[0];
+    console.log("entryData: " + $scope.entryData);
+    $scope.votes = $scope.entryData.votes;
+    $scope.upvote = parseFloat($scope.votes) + 1;
+    console.log($scope.upvote);
+    $scope.downvote = $scope.votes - 1;
+    console.log(response.data);
+  });
+
+
   $scope.submitComment = function() {
     console.log("submitComment() called");
     console.log("with text: ");
     console.log($scope.newComment);
     if($scope.newComment != ''){
-      $scope.comments.push(
-        {id: $scope.selectedID, text: $scope.newComment}
-      );
+      $http({
+        method: 'POST',
+        url: "http://52.37.14.110/comment",
+        data: {
+          entry_id: $scope.selectedID,
+          comment: $scope.newComment
+        }
+      }).then(function(response){
+        console.log("<-- post success -->");
+        console.log(response.data);
+        $http({
+          method: 'GET',
+          url: $scope.commentURL
+        }).then(function(response){
+          console.log(response);
+          $scope.$parent.comments = response.data.comment;
+          $scope.entryData = [];
+          $scope.entryData = response.data.entry[0];
+          console.log("entryData: " + $scope.entryData);
+          $scope.votes = $scope.entryData.votes;
+          $scope.upvote = parseFloat($scope.votes) + 1;
+          console.log($scope.upvote);
+          $scope.downvote = $scope.votes - 1;
+          console.log(response.data);
+        });
+      });
       $scope.newComment = '';
       console.log($scope.comments);
     }
-    //reload page
+  }
+
+
+
+  $scope.upVote = function() {
+    console.log("upVote() called!");
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.upvote,
+        entry_id: $scope.selectedID
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
+      $http({
+        method: 'GET',
+        url: $scope.commentURL
+      }).then(function(response){
+        $scope.comments = response.data.comment;
+        $scope.entryData = [];
+        $scope.entryData = response.data.entry[0];
+        console.log("entryData: " + $scope.entryData);
+        $scope.votes = $scope.entryData.votes;
+        $scope.upvote = parseFloat($scope.votes) + 1;
+        console.log($scope.upvote);
+        $scope.downvote = $scope.votes - 1;
+        console.log(response.data);
+      });
+    });
+    //put request changing ranking in database to one more
+  }
+
+
+  $scope.downVote = function() {
+    console.log("downVote() called!");
+    $http({
+      method: 'PUT',
+      url: "http://52.37.14.110/index",
+      data: {
+        votes: $scope.downvote,
+        entry_id: $scope.selectedID
+      }
+    })
+    .then(function(response) {
+      console.log("<-- DATA -->");
+      console.log(response.data);
+      $http({
+        method: 'GET',
+        url: $scope.commentURL
+      }).then(function(response){
+        $scope.comments = response.data.comment;
+        $scope.entryData = [];
+        $scope.entryData = response.data.entry[0];
+        console.log("entryData: " + $scope.entryData);
+        $scope.votes = $scope.entryData.votes;
+        $scope.upvote = parseFloat($scope.votes) + 1;
+        console.log($scope.upvote);
+        $scope.downvote = $scope.votes - 1;
+        console.log(response.data);
+      });
+    });
+    //Put request changing ranking in database to one less
   }
   console.log("Reached DetailsCtrl");
-  //TEST INFORMATION//
 })
