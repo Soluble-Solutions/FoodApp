@@ -31,39 +31,9 @@ $app->put('/index',function($request,$response,$args)
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
   $votes = $data['votes'];
-  //$sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-  //$retr_votes= $db->query($sql);
-  $sql = "SELECT votes FROM Entry WHERE entry_id = '$entry_id'";
-  $result = $db->query($sql);
-  $arr = $result->fetch(PDO::FETCH_ASSOC);
-  $retr_votes = $arr['votes'];
-  if($retr_votes == $votes){
-    $success = "false";
-    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
-    $result = $db->query($sql);*/
-    $messageDB = "Number of votes hasn't changed";
-    $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
-    //echo $success;
-    return $response->write(json_encode($str));
-  }
-  else if(!empty($retr_votes))//
-  {
-    $success = "true";
-    $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-    $db->query($sql);
-    $str = array("success" => $success, "votes" => $votes);
-    //echo $success;
-    return $response->write(json_encode($str));
-  }
-  else{
-    $success = "false";
-    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
-    $result = $db->query($sql);*/
-    $messageDB = "Entry_id not found";
-    $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
-    //echo $success;
-    return $response->write(json_encode($str));
-  }
+  $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
+  $db->query($sql);
+
 });
 
 $app->post('/entry',function($request,$response,$args)
@@ -71,6 +41,7 @@ $app->post('/entry',function($request,$response,$args)
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $dh_id = $data['dh_id'];
+  $user_id = $data['user_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
   $image = $data['image'];
@@ -79,7 +50,7 @@ $app->post('/entry',function($request,$response,$args)
   $time_stamp = date("Y-m-d H:i:s");
   $active = 1;
 
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active');";
+  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
 
   $db->query($sql);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -93,7 +64,7 @@ $app->post('/entry',function($request,$response,$args)
   $entry_id = (int)$arr['entry_id'];
   if(!empty($comment))
   {
-    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp',$entry_id);";
+    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment','$time_stamp','$entry_id','$user_id');";
     $db->query($sql);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
@@ -111,15 +82,23 @@ $app->post('/entry',function($request,$response,$args)
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
+    $sql = "SELECT * FROM Entry WHERE entry_id = $entry_id";
+
+    $db = $this->dbConn;
+    $q = $db->query($sql);
+    $entrydata = $q->fetchAll(PDO::FETCH_ASSOC);
+
     $sql = "SELECT c.comment
             FROM Comment c
             INNER JOIN Entry e
             ON e.entry_id = c.entry_id
             AND e.entry_id = '$entry_id'
             ;";
-    $db = $this->dbConn;
+
     $q = $db->query($sql);
-    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    $commentdata = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    $check = ['entry'=>$entrydata, 'comment'=>$commentdata];
     return $response->write(json_encode($check));
   }
   catch(PDOException $e){
@@ -133,9 +112,10 @@ $app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
+  $user_id = $data['user_id'];
   $comment = $data['comment'];
 
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
   $db->query($sql);
 });
 
