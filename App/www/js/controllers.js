@@ -316,7 +316,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User) {
+.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User, $rootScope) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
   $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
@@ -426,8 +426,21 @@ angular.module('starter.controllers', ['ngAnimate'])
         console.log(response.data);
       });
     });
-    //Put request changing ranking in database to one less
   }
+
+  // var oldSoftBack = $rootScope.$ionicGoBack;
+  //
+  //   // override default behaviour
+  // $rootScope.$ionicGoBack = function() {
+  //   $http.get("http://52.37.14.110/index")
+  //   .then(function(response) {
+  //       FeedData.data = response.data;
+  //       $scope.feedData = FeedData.data;
+  //   });
+  //   // uncomment below line to call old function when finished
+  //   oldSoftBack();
+  // };
+
   console.log("Reached DetailsCtrl");
   //TEST INFORMATION//
 })
