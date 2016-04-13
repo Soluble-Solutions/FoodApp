@@ -264,10 +264,24 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
+  $rootScope.$on('$viewContentLoading', function(event, viewConfig){
+    // Access to all the view config properties.
+    // and one special property 'targetView'
+    // viewConfig.targetView
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
 
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
+  });
+  
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
       FeedData.data = response.data;
@@ -285,6 +299,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.upVote = function() {
     console.log("upVote() called!");
+
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
@@ -319,7 +334,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User) {
+.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User, $rootScope) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
   $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
@@ -438,7 +453,20 @@ angular.module('starter.controllers', ['ngAnimate'])
         console.log(response.data);
       });
     });
-    //Put request changing ranking in database to one less
   }
+
+  // var oldSoftBack = $rootScope.$ionicGoBack;
+  //
+  //   // override default behaviour
+  // $rootScope.$ionicGoBack = function() {
+  //   $http.get("http://52.37.14.110/index")
+  //   .then(function(response) {
+  //       FeedData.data = response.data;
+  //       $scope.feedData = FeedData.data;
+  //   });
+  //   // uncomment below line to call old function when finished
+  //   oldSoftBack();
+  // };
+
   console.log("Reached DetailsCtrl");
 })
