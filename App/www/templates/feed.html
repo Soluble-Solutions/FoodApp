@@ -1,25 +1,30 @@
 <ion-view view-title="F&#x21D5;&#x21D5;D">
   <ion-content id="feed">
     <div class="list">
-      <div ng-repeat="f in feedData | orderBy:'-votes'" id="feedItem">
+      <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem">
         <div class="item item-icon-right" id="feedItemTitle">
           <h2><b>{{f.title}}</b></h2>
           <p>@ Umph - The Grill</p>
           <div class="icon">
             <div class="col">
-              <i class="button button-icon icon ion-chevron-up" ng-click="upVote()"></i>
+              <i class="button button-icon icon ion-chevron-up" ng-click="upVote()" ng-disabled="upIsDisabled"></i>
               <h2 class="text-right" id="votes">{{f.votes}}</h2>
-              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()"></i>
+              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()" ng-disabled="downIsDisabled"></i>
             </div>
           </div>
         </div>
         <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
           <img ng-src={{f.image}}>
         </a>
+      <!--
         <a class="item item-icon-left" href="#/app/feed/{{f.entry_id}}" id="feedItemDetails">
           <i class="icon ion-drag"></i>
-          View More<span class="badge badge-balanced">Top Ranked!</span>
+          View More
+
+          <span class="badge badge-balanced">Top Ranked!</span>
+
         </a>
+      -->
       </div>
     </div>
   </ion-content>
