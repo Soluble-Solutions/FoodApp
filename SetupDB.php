@@ -138,7 +138,7 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = "INSERT into User (salt, hash, email, phone, active) values ('ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1);
+  /*$sql = "INSERT into User (salt, hash, email, phone, active) values ('ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1);
   INSERT into User (salt, hash, email, phone, active) values ('n7pGScbbaGT327HBbzZYkHaGL3GHv3', '2cZvydbk5D4Vkgf3jacTvvvdemZAtx', 'lramirez1@hatena.ne.jp', '62-(892)331-3167', 1);
   INSERT into User (salt, hash, email, phone, active) values ('a95m4NpC3nyeM54RhTAR4n3Mn8pBAv', 'CWnxucn68vAVMBgEwCdP5WbSqCh6cf', 'ajames2@mozilla.org', '30-(851)903-0129', 1);
   INSERT into User (salt, hash, email, phone, active) values ('QSzgbk7kwR84GX8DfSgbEPYvffAGBD', 'QXkZecUm6E2m7WJcQLs83py4QweHqT', 'pshaw3@hostgator.com', '52-(295)439-0433', 1);
@@ -189,7 +189,7 @@ $dbname = "foodapp";
   INSERT into User (salt, hash, email, phone, active) values ('F2ytWkQ5Fyx72qQu9VaaWPLgWqLeYR', 'Knz4AJZPTLqKvatWXQ4Sz6NmhPUe5T', 'jbradley1d@yale.edu', '86-(199)238-3551', 1);";
 
   $conn->query($sql);
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);*/
 
   $sql = "INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('aliquet', 76, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 4, 24, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('purus', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12, 20, 1);
@@ -199,8 +199,8 @@ $dbname = "foodapp";
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('bacon', 92, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 4, 26, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('baked beans', 24, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 7, 12, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('bluefish', 35, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 1, 5, 1);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Cabbage', 76, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 4, 24, 1);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('broccoli', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12, 20, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Cabbage', 5, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/chicken-salad.jpg', 1, 4, 24, 1);
+  /*INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('broccoli', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12, 20, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('buritto', 91, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 9, 47, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('dumplings', 61, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 11, 17, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('donuts', 36, '2010-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 12, 10, 1);
@@ -240,7 +240,7 @@ $dbname = "foodapp";
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Zucchini', 91, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 2, 21, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Pepperoni', 61, '2009-12-14 17:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/fries.jpg', 2, 4, 3, 1);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('Noodles', 36, '2010-05-21 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/Croissant.jpg', 2, 10, 4, 1);
-  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('haiku roll', 92, '2014-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 11, 7, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active) values ('haiku roll', 92, '2014-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg', 1, 11, 7, 1);*/
   INSERT into Entry_Attributes (entry_id, attribute_id) values (1, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (2, 2);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (3, 1);
