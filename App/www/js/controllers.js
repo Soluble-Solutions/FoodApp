@@ -261,10 +261,23 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
+  $rootScope.$on('$viewContentLoading', function(event, viewConfig){
+    // Access to all the view config properties.
+    // and one special property 'targetView'
+    // viewConfig.targetView
+    $http.get("http://52.37.14.110/index")
+    .then(function(response) {
+        FeedData.data = response.data;
+        $scope.feedData = FeedData.data;
 
+        //DEBUGGING//
+        console.log("Status = " + response.statusText);
+        console.log($scope.feedData);
+    });
+  });
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
       FeedData.data = response.data;
@@ -282,6 +295,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.upVote = function() {
     console.log("upVote() called!");
+
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
