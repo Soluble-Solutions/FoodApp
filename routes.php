@@ -142,7 +142,7 @@ $app->post('/comment',function($request,$response,$args){
   $entry_id = $data['entry_id'];
   $user_id = $data['user_id'];
   $comment = $data['comment'];
-  if(empty($comment))//empty comment
+  if(strlen($comment)>0&&strlen(trim($comment))==0||empty($comment))//empty comment
   {
     $success = "false";
     $messageDB = "empty comment";
