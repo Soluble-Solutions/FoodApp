@@ -136,14 +136,31 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
 });
 
 $app->post('/comment',function($request,$response,$args){
+  try{
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
   $user_id = $data['user_id'];
   $comment = $data['comment'];
-
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
-  $db->query($sql);
+  if(empty($comment))//empty comment
+  {
+    $success = "false";
+    $messageDB = "empty comment";
+    $str = array("success" => $success, "messageDB" =>$messageDB);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else{
+    $success = "true";
+    $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
+    $db->query($sql);
+    $str = array("success" => $success);
+    return $response->write(json_encode($str));
+  }
+}
+  catch(PDOException $e){
+    $this->notFoundHandler;
+}
 });
 
 $app->put('/login',function($request,$response,$args)
