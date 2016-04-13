@@ -42,7 +42,7 @@ $app->put('/index',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else if(!empty($retr_votes))//
+  else if(!empty($votes))//
   {
     $success = "true";
     $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
