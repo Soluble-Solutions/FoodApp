@@ -228,33 +228,36 @@ angular.module('starter.controllers', ['ngAnimate'])
     {text:"Vegan", checked:false}
   ];
   $scope.displayTags = false;
+
   $scope.showTags = function() {
     console.log("toggleTags() called");
     $scope.displayTags = $scope.displayTags === false ? true: false;
   };
 
+  $scope.newPostForm = {};
   $scope.submitData = function() {
-    console.log("Submit Data called (1)")
-    var data = {
-      title: $scope.newTitle,
-      comment: $scope.newComment,
-      dh_id: $scope.newDh_id,
-      station_id: $scope.newStation_id,
-      attribute_id: $scope.attribute_id,
-      image: $scope.image
-    };
-    console.log("Submit Data called (2)")
-    $http.post('http://52.37.14.110/entry', data)
-      .success(function (response) {
-          $scope.postResponse = response;
-          console.log("Submit Data called (final)");
-          console.log(response);
-      })
-      .error(function (response) {
-          $scope.postResponse = response;
-          console.log(response);
-      });
+    console.log("submitData() called...");
+    console.log("-- DATA --");
+    console.log("title: " + $scope.newPostForm.title);
+    console.log("newComment: " + $scope.newPostForm.comment);
+    console.log("user_id: " + User.id);
+    $http({
+      method: 'POST',
+      url: "http://52.37.14.110/entry",
+      data: {
+        title: $scope.newPostForm.title,
+        comment: $scope.newPostForm.comment,
+        dh_id: 1,
+        station_id: 1,
+        attribute_id: [{"attribute":1},{"attribute":2}],
+        image: $scope.image,
+        user_id: User.id
+      }
+    }).then(function(response){
+      console.log(response);
+    });
   }
+
 })
 
 .factory('FeedData', function(){
