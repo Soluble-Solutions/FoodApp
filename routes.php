@@ -70,12 +70,12 @@ $app->post('/entry',function($request,$response,$args)
   $user_id = $data['user_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
-  $image = $data['image'];
+//  $image = $data['image'];
   $title = $data['title'];
   $comment = $data['comment'];
   $time_stamp = date("Y-m-d H:i:s");
   $active = 1;
-
+  $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg";
   $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
 
   $db->query($sql);
