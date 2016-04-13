@@ -1,7 +1,7 @@
 <ion-view view-title="F&#x21D5;&#x21D5;D">
   <ion-content id="feed">
     <div class="list">
-      <div ng-repeat="f in feedData | orderBy:'-votes'" id="feedItem">
+      <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem">
         <div class="item item-icon-right" id="feedItemTitle">
           <h2><b>{{f.title}}</b></h2>
           <p>@ Umph - The Grill</p>
