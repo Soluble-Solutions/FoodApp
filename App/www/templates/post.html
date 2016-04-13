@@ -4,27 +4,27 @@
 
       <label class="item item-input item-stacked-label">
         <span class="input-label">Title</span>
-        <input type="text" placeholder="Give your post a name" ng-model="newTitle">
+        <input type="text" placeholder="Give your post a name" ng-model="newPostForm.title">
       </label>
 
       <label class="item item-input item-stacked-label">
         <span class="input-label">Description</span>
-        <input type="text" placeholder="How'd you like it?" ng-model="newComment">
+        <input type="text" placeholder="How'd you like it?" ng-model="newPostForm.comment">
       </label>
 
       <div class="item item-icon-right"  ng-click="showTags()">
         <button class="icon button button-icon button-clear ion-chevron-down">
           </button>
-        <h2>Tags</h2>
+        <h2>Add tags</h2>
       </div>
       <ion-checkbox class="item" id="filterItem" ng-repeat="t in tags"
           ng-model="t.checked"
           ng-checked="t.checked"
           ng-show="displayTags">
-        {{ t.text }}
+        {{t.text}}
       </ion-checkbox>
 
-      <button class="button button-full" id="cameraButton" ng-click="takeImage()">
+      <button class="button button-full button-dark" ng-click="takeImage()">
           <i class="icon ion-ios-camera" id="cameraIcon"> Add Photo</i>
       </button>
     </div>
@@ -32,7 +32,7 @@
 
   <button>
     <ion-footer-bar class="bar bar-footer bar-dark" ng-click="submitData()">
-      <h3 class="title">Submit</h3>
+      <h1 class="title">Submit</h1>
     </ion-footer-bar>
   </button>
 </ion-view>

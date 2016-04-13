@@ -234,17 +234,22 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.displayTags = $scope.displayTags === false ? true: false;
   };
 
-
+  $scope.newPostForm = {};
   $scope.submitData = function() {
+    console.log("submitData() called...");
+    console.log("-- DATA --");
+    console.log("title: " + $scope.newPostForm.title);
+    console.log("newComment: " + $scope.newPostForm.comment);
+    console.log("user_id: " + User.id);
     $http({
       method: 'POST',
       url: "http://52.37.14.110/entry",
       data: {
         title: $scope.newTitle,
         comment: $scope.newComment,
-        dh_id: $scope.newDh_id,
-        station_id: $scope.newStation_id,
-        attribute_id: $scope.attribute_id,
+        dh_id: "1",
+        station_id: "1",
+        attribute_id: [{"attribute":"2"}],
         image: $scope.image,
         user_id: User.id
       }
@@ -252,6 +257,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log(response);
     });
   }
+
 })
 
 .factory('FeedData', function(){
