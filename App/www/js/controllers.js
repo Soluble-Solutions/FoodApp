@@ -278,7 +278,7 @@ angular.module('starter.controllers', ['ngAnimate'])
           console.log($scope.feedData);
       });
   });
-  
+
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
       FeedData.data = response.data;
@@ -309,7 +309,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data);
     });
-    //put request changing ranking in database to one more
+    $scope.upIsDisabled = true;
+    $scope.downIsDisabled = false;
   }
 
   $scope.downVote = function() {
@@ -326,7 +327,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data);
     });
-    //Put request changing ranking in database to one less
+    $scope.downIsDisabled = true;
+    $scope.upIsDisabled = false;
   }
 })
 
@@ -418,7 +420,8 @@ angular.module('starter.controllers', ['ngAnimate'])
         console.log(response.data);
       });
     });
-    //put request changing ranking in database to one more
+    $scope.upIsDisabled = true;
+    $scope.downIsDisabled = false;
   }
 
 
@@ -450,6 +453,8 @@ angular.module('starter.controllers', ['ngAnimate'])
         console.log(response.data);
       });
     });
+    $scope.downIsDisabled = true;
+    $scope.upIsDisabled = false;
   }
 
   // var oldSoftBack = $rootScope.$ionicGoBack;
