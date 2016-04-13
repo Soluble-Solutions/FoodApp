@@ -268,16 +268,17 @@ angular.module('starter.controllers', ['ngAnimate'])
     // Access to all the view config properties.
     // and one special property 'targetView'
     // viewConfig.targetView
-    $http.get("http://52.37.14.110/index")
-    .then(function(response) {
-        FeedData.data = response.data;
-        $scope.feedData = FeedData.data;
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
 
-        //DEBUGGING//
-        console.log("Status = " + response.statusText);
-        console.log($scope.feedData);
-    });
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
   });
+  
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
       FeedData.data = response.data;
