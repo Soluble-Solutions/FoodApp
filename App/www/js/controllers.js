@@ -245,11 +245,11 @@ angular.module('starter.controllers', ['ngAnimate'])
       method: 'POST',
       url: "http://52.37.14.110/entry",
       data: {
-        title: $scope.newTitle,
-        comment: $scope.newComment,
-        dh_id: "1",
-        station_id: "1",
-        attribute_id: [{"attribute":"2"}],
+        title: $scope.newPostForm.title,
+        comment: $scope.newPostForm.comment,
+        dh_id: 1,
+        station_id: 1,
+        attribute_id: [{"attribute":1},{"attribute":2}],
         image: $scope.image,
         user_id: User.id
       }
