@@ -74,17 +74,19 @@ i.button.button-icon.icon.ion-chevron-down:hover{
 }
 
 #feed {
-  background-color:#F8F8F8;
+  background-color:	#E8E8E8;
 }
 
 #feedItem {
   border-bottom: none;
-  padding: .5rem;
+  padding: .25rem;
 }
 
 #feedItemImage {
   max-height: 80%;
 }
+
+
 
 #comments {
   background-color:#F8F8F8;

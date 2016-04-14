@@ -14,7 +14,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
     scope: $scope,
-    animation: 'slide-in-up'
+    animation: 'slide-in-right'
     }).then(function(modal) {
     $scope.modal = modal
     })
@@ -106,7 +106,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $ionicModal.fromTemplateUrl('contact-modal.html', {
     scope: $scope,
-    animation: 'slide-in-up'
+    animation: 'slide-in-left'
     }).then(function(modal) {
     $scope.modal = modal
     })
@@ -130,7 +130,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       {text:"Umph", checked:true}
     ];
 
-    $scope.displayHalls = true;
+    $scope.displayHalls = false;
     $scope.toggleHalls = function() {
       console.log("toggleHalls() called");
       $scope.displayHalls = $scope.displayHalls === false ? true: false;

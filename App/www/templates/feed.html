@@ -1,6 +1,14 @@
 <ion-view view-title="F&#x21D5;&#x21D5;D">
   <ion-content id="feed">
     <div class="list">
+
+      <div id="feedItem">
+        <div class="item item-icon text-center" ng-click="newPost()" id="newPostItem">
+          <i class="icon ion-camera pull-xs-center"></i>
+          <b>New Post</b>
+        </div>
+      </div>
+
       <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem">
         <div class="item item-icon-right" id="feedItemTitle">
           <h2><b>{{f.title}}</b></h2>
@@ -28,9 +36,11 @@
       </div>
     </div>
   </ion-content>
+  <!--
   <button>
     <ion-footer-bar class="bar bar-footer bar-dark" ng-click="newPost()">
-      <h1 class="title">Create New!</h1>
+      <h1 class="title"> <i class="icon ion-camera pull-xs-center"></i> Create New</h1>
     </ion-footer-bar>
   </button>
+-->
 </ion-view>

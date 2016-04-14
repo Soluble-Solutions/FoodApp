@@ -5,7 +5,7 @@
       </ion-nav-back-button>
 
       <ion-nav-buttons side="right">
-        <button class="button button-icon button-clear ion-compose"
+        <button class="button button-icon button-clear ion-person"
               menu-toggle="right" ng-click="openAccount()" id="navBarButton">
         </button>
       </ion-nav-buttons>
@@ -13,8 +13,8 @@
       <!--  <button class="button button-icon button-clear ion-ios-settings"
               menu-toggle="left" ng-click="openModal()" id="navBarButton">
         </button> -->
-        <button class="button button-clear"
-              menu-toggle="left" ng-click="logout()" id="navBarButton"> Logout
+        <button class="button button-clear button-icon ion-ios-settings"
+              menu-toggle="left" ng-click="openModal()" id="navBarButton">
         </button>
       </ion-nav-buttons>
       <ion-nav-back-button id="backButton">
@@ -76,7 +76,6 @@
         </ion-checkbox>
       </div>
     </ion-content>
-
     <button>
       <ion-footer-bar class="bar bar-footer bar-dark" ng-click="closeModal()">
         <h3 class="title">Apply</h3>
