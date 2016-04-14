@@ -77,33 +77,90 @@ $app->post('/entry',function($request,$response,$args)
   $time_stamp = date("Y-m-d H:i:s");
   $active = 1;
 
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
+  $sql = 'SELECT dh_id
+          FROM Dining_Hall'; #ORDER BY votes DESC
+  $db = $this->dbConn;
+  $q = $db->query($sql);
+  $currentDH = $q->fetchAll(PDO::FETCH_ASSOC);
 
-  $db->query($sql);
-  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $sql = 'SELECT user_id
+          FROM User'; #ORDER BY votes DESC
+  $db = $this->dbConn;
+  $q = $db->query($sql);
+  $currentUsers = $q->fetchAll(PDO::FETCH_ASSOC);
 
-  #GET Entry_id from first line (based on image)
-  $sql = "SELECT entry_id
-          FROM Entry
-          WHERE image = '$image' AND time_stamp = '$time_stamp';";
-  $query = $db->query($sql);
-  $arr = $query->fetch(PDO::FETCH_ASSOC);
-  $entry_id = (int)$arr['entry_id'];
-  if(!empty($comment))
+  $sql = 'SELECT station_id
+          FROM Station'; #ORDER BY votes DESC
+  $db = $this->dbConn;
+  $q = $db->query($sql);
+  $currentStations = $q->fetchAll(PDO::FETCH_ASSOC);
+
+  if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($attribute_id) || empty($image) || empty($title))
   {
-    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment','$time_stamp','$entry_id','$user_id');";
-    $db->query($sql);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $success = "false";
+    $messageDB = "Empty Data Sent";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
   }
 
-  foreach($attribute_id as $attribute)
+  else if(!in_array(array("dh_id"=>(string)$dh_id),$currentDH))
   {
-    $attributenum =(int)$attribute['attribute'];
-    $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
-    $db->query($sql);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $success = "false";
+    $messageDB = "That Dining Hall ID $dh_id does not exists";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
   }
 
+  else if(!in_array(array("user_id"=>(string)$user_id),$currentUsers))
+  {
+    $success = "false";
+    $messageDB = "That User ID $user_id does not exists";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+
+  else if(!in_array(array("station_id"=>(string)$station_id),$currentStations))
+  {
+    $success = "false";
+    $messageDB = "That Station ID $station_id does not exists";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else
+  {
+    $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
+
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    #GET Entry_id from first line (based on image)
+    $sql = "SELECT entry_id FROM Entry WHERE image = '$image' AND time_stamp = '$time_stamp';";
+    $query = $db->query($sql);
+    $arr = $query->fetch(PDO::FETCH_ASSOC);
+    $entry_id = (int)$arr['entry_id'];
+    if(!empty($comment))
+    {
+      $sql ="INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment','$time_stamp','$entry_id','$user_id');";
+      $db->query($sql);
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
+    foreach($attribute_id as $attribute)
+    {
+      $attributenum =(int)$attribute['attribute'];
+      $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
+      $db->query($sql);
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    $success = "true";
+    $str = array("success" => $success);
+    //echo $success;
+    return $response->write(json_encode($str));
+}
 });
 
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
