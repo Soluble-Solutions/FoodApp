@@ -197,12 +197,13 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   }
 });
 //5
-$app->post('/comment',function($request,$response,$args){
+$app->post('/comment',function($request,$response,$args){//TEMP COMMENTED USER ID
   try{
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
 //  $user_id = $data['user_id'];
+  $user_id = 1;
   $comment = $data['comment'];
 
   if(strlen($comment)>0&&strlen(trim($comment))==0||empty($comment))//empty comment
