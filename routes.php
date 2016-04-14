@@ -4,6 +4,7 @@
 $servername = "localhost";
 $username = "admin";
 
+//1
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
   try{
@@ -21,7 +22,7 @@ $app->get('/index', function ($request, $response, $args) {
   }
 });
 
-
+//2
 $app->put('/index',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -62,7 +63,7 @@ $app->put('/index',function($request,$response,$args)
     return $response->write(json_encode($str));
   }
 });
-
+//3
 $app->post('/entry',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -78,8 +79,8 @@ $app->post('/entry',function($request,$response,$args)
   $active = 1;
 
   $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg";
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
-  $db->query($sql);
+  //$sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
+  //$db->query($sql);
 
   $sql = 'SELECT dh_id
           FROM Dining_Hall'; #ORDER BY votes DESC
@@ -166,7 +167,7 @@ $app->post('/entry',function($request,$response,$args)
     return $response->write(json_encode($str));
 }
 });
-
+//4
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
@@ -195,7 +196,7 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     //echo "Error: ".$e.getMessage();
   }
 });
-
+//5
 $app->post('/comment',function($request,$response,$args){
   try{
   $db = $this->dbConn;
@@ -224,7 +225,7 @@ $app->post('/comment',function($request,$response,$args){
     $this->notFoundHandler;
 }
 });
-
+//7
 $app->put('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
@@ -291,6 +292,7 @@ $app->put('/login',function($request,$response,$args)
 
 });
 //Referenced from https://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
+//8
 $app->post('/registration',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -354,7 +356,7 @@ function hash_equals($str1,$str2)
     //}
   //}
 }
-
+//9
 $app->put('/logout',function($request,$response,$args)
 {
   $db = $this->dbConn;
