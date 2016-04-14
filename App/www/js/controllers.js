@@ -4,6 +4,12 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {id: [], status: []};
 })
 
+
+.factory('FeedData', function(){
+  return {data: []};
+})
+
+
 .controller('LoginCtrl', function($scope, $state, $ionicModal, $http, User) {
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
@@ -92,6 +98,7 @@ angular.module('starter.controllers', ['ngAnimate'])
   }
 })
 
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, $http, User) {
   if(User.status=="0") {
     $state.go("login");
@@ -161,43 +168,12 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.displayTags = $scope.displayTags === false ? true: false;
     };
 
-    $scope.newPost = function() {
-      console.log("newPost() called");
-      $state.go('app.post');
-    }
-
-    $scope.logout = function() {
-      console.log("logout() called");
-      console.log("DATA: ");
-      console.log("user_id: " + User.id);
-      $http({
-        method: 'PUT',
-        url: 'http://52.37.14.110/logout',
-        contentType: "application/json",
-        data: {
-          user_id: User.id
-        }
-      })
-      .then(function(response) {
-        console.log(response.data);
-        $scope.loginSuccess = response.data.success;
-        console.log("Success: " + $scope.loginSuccess);
-
-        if($scope.loginSuccess == "true") {
-          console.log("Logged out");
-          User.status="0";
-          console.log("User.status: " + User.status);
-          User.id="";
-          console.log("User.id: " + User.id);
-          $state.go("login");
-        } else {
-          $scope.messageDB = response.data.messageDB;
-          alert("Logout Failed: " + $scope.messageDB);
-        }
-      })
+    $scope.openAccount = function() {
+      $state.go("app.account");
     }
 
 })
+
 
 .controller('PostCtrl', function($scope, $http, User) {
   $scope.takeImage = function() {
@@ -260,11 +236,14 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 })
 
-.factory('FeedData', function(){
-  return {data: []};
-})
 
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope) {
+
+  $scope.newPost = function() {
+    console.log("newPost() called");
+    $state.go('app.post');
+  }
+
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
   $rootScope.$on('$viewContentLoading', function(event, viewConfig){
@@ -359,6 +338,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.upIsDisabled = false;
   }
 })
+
 
 .controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User, $rootScope) {
   $scope.feedData = FeedData.data;
@@ -498,4 +478,38 @@ angular.module('starter.controllers', ['ngAnimate'])
   // };
 
   console.log("Reached DetailsCtrl");
+})
+
+
+.controller('AccountCtrl', function($http, $scope, User, $state) {
+  $scope.logout = function() {
+    console.log("logout() called");
+    console.log("DATA: ");
+    console.log("user_id: " + User.id);
+    $http({
+      method: 'PUT',
+      url: 'http://52.37.14.110/logout',
+      contentType: "application/json",
+      data: {
+        user_id: User.id
+      }
+    })
+    .then(function(response) {
+      console.log(response.data);
+      $scope.loginSuccess = response.data.success;
+      console.log("Success: " + $scope.loginSuccess);
+
+      if($scope.loginSuccess == "true") {
+        console.log("Logged out");
+        User.status="0";
+        console.log("User.status: " + User.status);
+        User.id="";
+        console.log("User.id: " + User.id);
+        $state.go("login");
+      } else {
+        $scope.messageDB = response.data.messageDB;
+        alert("Logout Failed: " + $scope.messageDB);
+      }
+    })
+  }
 })
