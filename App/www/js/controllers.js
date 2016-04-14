@@ -228,42 +228,59 @@ angular.module('starter.controllers', ['ngAnimate'])
     {text:"Vegan", checked:false}
   ];
   $scope.displayTags = false;
+
   $scope.showTags = function() {
     console.log("toggleTags() called");
     $scope.displayTags = $scope.displayTags === false ? true: false;
   };
 
+  $scope.newPostForm = {};
   $scope.submitData = function() {
-    console.log("Submit Data called (1)")
-    var data = {
-      title: $scope.newTitle,
-      comment: $scope.newComment,
-      dh_id: $scope.newDh_id,
-      station_id: $scope.newStation_id,
-      attribute_id: $scope.attribute_id,
-      image: $scope.image
-    };
-    console.log("Submit Data called (2)")
-    $http.post('http://52.37.14.110/entry', data)
-      .success(function (response) {
-          $scope.postResponse = response;
-          console.log("Submit Data called (final)");
-          console.log(response);
-      })
-      .error(function (response) {
-          $scope.postResponse = response;
-          console.log(response);
-      });
+    console.log("submitData() called...");
+    console.log("-- DATA --");
+    console.log("title: " + $scope.newPostForm.title);
+    console.log("newComment: " + $scope.newPostForm.comment);
+    console.log("user_id: " + User.id);
+    $http({
+      method: 'POST',
+      url: "http://52.37.14.110/entry",
+      data: {
+        title: $scope.newPostForm.title,
+        comment: $scope.newPostForm.comment,
+        dh_id: 1,
+        station_id: 1,
+        attribute_id: [{"attribute":1},{"attribute":2}],
+        image: $scope.image,
+        user_id: User.id
+      }
+    }).then(function(response){
+      console.log(response);
+    });
   }
+
 })
 
 .factory('FeedData', function(){
   return {data: []};
 })
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, User) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
+  $rootScope.$on('$viewContentLoading', function(event, viewConfig){
+    // Access to all the view config properties.
+    // and one special property 'targetView'
+    // viewConfig.targetView
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
+
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
+  });
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
@@ -282,6 +299,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.upVote = function() {
     console.log("upVote() called!");
+
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
@@ -294,7 +312,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data);
     });
-    //put request changing ranking in database to one more
+    $scope.upIsDisabled = true;
+    $scope.downIsDisabled = false;
   }
 
   $scope.downVote = function() {
@@ -311,15 +330,17 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data);
     });
-    //Put request changing ranking in database to one less
+    $scope.downIsDisabled = true;
+    $scope.upIsDisabled = false;
   }
 })
 
 
-.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, $window, User) {
+.controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User, $rootScope) {
   $scope.feedData = FeedData.data;
   $scope.selectedID = $stateParams.entry_id;
   $scope.commentURL = "http://52.37.14.110/comment/" + $scope.selectedID;
+
   $http({
     method: 'GET',
     url: $scope.commentURL
@@ -334,6 +355,8 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.downvote = $scope.votes - 1;
     console.log(response.data);
   });
+
+
   $scope.submitComment = function() {
     console.log("submitComment() called");
     console.log("with text: ");
@@ -347,12 +370,14 @@ angular.module('starter.controllers', ['ngAnimate'])
           comment: $scope.newComment
         }
       }).then(function(response){
+        console.log("<-- post success -->");
         console.log(response.data);
         $http({
           method: 'GET',
           url: $scope.commentURL
         }).then(function(response){
-          $scope.comments = response.data.comment;
+          console.log(response);
+          $scope.$parent.comments = response.data.comment;
           $scope.entryData = [];
           $scope.entryData = response.data.entry[0];
           console.log("entryData: " + $scope.entryData);
@@ -367,6 +392,9 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log($scope.comments);
     }
   }
+
+
+
   $scope.upVote = function() {
     console.log("upVote() called!");
     $http({
@@ -395,8 +423,10 @@ angular.module('starter.controllers', ['ngAnimate'])
         console.log(response.data);
       });
     });
-    //put request changing ranking in database to one more
+    $scope.upIsDisabled = true;
+    $scope.downIsDisabled = false;
   }
+
 
   $scope.downVote = function() {
     console.log("downVote() called!");
@@ -426,8 +456,22 @@ angular.module('starter.controllers', ['ngAnimate'])
         console.log(response.data);
       });
     });
-    //Put request changing ranking in database to one less
+    $scope.downIsDisabled = true;
+    $scope.upIsDisabled = false;
   }
+
+  // var oldSoftBack = $rootScope.$ionicGoBack;
+  //
+  //   // override default behaviour
+  // $rootScope.$ionicGoBack = function() {
+  //   $http.get("http://52.37.14.110/index")
+  //   .then(function(response) {
+  //       FeedData.data = response.data;
+  //       $scope.feedData = FeedData.data;
+  //   });
+  //   // uncomment below line to call old function when finished
+  //   oldSoftBack();
+  // };
+
   console.log("Reached DetailsCtrl");
-  //TEST INFORMATION//
 })
