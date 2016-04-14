@@ -79,7 +79,7 @@ i.button.button-icon.icon.ion-chevron-down:hover{
 
 #feedItem {
   border-bottom: none;
-  padding:0;
+  padding: .5rem;
 }
 
 #feedItemImage {

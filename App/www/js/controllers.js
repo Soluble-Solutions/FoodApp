@@ -282,6 +282,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       });
   });
 
+
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
       FeedData.data = response.data;
@@ -292,49 +293,72 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log($scope.feedData);
   });
 
-  $scope.upvote = $scope.votes+1;
-  $scope.downvote = $scope.votes-1;
-  console.log($scope.upvote);
-  console.log($scope.downvotevote);
-
-  $scope.upVote = function() {
+  $scope.upVote = function(entryID, invotes) {
     console.log("upVote() called!");
+    console.log(entryID);
+    console.log(invotes);
+    $scope.upvote = parseInt(invotes-0+1);
+
+    console.log($scope.upvote);
 
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.upvote,
-        entry_id: $scope.entry_id
+        entry_id: entryID
       }
     })
     .then(function(response) {
       console.log("<-- DATA -->");
-      console.log(response.data);
+      console.log(response.data.success);
+      console.log(response.data.votes);
+    });
+    $http.get("http://52.37.14.110/index")
+    .then(function(response) {
+        FeedData.data = response.data;
+        $scope.feedData = FeedData.data;
+
+        //DEBUGGING//
+        console.log("Status = " + response.statusText);
+        console.log($scope.feedData);
     });
     $scope.upIsDisabled = true;
     $scope.downIsDisabled = false;
   }
 
-  $scope.downVote = function() {
+  $scope.downVote = function(entryID, invotes) {
     console.log("downVote() called!");
+    console.log(entryID);
+    console.log(invotes);
+    $scope.downvote = parseFloat(invotes-1);
+    console.log($scope.downvote);
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.downvote,
-        entry_id: $scope.entry_id
+        entry_id: entryID
       }
     })
     .then(function(response) {
       console.log("<-- DATA -->");
-      console.log(response.data);
+      console.log(response.data.success);
+      console.log(response.data.votes);
+    });
+    $http.get("http://52.37.14.110/index")
+    .then(function(response) {
+        FeedData.data = response.data;
+        $scope.feedData = FeedData.data;
+
+        //DEBUGGING//
+        console.log("Status = " + response.statusText);
+        console.log($scope.feedData);
     });
     $scope.downIsDisabled = true;
     $scope.upIsDisabled = false;
   }
 })
-
 
 .controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User, $rootScope) {
   $scope.feedData = FeedData.data;

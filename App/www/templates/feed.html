@@ -7,9 +7,9 @@
           <p>@ Umph - The Grill</p>
           <div class="icon">
             <div class="col">
-              <i class="button button-icon icon ion-chevron-up" ng-click="upVote()" ng-disabled="upIsDisabled"></i>
+              <i class="button button-icon icon ion-chevron-up" ng-click="upVote(f.entry_id, f.votes)" ng-disabled="upIsDisabled" ng-model="f.entry_id"></i>
               <h2 class="text-right" id="votes">{{f.votes}}</h2>
-              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()" ng-disabled="downIsDisabled"></i>
+              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote(f.entry_id, f.votes)" ng-disabled="downIsDisabled" ng-model="f.entry_id"></i>
             </div>
           </div>
         </div>
