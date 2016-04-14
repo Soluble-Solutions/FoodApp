@@ -1,8 +1,10 @@
 <?php
+
 // Routes
 $servername = "localhost";
 $username = "admin";
 
+//1
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
   try{
@@ -20,71 +22,172 @@ $app->get('/index', function ($request, $response, $args) {
   }
 });
 
+//2
 $app->put('/index',function($request,$response,$args)
 {
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
   $votes = $data['votes'];
-  $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-  $db->query($sql);
-
+  //$sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
+  //$retr_votes= $db->query($sql);
+  $sql = "SELECT votes FROM Entry WHERE entry_id = '$entry_id'";
+  $result = $db->query($sql);
+  $arr = $result->fetch(PDO::FETCH_ASSOC);
+  $retr_votes = $arr['votes'];
+  if($retr_votes == $votes){
+    $success = "false";
+    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
+    $result = $db->query($sql);*/
+    $messageDB = "Number of votes hasn't changed";
+    $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else if(!empty($votes))//
+  {
+    $success = "true";
+    $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
+    $db->query($sql);
+    $str = array("success" => $success, "votes" => $votes);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else{
+    $success = "false";
+    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
+    $result = $db->query($sql);*/
+    $messageDB = "Entry_id not found";
+    $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
 });
-
+//3
 $app->post('/entry',function($request,$response,$args)
 {
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $dh_id = $data['dh_id'];
+  $user_id = $data['user_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
-  $image = $data['image'];
+//  $image = $data['image'];
   $title = $data['title'];
   $comment = $data['comment'];
   $time_stamp = date("Y-m-d H:i:s");
   $active = 1;
 
-  $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active');";
+  $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg";
+  //$sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
+  //$db->query($sql);
 
-  $db->query($sql);
-  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $sql = 'SELECT dh_id
+          FROM Dining_Hall'; #ORDER BY votes DESC
+  $db = $this->dbConn;
+  $q = $db->query($sql);
+  $currentDH = $q->fetchAll(PDO::FETCH_ASSOC);
 
-  #GET Entry_id from first line (based on image)
-  $sql = "SELECT entry_id
-          FROM Entry
-          WHERE image = '$image' AND time_stamp = '$time_stamp';";
-  $query = $db->query($sql);
-  $arr = $query->fetch(PDO::FETCH_ASSOC);
-  $entry_id = (int)$arr['entry_id'];
-  if(!empty($comment))
+  $sql = 'SELECT user_id
+          FROM User'; #ORDER BY votes DESC
+  $db = $this->dbConn;
+  $q = $db->query($sql);
+  $currentUsers = $q->fetchAll(PDO::FETCH_ASSOC);
+
+  $sql = 'SELECT station_id
+          FROM Station'; #ORDER BY votes DESC
+  $db = $this->dbConn;
+  $q = $db->query($sql);
+  $currentStations = $q->fetchAll(PDO::FETCH_ASSOC);
+
+  if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($attribute_id) || empty($image) || empty($title))
   {
-    $sql ="INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment','$time_stamp',$entry_id);";
-    $db->query($sql);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $success = "false";
+    $messageDB = "Empty Data Sent";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
   }
 
-  foreach($attribute_id as $attribute)
+  else if(!in_array(array("dh_id"=>(string)$dh_id),$currentDH))
   {
-    $attributenum =(int)$attribute['attribute'];
-    $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
-    $db->query($sql);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $success = "false";
+    $messageDB = "That Dining Hall ID $dh_id does not exists";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
   }
 
+  else if(!in_array(array("user_id"=>(string)$user_id),$currentUsers))
+  {
+    $success = "false";
+    $messageDB = "That User ID $user_id does not exists";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+
+  else if(!in_array(array("station_id"=>(string)$station_id),$currentStations))
+  {
+    $success = "false";
+    $messageDB = "That Station ID $station_id does not exists";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else
+  {
+    $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
+
+    $db->query($sql);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    #GET Entry_id from first line (based on image)
+    $sql = "SELECT entry_id FROM Entry WHERE image = '$image' AND time_stamp = '$time_stamp';";
+    $query = $db->query($sql);
+    $arr = $query->fetch(PDO::FETCH_ASSOC);
+    $entry_id = (int)$arr['entry_id'];
+    if(!empty($comment))
+    {
+      $sql ="INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment','$time_stamp','$entry_id','$user_id');";
+      $db->query($sql);
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
+    foreach($attribute_id as $attribute)
+    {
+      $attributenum =(int)$attribute['attribute'];
+      $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
+      $db->query($sql);
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    $success = "true";
+    $str = array("success" => $success);
+    //echo $success;
+    return $response->write(json_encode($str));
+}
 });
-
+//4
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
+    $sql = "SELECT * FROM Entry WHERE entry_id = $entry_id";
+
+    $db = $this->dbConn;
+    $q = $db->query($sql);
+    $entrydata = $q->fetchAll(PDO::FETCH_ASSOC);
+
     $sql = "SELECT c.comment
             FROM Comment c
             INNER JOIN Entry e
             ON e.entry_id = c.entry_id
             AND e.entry_id = '$entry_id'
             ;";
-    $db = $this->dbConn;
+
     $q = $db->query($sql);
-    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    $commentdata = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    $check = ['entry'=>$entrydata, 'comment'=>$commentdata];
     return $response->write(json_encode($check));
   }
   catch(PDOException $e){
@@ -93,17 +196,37 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     //echo "Error: ".$e.getMessage();
   }
 });
-
-$app->post('/comment',function($request,$response,$args){
+//5
+$app->post('/comment',function($request,$response,$args){//TEMP COMMENTED USER ID
+  try{
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
+//  $user_id = $data['user_id'];
+  $user_id = 1;
   $comment = $data['comment'];
 
-  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id) VALUES ('$comment',now(),'$entry_id');"; #now()
-  $db->query($sql);
+  if(strlen($comment)>0&&strlen(trim($comment))==0||empty($comment))//empty comment
+  {
+    $success = "false";
+    $messageDB = "empty comment";
+    $str = array("success" => $success, "messageDB" =>$messageDB);
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
+  else{
+    $success = "true";
+    $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
+    $db->query($sql);
+    $str = array("success" => $success);
+    return $response->write(json_encode($str));
+  }
+}
+  catch(PDOException $e){
+    $this->notFoundHandler;
+}
 });
-
+//7
 $app->put('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
@@ -170,6 +293,7 @@ $app->put('/login',function($request,$response,$args)
 
 });
 //Referenced from https://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
+//8
 $app->post('/registration',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -233,7 +357,7 @@ function hash_equals($str1,$str2)
     //}
   //}
 }
-
+//9
 $app->put('/logout',function($request,$response,$args)
 {
   $db = $this->dbConn;

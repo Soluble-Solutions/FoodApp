@@ -1,27 +1,38 @@
-<ion-view view-title="Create New">
+<ion-view view-title="New Post">
   <ion-content>
     <div class="list list-inset">
+
       <label class="item item-input item-stacked-label">
         <span class="input-label">Title</span>
-        <input type="text" placeholder="Give the plate a name">
+        <input type="text" placeholder="Give your post a name" ng-model="newPostForm.title">
       </label>
+
       <label class="item item-input item-stacked-label">
         <span class="input-label">Description</span>
-        <input type="text" placeholder="How'd you like the food?">
+        <input type="text" placeholder="How'd you like it?" ng-model="newPostForm.comment">
       </label>
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Dining Hall
-        </div>
-        <select>
-          <option>Umphry Lee</option>
-          <option>Arnold</option>
-          <option>Mac's Place</option>
-        </select>
-      </label>
-      <button class="button button-full button-dark" href="#" ng-click="takeImage()">
-          <i class="icon ion-ios-camera"> (required)</i>
+
+      <div class="item item-icon-right"  ng-click="showTags()">
+        <button class="icon button button-icon button-clear ion-chevron-down">
+          </button>
+        <h2>Add tags</h2>
+      </div>
+      <ion-checkbox class="item" id="filterItem" ng-repeat="t in tags"
+          ng-model="t.checked"
+          ng-checked="t.checked"
+          ng-show="displayTags">
+        {{t.text}}
+      </ion-checkbox>
+
+      <button class="button button-full button-dark" ng-click="takeImage()">
+          <i class="icon ion-ios-camera" id="cameraIcon"> Add Photo</i>
       </button>
     </div>
   </ion-content>
+
+  <button>
+    <ion-footer-bar class="bar bar-footer bar-dark" ng-click="submitData()">
+      <h1 class="title">Submit</h1>
+    </ion-footer-bar>
+  </button>
 </ion-view>

@@ -1,0 +1,43 @@
+<ion-view view-title="F&#x21D5;&#x21D5;D" name="login-view">
+  <ion-header-bar class="bar bar-header">
+    <h2 class="title">F&#x21D5;&#x21D5;D</h2>
+    <button class="button button-icon button-clear"
+          ng-click="openModal()" id="navBarButton">Sign up</button>
+  </ion-header-bar>
+  <ion-content class="padding">
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="Email" ng-model="form.email">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="form.password">
+          </label>
+      </div>
+      <button class="button button-block button-dark" ng-click="login()">Login</button>
+  </ion-content>
+</ion-view>
+
+<script id="signUp-modal.html" type="text/ng-template" class="filterModal">
+  <div class="modal">
+    <ion-header-bar>
+      <button class="button button-icon button-clear"
+        ng-click="closeModal()" id="navBarButton">cancel</button>
+      <h1 class="title">New User</h1>
+    </ion-header-bar>
+
+    <ion-content>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <input type="email" placeholder="Email" ng-model="form.newEmail">
+          </label>
+          <label class="item item-input">
+              <input type="text" placeholder="Phone Number" ng-model="form.newPhone">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="form.newPassword">
+          </label>
+          <button class="button button-block button-dark" ng-click="signUp()">Create Account</button>
+      </div>
+    </ion-content>
+  </div>
+</script>
