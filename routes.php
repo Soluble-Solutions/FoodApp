@@ -4,13 +4,79 @@
 $servername = "localhost";
 $username = "admin";
 
-//1
+date_default_timezone_set('America/Chicago');
+
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
   try{
+    $db = $this->dbConn;
+    $currentTime = date("H:i:s");
+    $weekday = date('w');
+
+    if($weekday == 0 || $weekday == 6)
+    {
+      if(strtotime($currentTime) >= strtotime("12:00:00") && strtotime($currentTime) <= strtotime("14:30:00"))
+      {
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
+        $db->query($sql);
+      }
+
+      else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
+      {
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 AND meal = 1';
+        $db->query($sql);
+      }
+
+      else if(strtotime($currentTime) >= strtotime("22:00:00"))
+      {
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 AND meal = 2 AND meal 1';
+        $db->query($sql);
+      }
+
+      else
+      {
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 AND meal = 2';
+        $db->query($sql);
+      }
+    }
+
+    else
+    {
+      echo $currentTime;
+      if(strtotime($currentTime) >= strtotime("10:30:00") && strtotime($currentTime) <= strtotime("14:30:00"))
+      {
+        echo "1030";
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
+        $db->query($sql);
+      }
+
+      else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
+      {
+        echo json_encode("1430");
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
+        $db->query($sql);
+      }
+
+      else if(strtotime($currentTime) >= strtotime("22:00:00"))
+      {
+        echo "22";
+
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
+        $db->query($sql);
+      }
+
+      else
+      {
+        echo "else";
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 AND meal = 2';
+        $db->query($sql);
+      }
+    }
+
 
     $sql = 'SELECT *
-            FROM Entry'; #ORDER BY votes DESC
+            FROM Entry
+            WHERE active = 1'; #ORDER BY votes DESC
     $db = $this->dbConn;
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +89,7 @@ $app->get('/index', function ($request, $response, $args) {
   }
 });
 
-//2
+
 $app->put('/index',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -45,7 +111,7 @@ $app->put('/index',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else if(!empty($votes))//
+  else if(!empty($retr_votes))//
   {
     $success = "true";
     $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
@@ -64,7 +130,7 @@ $app->put('/index',function($request,$response,$args)
     return $response->write(json_encode($str));
   }
 });
-//3
+
 $app->post('/entry',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -73,15 +139,50 @@ $app->post('/entry',function($request,$response,$args)
   $user_id = $data['user_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
-//  $image = $data['image'];
+  $image = $data['image'];
   $title = $data['title'];
   $comment = $data['comment'];
   $time_stamp = date("Y-m-d H:i:s");
+  $time = date("H:i:s");
+  $weekday = date('w');
   $active = 1;
+  $meal = 0;
 
-  $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1458694423/lasagna.jpg";
-  //$sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
-  //$db->query($sql);
+  if($weekday == 0 || $weekday == 6)
+  {
+    if( strtotime("00:00:00") < strtotime($time) && strtotime($time) <= strtotime("12:00:00"))
+    {
+      $meal = 1;
+    }
+
+    else if( strtotime("12:00:00") < strtotime($time) && strtotime($time) <= strtotime("14:30:00"))
+    {
+      $meal = 2;
+    }
+
+    else if( strtotime("14:30:00") < strtotime($time) && strtotime($time) <= strtotime("22:00:00"))
+    {
+      $meal = 3;
+    }
+  }
+  else
+  {
+    if( (strtotime("00:00:00") < strtotime($time) )&& (strtotime($time) <= strtotime("10:30:00")))
+    {
+      $meal = 1;
+    }
+
+    else if( (strtotime("10:30:00") < strtotime($time)) && (strtotime($time) <= strtotime("14:30:00")))
+    {
+      $meal = 2;
+    }
+
+    else if(( strtotime("14:30:00") < strtotime($time)) && (strtotime($time) <= strtotime("22:00:00")))
+    {
+      $meal = 3;
+    }
+  }
+
 
   $sql = 'SELECT dh_id
           FROM Dining_Hall'; #ORDER BY votes DESC
@@ -101,7 +202,7 @@ $app->post('/entry',function($request,$response,$args)
   $q = $db->query($sql);
   $currentStations = $q->fetchAll(PDO::FETCH_ASSOC);
 
-  if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($image) || empty($title))
+  if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($attribute_id) || empty($image) || empty($title))
   {
     $success = "false";
     $messageDB = "Empty Data Sent";
@@ -138,7 +239,7 @@ $app->post('/entry',function($request,$response,$args)
   }
   else
   {
-    $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id');";
+    $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id,meal) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id','$meal');";
 
     $db->query($sql);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -154,21 +255,24 @@ $app->post('/entry',function($request,$response,$args)
       $db->query($sql);
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-    if(!empty($attribute_id('attribute')))
-    {foreach($attribute_id as $attribute)
+
+    if($attribute_id[0]['attribute'] != "0")
     {
-      $attributenum =(int)$attribute['attribute'];
-      $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
-      $db->query($sql);
-      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }}
+      foreach($attribute_id as $attribute)
+      {
+        $attributenum =(int)$attribute['attribute'];
+        $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
+        $db->query($sql);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      }
+    }
     $success = "true";
     $str = array("success" => $success);
     //echo $success;
     return $response->write(json_encode($str));
 }
 });
-//4
+
 $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
@@ -197,37 +301,18 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
     //echo "Error: ".$e.getMessage();
   }
 });
-//5
-$app->post('/comment',function($request,$response,$args){//TEMP COMMENTED USER ID
-  try{
+
+$app->post('/comment',function($request,$response,$args){
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $entry_id = $data['entry_id'];
-//  $user_id = $data['user_id'];
-  $user_id = 1;
+  $user_id = $data['user_id'];
   $comment = $data['comment'];
 
-  if(strlen($comment)>0&&strlen(trim($comment))==0||empty($comment))//empty comment
-  {
-    $success = "false";
-    $messageDB = "empty comment";
-    $str = array("success" => $success, "messageDB" =>$messageDB);
-    //echo $success;
-    return $response->write(json_encode($str));
-  }
-  else{
-    $success = "true";
-    $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
-    $db->query($sql);
-    $str = array("success" => $success);
-    return $response->write(json_encode($str));
-  }
-}
-  catch(PDOException $e){
-    $this->notFoundHandler;
-}
+  $sql = "INSERT INTO Comment (comment,time_stamp,entry_id,user_id) VALUES ('$comment',now(),'$entry_id','$user_id');"; #now()
+  $db->query($sql);
 });
-//7
+
 $app->put('/login',function($request,$response,$args)
 {
     $db = $this->dbConn;
@@ -294,7 +379,6 @@ $app->put('/login',function($request,$response,$args)
 
 });
 //Referenced from https://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
-//8
 $app->post('/registration',function($request,$response,$args)
 {
   $db = $this->dbConn;
@@ -358,7 +442,7 @@ function hash_equals($str1,$str2)
     //}
   //}
 }
-//9
+
 $app->put('/logout',function($request,$response,$args)
 {
   $db = $this->dbConn;
