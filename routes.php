@@ -6,6 +6,7 @@ $username = "admin";
 
 //1
 $app->get('/index', function ($request, $response, $args) {
+
     // Sample log message
   try{
     $sql = 'SELECT *
@@ -172,7 +173,7 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
     $sql = "SELECT * FROM Entry WHERE entry_id = $entry_id";
-
+    echo gettype($entry_id);
     $db = $this->dbConn;
     $q = $db->query($sql);
     $entrydata = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -394,3 +395,15 @@ $app->put('/logout',function($request,$response,$args)
 });
 
 ?>
+<html>
+<body>
+  <script src= "/FoodApp/resemble.js"></script>
+<script type="text/javascript">
+
+ var diff = resemble("http://res.cloudinary.com/doazmoxb7/image/upload/v1460698618/bean2_bur4uf.jpg").
+  compareTo("http://res.cloudinary.com/doazmoxb7/image/upload/v1460567861/baked_beans.jpg").ignoreColors().onComplete(function(data){
+    console.log(data);
+  });
+  </script>
+</body>
+  </html>
