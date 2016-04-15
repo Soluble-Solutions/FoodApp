@@ -392,5 +392,43 @@ $app->put('/logout',function($request,$response,$args)
 
 
 });
+$app->get('/filters/{dh_id}/{station_id}/{attribute_id}', function ($request, $response, $args) {
+  try{
+    $dh_id = $request->getAttribute('dh_id');
+    $station_id = $request->getAttribute('station_id');
+    $attribute_id = $request->getAttribute('attribute_id');
+    foreach($dh_id as $dh)
+    {
+      foreach($station_id as $station)
+      {
+        foreach($attribute_id as $attribute)
+        {
+          $dhnum =(int)$dh['dh'];
+          $stationnum =(int)$station['station'];
+          $attributenum =(int)$attribute['attribute'];
+          $sql = "SELECT *
+                  FROM Entry  e
+                  INNER JOIN Entry_Attributes ea
+                  ON e.entry_id = ea.entry_id
+                  WHERE e.dh_id=$dhnum
+                  AND e.station_id=$stationnum
+                  AND ea.attribute_id=$attributenum";
+          $db = $this->dbConn;
+          $q = $db->query($sql);
+
+
+        }
+      }
+
+    }
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+    return $response->write(json_encode($check));
+  }
+  catch(PDOException $e){
+    $this->notFoundHandler; //404
+    //$app->$response->setStatus(404);
+    //echo "Error: ".$e.getMessage();
+  }
+});
 
 ?>
