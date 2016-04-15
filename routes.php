@@ -8,6 +8,7 @@ $username = "admin";
 $app->get('/index', function ($request, $response, $args) {
     // Sample log message
   try{
+
     $sql = 'SELECT *
             FROM Entry'; #ORDER BY votes DESC
     $db = $this->dbConn;
@@ -100,7 +101,7 @@ $app->post('/entry',function($request,$response,$args)
   $q = $db->query($sql);
   $currentStations = $q->fetchAll(PDO::FETCH_ASSOC);
 
-  if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($attribute_id) || empty($image) || empty($title))
+  if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($image) || empty($title))
   {
     $success = "false";
     $messageDB = "Empty Data Sent";
@@ -153,14 +154,14 @@ $app->post('/entry',function($request,$response,$args)
       $db->query($sql);
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-
-    foreach($attribute_id as $attribute)
+    if(!empty($attribute_id('attribute')))
+    {foreach($attribute_id as $attribute)
     {
       $attributenum =(int)$attribute['attribute'];
       $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
       $db->query($sql);
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
+    }}
     $success = "true";
     $str = array("success" => $success);
     //echo $success;
