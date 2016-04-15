@@ -408,6 +408,14 @@ $app->post('/filters',function($request,$response,$args)
   $dh_id = $data['dh_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
+  if(empty($dh_id) || empty($station_id) || empty($attribute_id) )
+  {
+    $success = "false";
+    $messageDB = "Empty Data Sent";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    //echo $success;
+    return $response->write(json_encode($str));
+  }
 
 /*    echo gettype($dh_id);
     echo is_array($dh_id) ? 'Array' : 'not an Array';
@@ -438,7 +446,7 @@ $app->post('/filters',function($request,$response,$args)
                   AND ea.attribute_id='$attributenum'
                   AND e.active=1";
           $q = $db->query($sql);
-          $data[] = $q->fetch(PDO::FETCH_ASSOC);
+          //$arr[] = $q->fetch(PDO::FETCH_ASSOC);
 
 
 
@@ -446,11 +454,33 @@ $app->post('/filters',function($request,$response,$args)
       }
 
     }
-
+    $returnArr = array();
+    foreach($q as $row){
+      $returnArr['entry_id'] = $row['entry_id'];
+      $returnArr['title'] = $row['title'];
+      $returnArr['votes'] = $row['votes'];
+      $returnArr['time_stamp'] = $row['time_stamp'];
+      $returnArr['image'] = $row['image'];
+      $returnArr['dh_id'] = $row['dh_id'];
+      $returnArr['station_id'] = $row['station_id'];
+      $returnArr['user_id'] = $row['user_id'];
+      $returnArr['active'] = $row['active'];
+      $returnArr['entry_id'] = $row['entry_id'];
+      $returnArr['attribute_id'] = $row['attribute_id'];
+    /*  $returnArr['title'] = $row['title'];
+      $returnArr['votes'] = $row['votes'];
+      $returnArr['time_stamp'] = $row['time_stamp'];
+      $returnArr['image'] = $row['image'];
+      $returnArr['dh_id'] = $row['dh_id'];
+      $returnArr['station_id'] = $row['station_id'];*/
+      echo json_encode($returnArr);
+    }
+/*
     $success = "true";
-    $str = array("success" => $success, "data" => $data);
+    $str = array("success" => $success, "data" => $arr);
     //echo $success;
     return $response->write(json_encode($str));
+    */
 
   }
 
