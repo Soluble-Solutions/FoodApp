@@ -129,6 +129,13 @@ $app->post('/entry',function($request,$response,$args)
 
   else if(!in_array(array("station_id"=>(string)$station_id),$currentStations))
   {
+
+    foreach($attribute_id as $attribute)
+    {
+      echo gettype($attribute);
+      print_r(array_values($attribute_id));
+    }
+
     $success = "false";
     $messageDB = "That Station ID $station_id does not exists";
     $str = array("success" => $success, "messageDB" =>$messageDB );
@@ -154,8 +161,10 @@ $app->post('/entry',function($request,$response,$args)
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
+
     foreach($attribute_id as $attribute)
     {
+
       $attributenum =(int)$attribute['attribute'];
       $sql = "INSERT INTO Entry_Attributes(entry_id,attribute_id) VALUES ('$entry_id','$attributenum');";
       $db->query($sql);
@@ -392,23 +401,31 @@ $app->put('/logout',function($request,$response,$args)
 
 
 });
-$app->get('/filters/{dh_id}/{station_id}/{attribute_id}', function ($request, $response, $args) {
-  try{
-    $db = $this->dbConn;
-    $dh_id = $request->getAttribute('dh_id');
-    echo $dh_id;
-    $station_id = $request->getAttribute('station_id');
-    echo $station_id;
-    $attribute_id = $request->getAttribute('attribute_id');
-    echo $attribute_id;
-    $data = array();
+$app->post('/filters',function($request,$response,$args)
+{
+  $db = $this->dbConn;
+  $data = $request->getParsedBody();
+  $dh_id = $data['dh_id'];
+  $station_id = $data['station_id'];
+  $attribute_id =$data['attribute_id'];
+
+/*    echo gettype($dh_id);
+    echo is_array($dh_id) ? 'Array' : 'not an Array';
+    echo "\n";
+    */
+
+    //echo "dh";
   //  $query = $db->query(('$dh_id','$station_id','$attribute_id'));
     foreach($dh_id as $dh)
-    {
+   {
       foreach($station_id as $station)
       {
         foreach($attribute_id as $attribute)
         {
+        //  echo $attribute;
+          //print_r(array_values($attribute_id));
+        //  echo gettype($dh);
+
           $dhnum =(int)$dh['dh'];
           $stationnum =(int)$station['station'];
           $attributenum =(int)$attribute['attribute'];
@@ -418,11 +435,11 @@ $app->get('/filters/{dh_id}/{station_id}/{attribute_id}', function ($request, $r
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
                   AND e.station_id='$stationnum'
-                  AND ea.attribute_id='$attributenum'";
-
+                  AND ea.attribute_id='$attributenum'
+                  AND e.active=1";
           $q = $db->query($sql);
-          $check = $q->fetchAll(PDO::FETCH_ASSOC);
-          $data[]=$check;
+          $data[] = $q->fetch(PDO::FETCH_ASSOC);
+
 
 
         }
@@ -430,13 +447,13 @@ $app->get('/filters/{dh_id}/{station_id}/{attribute_id}', function ($request, $r
 
     }
 
-    return $response->write(json_encode($data));
+    $success = "true";
+    $str = array("success" => $success, "data" => $data);
+    //echo $success;
+    return $response->write(json_encode($str));
+
   }
-  catch(PDOException $e){
-    $this->notFoundHandler; //404
-    //$app->$response->setStatus(404);
-    //echo "Error: ".$e.getMessage();
-  }
-});
+
+);
 
 ?>
