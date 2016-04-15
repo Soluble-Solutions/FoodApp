@@ -12,6 +12,27 @@ $app->get('/index', function ($request, $response, $args) {
     $db = $this->dbConn;
     $currentTime = date("H:i:s");
     $weekday = date('w');
+    $day = date("Y-m-d");
+
+    $sql = 'SELECT entry_id,time_stamp
+            FROM Entry
+            WHERE active = 1'; #ORDER BY votes DESC
+    $q = $db->query($sql);
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach($check as $entry)
+    {
+      $entry_id = $entry['entry_id'];
+      $ts = $entry['time_stamp'];
+      $dt = new DateTime($ts);
+      $date = $dt->format("Y-m-d");
+
+      if($date != $day)
+      {
+        $sql = "UPDATE Entry SET active = 0 WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
+    }
 
     if($weekday == 0 || $weekday == 6)
     {
@@ -23,21 +44,16 @@ $app->get('/index', function ($request, $response, $args) {
 
       else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
       {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 AND meal = 1';
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
         $db->query($sql);
       }
 
       else if(strtotime($currentTime) >= strtotime("22:00:00"))
       {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 AND meal = 2 AND meal 1';
+        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 OR meal = 2 OR meal 1';
         $db->query($sql);
       }
 
-      else
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 AND meal = 2';
-        $db->query($sql);
-      }
     }
 
     else
@@ -65,22 +81,15 @@ $app->get('/index', function ($request, $response, $args) {
         $db->query($sql);
       }
 
-      else
-      {
-        echo "else";
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 AND meal = 2';
-        $db->query($sql);
-      }
     }
 
 
     $sql = 'SELECT *
             FROM Entry
             WHERE active = 1'; #ORDER BY votes DESC
-    $db = $this->dbConn;
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
-    return $response->write(json_encode($check));
+    //return $response->write(json_encode($check));
   }
   catch(PDOException $e){
     $this->notFoundHandler; //404
