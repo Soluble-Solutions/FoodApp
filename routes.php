@@ -598,7 +598,7 @@ $app->post('/filters',function($request,$response,$args)
   }
 
 );
-
+/*
 ?>
 <html>
 <body>
@@ -612,3 +612,4 @@ $app->post('/filters',function($request,$response,$args)
   </script>
 </body>
   </html>
+*/
