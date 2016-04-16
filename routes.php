@@ -20,7 +20,7 @@ $app->get('/index', function ($request, $response, $args) {
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach($check as $entry)
+    /*foreach($check as $entry)
     {
       $entry_id = $entry['entry_id'];
       $ts = $entry['time_stamp'];
@@ -76,7 +76,7 @@ $app->get('/index', function ($request, $response, $args) {
         $db->query($sql);
       }
 
-    }
+    }*/
 
 
     $sql = 'SELECT *
