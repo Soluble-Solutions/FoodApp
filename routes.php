@@ -58,25 +58,20 @@ $app->get('/index', function ($request, $response, $args) {
 
     else
     {
-      echo $currentTime;
       if(strtotime($currentTime) >= strtotime("10:30:00") && strtotime($currentTime) <= strtotime("14:30:00"))
       {
-        echo "1030";
         $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
         $db->query($sql);
       }
 
       else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
       {
-        echo json_encode("1430");
         $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
         $db->query($sql);
       }
 
       else if(strtotime($currentTime) >= strtotime("22:00:00"))
       {
-        echo "22";
-
         $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
         $db->query($sql);
       }
@@ -89,7 +84,7 @@ $app->get('/index', function ($request, $response, $args) {
             WHERE active = 1'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
-    //return $response->write(json_encode($check));
+    return $response->write(json_encode($check));
   }
   catch(PDOException $e){
     $this->notFoundHandler; //404
