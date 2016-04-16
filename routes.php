@@ -408,14 +408,7 @@ $app->post('/filters',function($request,$response,$args)
   $dh_id = $data['dh_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
-  if(empty($dh_id) || empty($station_id) || empty($attribute_id) )
-  {
-    $success = "false";
-    $messageDB = "Empty Data Sent";
-    $str = array("success" => $success, "messageDB" =>$messageDB );
-    //echo $success;
-    return $response->write(json_encode($str));
-  }
+
 
 /*    echo gettype($dh_id);
     echo is_array($dh_id) ? 'Array' : 'not an Array';
@@ -424,6 +417,7 @@ $app->post('/filters',function($request,$response,$args)
 
     //echo "dh";
   //  $query = $db->query(('$dh_id','$station_id','$attribute_id'));
+  $arr=array();
     foreach($dh_id as $dh)
    {
       foreach($station_id as $station)
@@ -446,7 +440,21 @@ $app->post('/filters',function($request,$response,$args)
                   AND ea.attribute_id='$attributenum'
                   AND e.active=1";
           $q = $db->query($sql);
-          //$arr[] = $q->fetch(PDO::FETCH_ASSOC);
+
+          $val =$q->fetchAll(PDO::FETCH_ASSOC);
+          //echo gettype($q);
+          //echo "!!!!!";
+        //  echo gettype($val);
+        //  $arr[]=$val;
+          foreach($val as $row)
+          {
+            $arr[]=$row;
+          //  print_r(array_values($arr));
+        }
+
+        //  print_r(array_values($arr));
+
+
 
 
 
@@ -455,25 +463,41 @@ $app->post('/filters',function($request,$response,$args)
 
     }
     $returnArr = array();
-    foreach($q as $row){
-      $returnArr['entry_id'] = $row['entry_id'];
-      $returnArr['title'] = $row['title'];
-      $returnArr['votes'] = $row['votes'];
-      $returnArr['time_stamp'] = $row['time_stamp'];
-      $returnArr['image'] = $row['image'];
-      $returnArr['dh_id'] = $row['dh_id'];
-      $returnArr['station_id'] = $row['station_id'];
-      $returnArr['user_id'] = $row['user_id'];
-      $returnArr['active'] = $row['active'];
-      $returnArr['entry_id'] = $row['entry_id'];
-      $returnArr['attribute_id'] = $row['attribute_id'];
-    /*  $returnArr['title'] = $row['title'];
-      $returnArr['votes'] = $row['votes'];
-      $returnArr['time_stamp'] = $row['time_stamp'];
-      $returnArr['image'] = $row['image'];
-      $returnArr['dh_id'] = $row['dh_id'];
-      $returnArr['station_id'] = $row['station_id'];*/
-      echo json_encode($returnArr);
+
+  //  echo gettype($arr);
+  //  print_r(array_values($arr));
+    foreach($arr as $row){
+      $test=true;
+    //  if (!is_null($row['entry_id'])){
+
+      /*oreach($arr as $v){
+
+
+        if($v['entry_id']==$row['entry_id'])
+        {
+          $test=false;
+          echo "!!!!!!!!!!!!!!!!!!";
+        }
+
+
+
+
+    }*/
+    if($test==true){
+    $returnArr['entry_id'] = $row['entry_id'];
+    $returnArr['title'] = $row['title'];
+    $returnArr['votes'] = $row['votes'];
+    $returnArr['time_stamp'] = $row['time_stamp'];
+    $returnArr['image'] = $row['image'];
+    $returnArr['dh_id'] = $row['dh_id'];
+    $returnArr['station_id'] = $row['station_id'];
+    $returnArr['user_id'] = $row['user_id'];
+    $returnArr['active'] = $row['active'];
+    $returnArr['entry_id'] = $row['entry_id'];
+    $returnArr['attribute_id'] = $row['attribute_id'];
+    echo json_encode($returnArr);
+  }
+  //  }
     }
 /*
     $success = "true";
