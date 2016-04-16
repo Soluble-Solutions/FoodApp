@@ -466,23 +466,25 @@ $app->post('/filters',function($request,$response,$args)
 
   //  echo gettype($arr);
   //  print_r(array_values($arr));
+  $counter=0;
     foreach($arr as $row){
+      $counter+=1;
       $test=true;
     //  if (!is_null($row['entry_id'])){
 
-      /*oreach($arr as $v){
+      for($i=0;$i<$counter-1;$i++){
 
 
-        if($v['entry_id']==$row['entry_id'])
+
+        if($row['entry_id']==$arr[$i]['entry_id'])
         {
           $test=false;
-          echo "!!!!!!!!!!!!!!!!!!";
+        
         }
+}
 
 
 
-
-    }*/
     if($test==true){
     $returnArr['entry_id'] = $row['entry_id'];
     $returnArr['title'] = $row['title'];
