@@ -262,11 +262,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope) {
 
-  $scope.newPost = function() {
-    console.log("newPost() called");
-    $state.go('app.post');
-  }
-
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
   $rootScope.$on('$viewContentLoading', function(event, viewConfig){
@@ -284,6 +279,10 @@ angular.module('starter.controllers', ['ngAnimate'])
       });
   });
 
+  $scope.newPost = function() {
+    console.log("newPost() called");
+    $state.go('app.post');
+  }
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
@@ -372,9 +371,11 @@ angular.module('starter.controllers', ['ngAnimate'])
     method: 'GET',
     url: $scope.commentURL
   }).then(function(response){
+    console.log("response.data: \n" + response.data);
     $scope.comments = response.data.comment;
     $scope.entryData = [];
-    $scope.entryData = response.data.entry[0];
+    console.log("response.data.entry: \n" + response.data.entry);
+    /*$scope.entryData = response.data.entry[0];*/
     console.log("entryData: " + $scope.entryData);
     $scope.votes = $scope.entryData.votes;
     $scope.upvote = parseFloat($scope.votes) + 1;
@@ -419,7 +420,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log($scope.comments);
     }
   }
-
 
 
   $scope.upVote = function() {
