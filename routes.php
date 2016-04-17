@@ -288,7 +288,7 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
     $sql = "SELECT * FROM Entry WHERE entry_id = $entry_id";
-    echo gettype($entry_id);
+   // echo gettype($entry_id);
     $db = $this->dbConn;
     $q = $db->query($sql);
     $entrydata = $q->fetchAll(PDO::FETCH_ASSOC);
