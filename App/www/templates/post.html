@@ -1,5 +1,5 @@
 <ion-view view-title="New Post">
-  <ion-content>
+  <ion-content id="post">
     <div class="list list-inset">
 
       <label class="item item-input item-stacked-label">
@@ -8,14 +8,36 @@
       </label>
 
       <label class="item item-input item-stacked-label">
-        <span class="input-label">How'd You Like It?</span>
-        <input type="text" placeholder="Good? Bad? Gut-wrenchingly disgusting?" ng-model="newPostForm.comment">
+        <span class="input-label">How did you like it?</span>
+        <input type="text" placeholder="Good? Bad? Ugly?" ng-model="newPostForm.comment">
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Dining Hall
+        </div>
+        <select ng-model="selectedDiningHall">
+          <option ng-repeat="d in diningHalls" value="{{d.text}}" ng-selected="{{d.checked}}">
+          {{d.text}}
+          </option>
+        </select>
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Station
+        </div>
+        <select ng-model="selectedStation">
+          <option ng-repeat="s in stations" value="{{s.text}}" ng-selected="{{s.checked}}">
+          {{s.text}}
+          </option>
+        </select>
       </label>
 
       <div class="item item-icon-right"  ng-click="showTags()">
         <button class="icon button button-icon button-clear ion-chevron-down">
           </button>
-        <h2>Add tags</h2>
+        <h2>Options</h2>
       </div>
       <ion-checkbox class="item" id="filterItem" ng-repeat="t in tags"
           ng-model="t.checked"
@@ -23,7 +45,8 @@
           ng-show="displayTags">
         {{t.text}}
       </ion-checkbox>
-
+    </div>
+    <div id="cameraButton">
       <button class="button button-full button-dark" ng-click="takeImage()">
           <i class="icon ion-ios-camera" id="cameraIcon"> Add Photo</i>
       </button>

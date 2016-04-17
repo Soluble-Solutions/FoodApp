@@ -73,7 +73,9 @@ i.button.button-icon.icon.ion-chevron-down:hover{
 
 }
 
-#feed {
+#feed,
+#post,
+#account {
   background-color:	#E8E8E8;
 }
 
@@ -86,7 +88,11 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   max-height: 80%;
 }
 
-
+#cameraButton {
+  margin-top:0rem;
+  padding-left:0.75rem;
+  padding-right:0.75rem;
+}
 
 #comments {
   background-color:#F8F8F8;

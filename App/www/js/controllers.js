@@ -106,7 +106,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $ionicModal.fromTemplateUrl('contact-modal.html', {
     scope: $scope,
-    animation: 'slide-in-left'
+    animation: 'slide-in-up'
     }).then(function(modal) {
     $scope.modal = modal
     })
@@ -130,7 +130,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       {text:"Umph", checked:true}
     ];
 
-    $scope.displayHalls = false;
+    $scope.displayHalls = true;
     $scope.toggleHalls = function() {
       console.log("toggleHalls() called");
       $scope.displayHalls = $scope.displayHalls === false ? true: false;
@@ -150,7 +150,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       {text:"International", checked:true}
     ];
 
-    $scope.displayStations = false;
+    $scope.displayStations = true;
     $scope.toggleStations = function() {
       console.log("toggleStations() called");
       $scope.displayStations = $scope.displayStations === false ? true: false;
@@ -162,7 +162,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       {text:"Vegetarian", checked:true},
       {text:"Vegan", checked:true}
     ];
-    $scope.displayTags = false;
+    $scope.displayTags = true;
     $scope.toggleTags = function() {
       console.log("toggleTags() called");
       $scope.displayTags = $scope.displayTags === false ? true: false;
@@ -197,12 +197,35 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
   }
 
-  $scope.tags = [
+  $scope.diningHalls = [
+    {text:"Arnold", checked:false},
+    {text:"Umph", checked:false}
+  ];
+
+  $scope.stations = [
+    {text:"Bakery", checked:false},
+    {text:"Grill", checked:false},
+    {text:"Pizza", checked:false},
+    {text:"Deli", checked:false},
+    {text:"Home_zone", checked:false},
+    {text:"Mongolian_grill", checked:false},
+    {text:"Produce", checked:false},
+    {text:"Soup", checked:false},
+    {text:"Tex_Mex", checked:false},
+    {text:"Healthy_on_the_Hilltop", checked:false},
+    {text:"International", checked:false}
+  ];
+
+  $scope.temp = [
     {text:"Hot", checked:false},
-    {text:"Cold", checked:false},
+    {text:"Cold", checked:false}
+  ];
+
+  $scope.tags = [
     {text:"Vegetarian", checked:false},
     {text:"Vegan", checked:false}
   ];
+
   $scope.displayTags = false;
 
   $scope.showTags = function() {
@@ -292,15 +315,15 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data.success);
       console.log(response.data.votes);
-    });
-    $http.get("http://52.37.14.110/index")
-    .then(function(response) {
-        FeedData.data = response.data;
-        $scope.feedData = FeedData.data;
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
 
-        //DEBUGGING//
-        console.log("Status = " + response.statusText);
-        console.log($scope.feedData);
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
     });
     $scope.upIsDisabled = true;
     $scope.downIsDisabled = false;
@@ -324,15 +347,15 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data.success);
       console.log(response.data.votes);
-    });
-    $http.get("http://52.37.14.110/index")
-    .then(function(response) {
-        FeedData.data = response.data;
-        $scope.feedData = FeedData.data;
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
 
-        //DEBUGGING//
-        console.log("Status = " + response.statusText);
-        console.log($scope.feedData);
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
     });
     $scope.downIsDisabled = true;
     $scope.upIsDisabled = false;
