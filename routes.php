@@ -144,7 +144,8 @@ $app->post('/entry',function($request,$response,$args)
   $user_id = $data['user_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
-  $image = $data['image'];
+//  $image = $data['image'];
+  $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1460929747/noodles_c4gq9p.jpg";
   $title = $data['title'];
   $comment = $data['comment'];
   $time_stamp = date("Y-m-d H:i:s");
