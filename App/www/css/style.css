@@ -70,7 +70,6 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   bottom:1.5rem;
   width:4rem;
   text-align: center;
-
 }
 
 #feed,
@@ -94,6 +93,7 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   padding-right:0.75rem;
 }
 
-#comments {
-  background-color:#F8F8F8;
+#votingBar,
+#votingButton {
+  border-radius:0;
 }
