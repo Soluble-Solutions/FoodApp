@@ -9,6 +9,9 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {data: []};
 })
 
+.factory('Filters', function() {
+  return {filters: []};
+})
 
 .controller('LoginCtrl', function($scope, $state, $ionicModal, $http, User) {
 
@@ -104,7 +107,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $state.go("login");
   }
 
-  $ionicModal.fromTemplateUrl('contact-modal.html', {
+  $ionicModal.fromTemplateUrl('filtersModal.html', {
     scope: $scope,
     animation: 'slide-in-up'
     }).then(function(modal) {
@@ -125,9 +128,15 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.modal.remove();
     });
 
+    $scope.filterData = {
+      "attribute_id":[],
+      "station_id":[],
+      "dh_id":[]
+    };
+
     $scope.diningHalls = [
-      {text:"Arnold", checked:true},
-      {text:"Umph", checked:true}
+      {text:"Arnold", checked:true, value:1},
+      {text:"Umph", checked:true, value:2}
     ];
 
     $scope.displayHalls = true;
@@ -137,17 +146,18 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.stations = [
-      {text:"Bakery", checked:true},
-      {text:"Grill", checked:true},
-      {text:"Pizza", checked:true},
-      {text:"Deli", checked:true},
-      {text:"Home_zone", checked:true},
-      {text:"Mongolian_grill", checked:true},
-      {text:"Produce", checked:true},
-      {text:"Soup", checked:true},
-      {text:"Tex_Mex", checked:true},
-      {text:"Healthy_on_the_Hilltop", checked:true},
-      {text:"International", checked:true}
+      {text:"Bakery", checked:true, value:1},
+      {text:"Grill", checked:true, value:2},
+      {text:"Pizza", checked:true, value:3},
+      {text:"Deli", checked:true, value:4},
+      {text:"Home_zone", checked:true, value:5},
+      {text:"Mongolian_grill", checked:true, value:6},
+      {text:"Produce", checked:true, value:7},
+      {text:"Soup", checked:true, value:8},
+      {text:"Tex_Mex", checked:true, value:9},
+      {text:"Healthy_on_the_Hilltop", checked:true, value:10},
+      {text:"International", checked:true, value:11},
+      {text:"Salad Bar", checked:true, value:12}
     ];
 
     $scope.displayStations = true;
@@ -157,10 +167,10 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.filters = [
-      {text:"Hot", checked:true},
-      {text:"Cold", checked:true},
-      {text:"Vegetarian", checked:true},
-      {text:"Vegan", checked:true}
+      {text:"Hot", checked:true, value:1},
+      {text:"Cold", checked:true, value:2},
+      {text:"Vegetarian", checked:true, value:3},
+      {text:"Vegan", checked:true, value:4}
     ];
     $scope.displayTags = true;
     $scope.toggleTags = function() {
@@ -168,10 +178,16 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.displayTags = $scope.displayTags === false ? true: false;
     };
 
+
+    $scope.applyFilters = function() {
+      /*pass data into filters factory*/
+      Filters.filters = $scope.filterData;
+      $state.go("app.feed");
+    }
+
     $scope.openAccount = function() {
       $state.go("app.account");
     }
-
 })
 
 
@@ -375,7 +391,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.comments = response.data.comment;
     $scope.entryData = [];
     console.log("response.data.entry: \n" + response.data.entry);
-    /*$scope.entryData = response.data.entry[0];*/
+    $scope.entryData = response.data.entry[0];
     console.log("entryData: " + $scope.entryData);
     $scope.votes = $scope.entryData.votes;
     $scope.upvote = parseFloat($scope.votes) + 1;
@@ -395,7 +411,8 @@ angular.module('starter.controllers', ['ngAnimate'])
         url: "http://52.37.14.110/comment",
         data: {
           entry_id: $scope.selectedID,
-          comment: $scope.newComment
+          comment: $scope.newComment,
+          user_id: User.id
         }
       }).then(function(response){
         console.log("<-- post success -->");
