@@ -116,7 +116,7 @@ $app->put('/index',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else if(!empty($retr_votes))//
+  else //if(!empty($retr_votes))//
   {
     $success = "true";
     $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
@@ -125,15 +125,15 @@ $app->put('/index',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else{
-    $success = "false";
+ // else{
+   // $success = "false";
     /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
     $result = $db->query($sql);*/
-    $messageDB = "Entry_id not found";
-    $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
+   // $messageDB = "Entry_id not found";
+   // $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
     //echo $success;
-    return $response->write(json_encode($str));
-  }
+   // return $response->write(json_encode($str));
+ // }
 });
 
 $app->post('/entry',function($request,$response,$args)
