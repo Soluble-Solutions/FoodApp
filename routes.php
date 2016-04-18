@@ -85,6 +85,31 @@ $app->get('/index', function ($request, $response, $args) {
             WHERE active = 1'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
+  ?>
+    <html>
+    <body>
+      <script src= "/FoodApp/resemble.js"></script>
+    <script type="text/javascript">
+
+     var diff = resemble("http://res.cloudinary.com/doazmoxb7/image/upload/v1460698618/bean2_bur4uf.jpg").
+      compareTo("http://res.cloudinary.com/doazmoxb7/image/upload/v1460567861/baked_beans.jpg").ignoreColors().onComplete(function(data){
+        console.log(data);
+
+      });
+      function myJavascriptFunction() {
+
+      var json_upload = "json_name=" + JSON.stringify({name:"John Rambo", time:"2pm"});
+      var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+      xmlhttp.open("GET", "http://zero-to-slim.dev/index");
+      xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xmlhttp.send(json_upload);}
+      </script>
+    </body>
+      </html>
+<?php
+    $_POST['json_name'];
+    //$variable = $_GET['name'];
+    //echo $variable;
     return $response->write(json_encode($check));
   }
   catch(PDOException $e){
@@ -599,18 +624,5 @@ $app->post('/filters',function($request,$response,$args)
   }
 
 );
-/*
-?>
-<html>
-<body>
-  <script src= "/FoodApp/resemble.js"></script>
-<script type="text/javascript">
 
- var diff = resemble("http://res.cloudinary.com/doazmoxb7/image/upload/v1460698618/bean2_bur4uf.jpg").
-  compareTo("http://res.cloudinary.com/doazmoxb7/image/upload/v1460567861/baked_beans.jpg").ignoreColors().onComplete(function(data){
-    console.log(data);
-  });
-  </script>
-</body>
-  </html>
-*/
+?>
