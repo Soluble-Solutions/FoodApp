@@ -344,7 +344,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     data: Filters.data
   })
   .then(function(response) {
-      console.log("2");
+      console.log(response);
       FeedData.data = response.data;
       $scope.feedData = FeedData.data;
 
