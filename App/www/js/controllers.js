@@ -117,7 +117,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.openModal = function() {
       console.log("openModal called!");
       $scope.modal.show();
-    }
+    };
 
     $scope.closeModal = function() {
       console.log("closeModal() called");
@@ -135,8 +135,8 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.diningHalls = [
-      {text:"Arnold", checked:true, value:"1"},
-      {text:"Umph", checked:true, value:"2"}
+      {text:"Arnold", checked:true, value:1},
+      {text:"Umph", checked:true, value:2}
     ];
 
     $scope.displayHalls = true;
@@ -146,18 +146,18 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.stations = [
-      {text:"Bakery", checked:true, value:"1"},
-      {text:"Grill", checked:true, value:"2"},
-      {text:"Pizza", checked:true, value:"3"},
-      {text:"Deli", checked:true, value:"4"},
-      {text:"Home_zone", checked:true, value:"5"},
-      {text:"Mongolian_grill", checked:true, value:"6"},
-      {text:"Produce", checked:true, value:"7"},
-      {text:"Soup", checked:true, value:"8"},
-      {text:"Tex_Mex", checked:true, value:"9"},
-      {text:"Healthy_on_the_Hilltop", checked:true, value:"10"},
-      {text:"International", checked:true, value:"11"},
-      {text:"Salad Bar", checked:true, value:"12"}
+      {text:"Bakery", checked:true, value:1},
+      {text:"Grill", checked:true, value:2},
+      {text:"Pizza", checked:true, value:3},
+      {text:"Deli", checked:true, value:4},
+      {text:"Home_zone", checked:true, value:5},
+      {text:"Mongolian_grill", checked:true, value:6},
+      {text:"Produce", checked:true, value:7},
+      {text:"Soup", checked:true, value:8},
+      {text:"Tex_Mex", checked:true, value:9},
+      {text:"Healthy_on_the_Hilltop", checked:true, value:10},
+      {text:"International", checked:true, value:11},
+      {text:"Salad Bar", checked:true, value:12}
     ];
 
     $scope.displayStations = true;
@@ -167,10 +167,10 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.filters = [
-      {text:"Hot", checked:true, value:"1"},
-      {text:"Cold", checked:true, value:"2"},
-      {text:"Vegetarian", checked:true, value:"3"},
-      {text:"Vegan", checked:true, value:"4"}
+      {text:"Hot", checked:true, value:1},
+      {text:"Cold", checked:true, value:2},
+      {text:"Vegetarian", checked:true, value:3},
+      {text:"Vegan", checked:true, value:4}
     ];
     $scope.displayTags = true;
     $scope.toggleTags = function() {
@@ -179,17 +179,16 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
 
-    $scope.applyFilters = function() {
+    $scope.applyFilters = function(original) {
       /* pass data into filters factory */
+      console.log("APPLY FILTERS CALLED");
       Filters.data = {};
       $scope.filterData = {
         "attribute_id":[],
         "station_id":[],
         "dh_id":[]
       };
-      console.log("<--$scope.filterData BEFORE-->");
-      console.log($scope.filterData);
-      console.log("<--Filters.data BEFORE-->");
+
       console.log(Filters.data);
 
       var i;
@@ -208,13 +207,14 @@ angular.module('starter.controllers', ['ngAnimate'])
           $scope.filterData.dh_id.push({"dh":$scope.diningHalls[i].value});
         }
       }
-      console.log("<--$scope.filterData AFTER-->");
-      console.log($scope.filterData);
-      Filters.data = $scope.filterData;
+
       console.log("<--Filters.data AFTER-->");
+      Filters.data = $scope.filterData;
       console.log(Filters.data);
       $state.go("app.feed");
-      $scope.closeModal();
+      if(!original){
+        $scope.closeModal();
+      }
     }
 
     $scope.openAccount = function() {
@@ -311,13 +311,19 @@ angular.module('starter.controllers', ['ngAnimate'])
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope, Filters) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
+  $scope.applyFilters(1);
 
   $rootScope.$on('$viewContentLoading', function(event, viewConfig){
     // Access to all the view config properties.
     // and one special property 'targetView'
     // viewConfig.targetView
-      $http.get("http://52.37.14.110/index")
-      .then(function(response) {
+    $http({
+      method: 'POST',
+      url: "http://52.37.14.110/filters",
+      data: Filters.data
+    })
+    .then(function(response) {
+          console.log();
           FeedData.data = response.data;
           $scope.feedData = FeedData.data;
 
@@ -334,6 +340,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
+      console.log("2");
       FeedData.data = response.data;
       $scope.feedData = FeedData.data;
 
