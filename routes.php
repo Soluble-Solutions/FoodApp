@@ -540,59 +540,45 @@ $app->post('/filters',function($request,$response,$args)
           {
             $arr[]=$row;
           //  print_r(array_values($arr));
-        }
-
+          }
         //  print_r(array_values($arr));
-
-
-
-
-
         }
       }
-
     }
   //  usort($arr, "entry_id");
+    $AssocArr = array();
     $returnArr = array();
     usort($arr, function($a, $b) {
     return $b['votes'] - $a['votes'];
-});
+    });
   //  echo gettype($arr);
   //  print_r(array_values($arr));
-  $counter=0;
+    $counter=0;
     foreach($arr as $row){
       $counter+=1;
       $test=true;
-    //  if (!is_null($row['entry_id'])){
 
       for($i=0;$i<$counter-1;$i++){
-
-
-
         if($row['entry_id']==$arr[$i]['entry_id'])
         {
           $test=false;
-
         }
-}
-
-
-
-    if($test==true){
-    $returnArr['entry_id'] = $row['entry_id'];
-    $returnArr['title'] = $row['title'];
-    $returnArr['votes'] = $row['votes'];
-    $returnArr['time_stamp'] = $row['time_stamp'];
-    $returnArr['image'] = $row['image'];
-    $returnArr['dh_id'] = $row['dh_id'];
-    $returnArr['station_id'] = $row['station_id'];
-    $returnArr['user_id'] = $row['user_id'];
-    $returnArr['active'] = $row['active'];
-    $returnArr['entry_id'] = $row['entry_id'];
-    $returnArr['attribute_id'] = $row['attribute_id'];
-    echo json_encode($returnArr);
-  }
-  //  }
+      }
+      if($test==true){
+        $returnArr['entry_id'] = $row['entry_id'];
+        $returnArr['title'] = $row['title'];
+        $returnArr['votes'] = $row['votes'];
+        $returnArr['time_stamp'] = $row['time_stamp'];
+        $returnArr['image'] = $row['image'];
+        $returnArr['dh_id'] = $row['dh_id'];
+        $returnArr['station_id'] = $row['station_id'];
+        $returnArr['user_id'] = $row['user_id'];
+        $returnArr['active'] = $row['active'];
+        $returnArr['entry_id'] = $row['entry_id'];
+        $returnArr['attribute_id'] = $row['attribute_id'];
+        echo json_encode($returnArr);
+        $AssocArr[] = $returnArr;
+      }
     }
 /*
     $success = "true";
@@ -600,7 +586,7 @@ $app->post('/filters',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
     */
-
+    return $response->write(json_encode($AssocArr));
   }
 
 );
