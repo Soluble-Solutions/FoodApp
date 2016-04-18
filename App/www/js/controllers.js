@@ -4,11 +4,20 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {id: [], status: []};
 })
 
+
+.factory('FeedData', function(){
+  return {data: []};
+})
+
+.factory('Filters', function() {
+  return {data: []};
+})
+
 .controller('LoginCtrl', function($scope, $state, $ionicModal, $http, User) {
 
   $ionicModal.fromTemplateUrl('signUp-modal.html', {
     scope: $scope,
-    animation: 'slide-in-up'
+    animation: 'slide-in-right'
     }).then(function(modal) {
     $scope.modal = modal
     })
@@ -92,12 +101,13 @@ angular.module('starter.controllers', ['ngAnimate'])
   }
 })
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, $http, User) {
+
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, $http, User, Filters) {
   if(User.status=="0") {
     $state.go("login");
   }
 
-  $ionicModal.fromTemplateUrl('contact-modal.html', {
+  $ionicModal.fromTemplateUrl('filtersModal.html', {
     scope: $scope,
     animation: 'slide-in-up'
     }).then(function(modal) {
@@ -118,9 +128,15 @@ angular.module('starter.controllers', ['ngAnimate'])
       $scope.modal.remove();
     });
 
+    $scope.filterData = {
+      "attribute_id":[],
+      "station_id":[],
+      "dh_id":[]
+    };
+
     $scope.diningHalls = [
-      {text:"Arnold", checked:true},
-      {text:"Umph", checked:true}
+      {text:"Arnold", checked:true, value:"1"},
+      {text:"Umph", checked:true, value:"2"}
     ];
 
     $scope.displayHalls = true;
@@ -130,74 +146,82 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.stations = [
-      {text:"Bakery", checked:true},
-      {text:"Grill", checked:true},
-      {text:"Pizza", checked:true},
-      {text:"Deli", checked:true},
-      {text:"Home_zone", checked:true},
-      {text:"Mongolian_grill", checked:true},
-      {text:"Produce", checked:true},
-      {text:"Soup", checked:true},
-      {text:"Tex_Mex", checked:true},
-      {text:"Healthy_on_the_Hilltop", checked:true},
-      {text:"International", checked:true}
+      {text:"Bakery", checked:true, value:"1"},
+      {text:"Grill", checked:true, value:"2"},
+      {text:"Pizza", checked:true, value:"3"},
+      {text:"Deli", checked:true, value:"4"},
+      {text:"Home_zone", checked:true, value:"5"},
+      {text:"Mongolian_grill", checked:true, value:"6"},
+      {text:"Produce", checked:true, value:"7"},
+      {text:"Soup", checked:true, value:"8"},
+      {text:"Tex_Mex", checked:true, value:"9"},
+      {text:"Healthy_on_the_Hilltop", checked:true, value:"10"},
+      {text:"International", checked:true, value:"11"},
+      {text:"Salad Bar", checked:true, value:"12"}
     ];
 
-    $scope.displayStations = false;
+    $scope.displayStations = true;
     $scope.toggleStations = function() {
       console.log("toggleStations() called");
       $scope.displayStations = $scope.displayStations === false ? true: false;
     };
 
     $scope.filters = [
-      {text:"Hot", checked:true},
-      {text:"Cold", checked:true},
-      {text:"Vegetarian", checked:true},
-      {text:"Vegan", checked:true}
+      {text:"Hot", checked:true, value:"1"},
+      {text:"Cold", checked:true, value:"2"},
+      {text:"Vegetarian", checked:true, value:"3"},
+      {text:"Vegan", checked:true, value:"4"}
     ];
-    $scope.displayTags = false;
+    $scope.displayTags = true;
     $scope.toggleTags = function() {
       console.log("toggleTags() called");
       $scope.displayTags = $scope.displayTags === false ? true: false;
     };
 
-    $scope.newPost = function() {
-      console.log("newPost() called");
-      $state.go('app.post');
+
+    $scope.applyFilters = function() {
+      /* pass data into filters factory */
+      Filters.data = {};
+      $scope.filterData = {
+        "attribute_id":[],
+        "station_id":[],
+        "dh_id":[]
+      };
+      console.log("<--$scope.filterData BEFORE-->");
+      console.log($scope.filterData);
+      console.log("<--Filters.data BEFORE-->");
+      console.log(Filters.data);
+
+      var i;
+      for(i=0; i<4; i++){
+        if($scope.filters[i].checked==true){
+          $scope.filterData.attribute_id.push({"attribute":$scope.filters[i].value});
+        }
+      }
+      for(i=0; i<12; i++){
+        if($scope.stations[i].checked==true){
+          $scope.filterData.station_id.push({"station":$scope.stations[i].value});
+        }
+      }
+      for(i=0; i<2; i++){
+        if($scope.diningHalls[i].checked==true){
+          $scope.filterData.dh_id.push({"dh":$scope.diningHalls[i].value});
+        }
+      }
+      console.log("<--$scope.filterData AFTER-->");
+      console.log($scope.filterData);
+      Filters.data = $scope.filterData;
+      console.log("<--Filters.data AFTER-->");
+      console.log(Filters.data);
+      $state.go("app.feed");
+      $scope.closeModal();
     }
 
-    $scope.logout = function() {
-      console.log("logout() called");
-      console.log("DATA: ");
-      console.log("user_id: " + User.id);
-      $http({
-        method: 'PUT',
-        url: 'http://52.37.14.110/logout',
-        contentType: "application/json",
-        data: {
-          user_id: User.id
-        }
-      })
-      .then(function(response) {
-        console.log(response.data);
-        $scope.loginSuccess = response.data.success;
-        console.log("Success: " + $scope.loginSuccess);
-
-        if($scope.loginSuccess == "true") {
-          console.log("Logged out");
-          User.status="0";
-          console.log("User.status: " + User.status);
-          User.id="";
-          console.log("User.id: " + User.id);
-          $state.go("login");
-        } else {
-          $scope.messageDB = response.data.messageDB;
-          alert("Logout Failed: " + $scope.messageDB);
-        }
-      })
+    $scope.openAccount = function() {
+      $state.go("app.account");
     }
-
 })
+
 
 .controller('PostCtrl', function($scope, $http, User) {
   $scope.takeImage = function() {
@@ -221,12 +245,35 @@ angular.module('starter.controllers', ['ngAnimate'])
     });
   }
 
-  $scope.tags = [
+  $scope.diningHalls = [
+    {text:"Arnold", checked:false},
+    {text:"Umph", checked:false}
+  ];
+
+  $scope.stations = [
+    {text:"Bakery", checked:false},
+    {text:"Grill", checked:false},
+    {text:"Pizza", checked:false},
+    {text:"Deli", checked:false},
+    {text:"Home_zone", checked:false},
+    {text:"Mongolian_grill", checked:false},
+    {text:"Produce", checked:false},
+    {text:"Soup", checked:false},
+    {text:"Tex_Mex", checked:false},
+    {text:"Healthy_on_the_Hilltop", checked:false},
+    {text:"International", checked:false}
+  ];
+
+  $scope.temp = [
     {text:"Hot", checked:false},
-    {text:"Cold", checked:false},
+    {text:"Cold", checked:false}
+  ];
+
+  $scope.tags = [
     {text:"Vegetarian", checked:false},
     {text:"Vegan", checked:false}
   ];
+
   $scope.displayTags = false;
 
   $scope.showTags = function() {
@@ -260,13 +307,11 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 })
 
-.factory('FeedData', function(){
-  return {data: []};
-})
 
-.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope) {
+.controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope, Filters) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
+
   $rootScope.$on('$viewContentLoading', function(event, viewConfig){
     // Access to all the view config properties.
     // and one special property 'targetView'
@@ -282,6 +327,10 @@ angular.module('starter.controllers', ['ngAnimate'])
       });
   });
 
+  $scope.newPost = function() {
+    console.log("newPost() called");
+    $state.go('app.post');
+  }
 
   $http.get("http://52.37.14.110/index")
   .then(function(response) {
@@ -313,15 +362,15 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data.success);
       console.log(response.data.votes);
-    });
-    $http.get("http://52.37.14.110/index")
-    .then(function(response) {
-        FeedData.data = response.data;
-        $scope.feedData = FeedData.data;
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
 
-        //DEBUGGING//
-        console.log("Status = " + response.statusText);
-        console.log($scope.feedData);
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
     });
     $scope.upIsDisabled = true;
     $scope.downIsDisabled = false;
@@ -345,20 +394,21 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<-- DATA -->");
       console.log(response.data.success);
       console.log(response.data.votes);
-    });
-    $http.get("http://52.37.14.110/index")
-    .then(function(response) {
-        FeedData.data = response.data;
-        $scope.feedData = FeedData.data;
+      $http.get("http://52.37.14.110/index")
+      .then(function(response) {
+          FeedData.data = response.data;
+          $scope.feedData = FeedData.data;
 
-        //DEBUGGING//
-        console.log("Status = " + response.statusText);
-        console.log($scope.feedData);
+          //DEBUGGING//
+          console.log("Status = " + response.statusText);
+          console.log($scope.feedData);
+      });
     });
     $scope.downIsDisabled = true;
     $scope.upIsDisabled = false;
   }
 })
+
 
 .controller('DetailsCtrl', function($http, $scope, FeedData, $stateParams, $state, $location, User, $rootScope) {
   $scope.feedData = FeedData.data;
@@ -369,8 +419,10 @@ angular.module('starter.controllers', ['ngAnimate'])
     method: 'GET',
     url: $scope.commentURL
   }).then(function(response){
+    console.log("response.data: \n" + response.data);
     $scope.comments = response.data.comment;
     $scope.entryData = [];
+    console.log("response.data.entry: \n" + response.data.entry);
     $scope.entryData = response.data.entry[0];
     console.log("entryData: " + $scope.entryData);
     $scope.votes = $scope.entryData.votes;
@@ -391,7 +443,8 @@ angular.module('starter.controllers', ['ngAnimate'])
         url: "http://52.37.14.110/comment",
         data: {
           entry_id: $scope.selectedID,
-          comment: $scope.newComment
+          comment: $scope.newComment,
+          user_id: User.id
         }
       }).then(function(response){
         console.log("<-- post success -->");
@@ -416,7 +469,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log($scope.comments);
     }
   }
-
 
 
   $scope.upVote = function() {
@@ -498,4 +550,38 @@ angular.module('starter.controllers', ['ngAnimate'])
   // };
 
   console.log("Reached DetailsCtrl");
+})
+
+
+.controller('AccountCtrl', function($http, $scope, User, $state) {
+  $scope.logout = function() {
+    console.log("logout() called");
+    console.log("DATA: ");
+    console.log("user_id: " + User.id);
+    $http({
+      method: 'PUT',
+      url: 'http://52.37.14.110/logout',
+      contentType: "application/json",
+      data: {
+        user_id: User.id
+      }
+    })
+    .then(function(response) {
+      console.log(response.data);
+      $scope.loginSuccess = response.data.success;
+      console.log("Success: " + $scope.loginSuccess);
+
+      if($scope.loginSuccess == "true") {
+        console.log("Logged out");
+        User.status="0";
+        console.log("User.status: " + User.status);
+        User.id="";
+        console.log("User.id: " + User.id);
+        $state.go("login");
+      } else {
+        $scope.messageDB = response.data.messageDB;
+        alert("Logout Failed: " + $scope.messageDB);
+      }
+    })
+  }
 })
