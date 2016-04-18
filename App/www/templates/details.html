@@ -8,9 +8,13 @@
           <p>@ Umph - The Grill</p>
           <div class="icon">
             <div class="col">
+              <!--
               <i class="button button-icon icon ion-chevron-up" ng-click="upVote()" ng-disabled="upIsDisabled"></i>
+            -->
               <h2 class="text-right" id="votes">{{votes}}</h2>
+            <!--
               <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()" ng-disabled="downIsDisabled"></i>
+            -->
             </div>
           </div>
         </div>
@@ -18,12 +22,21 @@
         <div class="item item-image" id="feedItemImage">
           <img ng-src={{entryData.image}}>
         </div>
+        <div class="button-bar" id="votingBar">
+          <a class="button button-icon-left button-assertive" id="votingButton" ng-click="downVote()">
+            <i class="icon ion-sad-outline"> Gross!</i>
+          </a>
+          <a class="button button-icon-left button-balanced" id="votingButton" ng-click="upVote()">
+            <i class="icon ion-happy-outline"> Yum!</i>
+          </a>
+        </div>
         <!--Display comments of post here-->
         <ion-item class="item item-text-wrap" ng-repeat="c in comments">
           <div class="row text-left">
               {{c.comment}}
           </div>
       </ion-item>
+
 
       <form class="item item-input-inset" id = "newCommentForm" ng-submit="submitComment()" ng-controller="DetailsCtrl">
           <label class="item-input-wrapper">
