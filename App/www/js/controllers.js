@@ -375,7 +375,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.comments = response.data.comment;
     $scope.entryData = [];
     console.log("response.data.entry: \n" + response.data.entry);
-    /*$scope.entryData = response.data.entry[0];*/
+    $scope.entryData = response.data.entry[0];
     console.log("entryData: " + $scope.entryData);
     $scope.votes = $scope.entryData.votes;
     $scope.upvote = parseFloat($scope.votes) + 1;
