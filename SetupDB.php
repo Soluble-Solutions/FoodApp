@@ -49,6 +49,16 @@ $dbname = "foodapp";
     meal TINYINT(1) NOT NULL
   );
 
+  CREATE TABLE IF NOT EXISTS User_Votes
+  (
+    entry_id INT  NOT NULL,
+    user_id INT  NOT NULL,
+    upvote TINYINT(1),
+    downvote TINYINT(1),
+    CONSTRAINT User_Votes_pk PRIMARY KEY (entry_id,user_id),
+    CONSTRAINT User_Votes_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
+  );
+
   CREATE TABLE IF NOT EXISTS Comment
   (
     comment_id INT  NOT NULL  AUTO_INCREMENT PRIMARY KEY,
@@ -221,7 +231,9 @@ $dbname = "foodapp";
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('great', '2008-10-14 20:41', 7, 40);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('yum', '2008-11-14 22:37', 8, 22);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('disgusting', '2008-04-14 7:12', 9, 24);
-  INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('tasty', '2008-02-14 14:29', 10, 16);";
+  INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('tasty', '2008-02-14 14:29', 10, 16);
+
+  INSERT int ";
 
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
