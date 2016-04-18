@@ -116,7 +116,7 @@ $app->put('/index',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else if(!empty($retr_votes))//
+  else //if(!empty($retr_votes))//
   {
     $success = "true";
     $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
@@ -125,15 +125,15 @@ $app->put('/index',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
-  else{
-    $success = "false";
+ // else{
+   // $success = "false";
     /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
     $result = $db->query($sql);*/
-    $messageDB = "Entry_id not found";
-    $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
+   // $messageDB = "Entry_id not found";
+   // $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
     //echo $success;
-    return $response->write(json_encode($str));
-  }
+   // return $response->write(json_encode($str));
+ // }
 });
 
 $app->post('/entry',function($request,$response,$args)
@@ -144,7 +144,8 @@ $app->post('/entry',function($request,$response,$args)
   $user_id = $data['user_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
-  $image = $data['image'];
+//  $image = $data['image'];
+  $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1460929747/noodles_c4gq9p.jpg";
   $title = $data['title'];
   $comment = $data['comment'];
   $time_stamp = date("Y-m-d H:i:s");
@@ -288,7 +289,7 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
   try{
     $entry_id = $request->getAttribute('entry_id');
     $sql = "SELECT * FROM Entry WHERE entry_id = $entry_id";
-    echo gettype($entry_id);
+   // echo gettype($entry_id);
     $db = $this->dbConn;
     $q = $db->query($sql);
     $entrydata = $q->fetchAll(PDO::FETCH_ASSOC);
