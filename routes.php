@@ -17,7 +17,8 @@ $app->get('/index', function ($request, $response, $args) {
 
     $sql = 'SELECT entry_id,time_stamp
             FROM Entry
-            WHERE active = 1'; #ORDER BY votes DESC
+            WHERE active = 1
+            ORDER BY votes DESC'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
 
@@ -526,7 +527,8 @@ $app->post('/filters',function($request,$response,$args)
                   WHERE e.dh_id='$dhnum'
                   AND e.station_id='$stationnum'
                   AND ea.attribute_id='$attributenum'
-                  AND e.active=1";
+                  AND e.active=1
+                  ORDER BY e.votes DESC";
           $q = $db->query($sql);
 
           $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -550,8 +552,11 @@ $app->post('/filters',function($request,$response,$args)
       }
 
     }
+  //  usort($arr, "entry_id");
     $returnArr = array();
-
+    usort($arr, function($a, $b) {
+    return $b['votes'] - $a['votes'];
+});
   //  echo gettype($arr);
   //  print_r(array_values($arr));
   $counter=0;
