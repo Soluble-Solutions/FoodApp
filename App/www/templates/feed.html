@@ -1,4 +1,4 @@
-<ion-view view-title="F&#x21D5;&#x21D5;D">
+<ion-view view-title="YUM">
   <ion-content id="feed">
     <div class="list">
 
@@ -12,14 +12,20 @@
 
       <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem">
         <div class="item item-icon-right" id="feedItemTitle">
-          <h2><b>{{f.title}}</b></h2>
-          <p>@ Umph - The Grill</p>
+          <h2 id = "postTitle"><b>{{f.title}}</b></h2>
+          <p ng-if = "f.dh_id == 1">
+            @Arnold
+          </p>
+          <p ng-if = "f.dh_id == 2">
+            @Umph
+          </p>
+          <p ng-repeat="s in stations | filter: {value : f.station_id} : true"> {{s.text}} </p>
           <div class="icon">
             <div class="col">
             <!--
               <i class="button button-icon icon ion-chevron-up" ng-click="upVote(f.entry_id, f.votes)" ng-disabled="upIsDisabled" ng-model="f.entry_id"></i>
             -->
-              <h2 class="text-right" id="votes">{{f.votes}}</h2>
+              <strong><h1 class="text-right" id="votes">{{f.votes}}</h1></strong>
             <!--
               <i class="button button-icon icon ion-chevron-down" ng-click = "downVote(f.entry_id, f.votes)" ng-disabled="downIsDisabled" ng-model="f.entry_id"></i>
             -->
