@@ -5,13 +5,19 @@
       <div>
         <div class="item item-icon-right" id="feedItemTitle">
           <h2><b ng-bind = "entryData.title"></b></h2>
-          <p>@ Umph - The Grill</p>
+          <p ng-if = "entryData.dh_id == 1">
+            @Arnold
+          </p>
+          <p ng-if = "entryData.dh_id == 2">
+            @Umph
+          </p>
+          <p ng-repeat="s in stations | filter: {value : entryData.station_id} : true"> {{s.text}} </p>
           <div class="icon">
             <div class="col">
               <!--
               <i class="button button-icon icon ion-chevron-up" ng-click="upVote()" ng-disabled="upIsDisabled"></i>
             -->
-              <h2 class="text-right" id="votes">{{votes}}</h2>
+              <strong><h1 class="text-right" id="votes">{{votes}}</h1></strong>
             <!--
               <i class="button button-icon icon ion-chevron-down" ng-click = "downVote()" ng-disabled="downIsDisabled"></i>
             -->
