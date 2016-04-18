@@ -4,7 +4,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {id: [], status: []};
 })
 
-
 .factory('FeedData', function(){
   return {data: []};
 })
@@ -211,6 +210,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<--Filters.data AFTER-->");
       Filters.data = $scope.filterData;
       console.log(Filters.data);
+      $state.go("app.post");
       $state.go("app.feed");
       if(!original){
         $scope.closeModal();
@@ -565,6 +565,8 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 
 .controller('AccountCtrl', function($http, $scope, User, $state) {
+  $scope.userID = User.id;
+
   $scope.logout = function() {
     console.log("logout() called");
     console.log("DATA: ");
