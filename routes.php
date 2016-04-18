@@ -109,8 +109,8 @@ $app->put('/index',function($request,$response,$args)
   $result = $db->query($sql);
   $arr = $result->fetch(PDO::FETCH_ASSOC);
   $retr_votes = $arr['votes'];
-  echo $retr_votes;
-  echo $votes;
+ // echo $retr_votes;
+ // echo $votes;
 
   if($retr_votes == $votes){
     $success = "false";
