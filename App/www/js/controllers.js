@@ -323,7 +323,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       data: Filters.data
     })
     .then(function(response) {
-          console.log();
+          console.log(response);
           FeedData.data = response.data;
           $scope.feedData = FeedData.data;
 
@@ -338,7 +338,11 @@ angular.module('starter.controllers', ['ngAnimate'])
     $state.go('app.post');
   }
 
-  $http.get("http://52.37.14.110/index")
+  $http({
+    method: 'POST',
+    url: "http://52.37.14.110/filters",
+    data: Filters.data
+  })
   .then(function(response) {
       console.log("2");
       FeedData.data = response.data;
