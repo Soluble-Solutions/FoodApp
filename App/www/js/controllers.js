@@ -227,7 +227,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 .controller('PostCtrl', function($scope, $http, User, $cordovaCamera) {
   $scope.takeImage = function () {
     var options = {
-      quality: 80,
+      quality: 90,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
