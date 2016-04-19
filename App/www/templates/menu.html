@@ -38,13 +38,6 @@
     <ion-content>
 
       <div class="list">
-        <div class="item item-input item-select">
-          <div class="input-label">Dining Halls</div>
-          <select [(ngModel)]="selectedHalls" multiple="true">
-            <option ng-repeat="d in diningHalls" value="{{d.value}}">{{d.text}}</option>
-          </select>
-        </div>
-
         <div class="item item-stable item-icon-right"  ng-click="toggleHalls()">
           <button class="icon button button-icon button-clear ion-plus">
             </button>

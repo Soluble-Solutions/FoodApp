@@ -134,7 +134,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       "dh_id":[]
     };
 
-    $scope.selectedHalls = [];
+
     $scope.diningHalls = [
       {text:"Arnold", checked:true, value:1},
       {text:"Umph", checked:true, value:2}
