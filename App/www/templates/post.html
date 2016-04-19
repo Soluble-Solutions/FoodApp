@@ -1,5 +1,18 @@
 <ion-view view-title="New Post">
   <ion-content id="post">
+    <br>
+    <div id="cameraButton">
+      <button class="button button-full button-dark" ng-click="takeImage()">
+          <i class="icon ion-ios-camera" id="cameraIcon"> Take Photo</i>
+      </button>
+    </div>
+
+    <div class="list list-inset" ng-show="imgURI !== undefined">
+      <div class="item item-image" id="feedItemImage">
+        <img ng-src="{{imgURI}}"></img>
+      </div>
+    </div>
+
     <div class="list list-inset">
 
       <label class="item item-input item-stacked-label">
@@ -46,11 +59,7 @@
         {{t.text}}
       </ion-checkbox>
     </div>
-    <div id="cameraButton">
-      <button class="button button-full button-dark" ng-click="takeImage()">
-          <i class="icon ion-ios-camera" id="cameraIcon"> Add Photo</i>
-      </button>
-    </div>
+
   </ion-content>
 
   <button>
