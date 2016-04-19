@@ -5,6 +5,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 .factory('FeedData', function(){
+
   return {data: []};
 })
 
@@ -324,7 +325,11 @@ angular.module('starter.controllers', ['ngAnimate'])
     })
     .then(function(response) {
           console.log(response);
-          FeedData.data = response.data;
+          $scope.responseData=response.data;
+          angular.forEach($scope.responseData,function(value,index){
+                    value.votes = parseInt(value.votes);
+                })
+          FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
 
           //DEBUGGING//
@@ -344,10 +349,14 @@ angular.module('starter.controllers', ['ngAnimate'])
     data: Filters.data
   })
   .then(function(response) {
-      console.log(response);
-      FeedData.data = response.data;
+      console.log(response.data);
+      $scope.responseData=response.data;
+      angular.forEach($scope.responseData,function(value,index){
+                value.votes = parseInt(value.votes);
+            })
+      console.log($scope.responseData);
+      FeedData.data = $scope.responseData;
       $scope.feedData = FeedData.data;
-
       //DEBUGGING//
       console.log("Status = " + response.statusText);
       console.log($scope.feedData);
@@ -366,18 +375,31 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.upvote,
-        entry_id: entryID
+        entry_id: entryID,
+        user_id: User.id
       }
     })
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data.success);
+      if(response.data.success=="false"){
+        alert("Sorry, you already voted up on this!");
+      }
       console.log(response.data.votes);
-      $http.get("http://52.37.14.110/index")
+      $http({
+        method: 'POST',
+        url: "http://52.37.14.110/filters",
+        data: Filters.data
+      })
       .then(function(response) {
-          FeedData.data = response.data;
+          console.log(response.data);
+          $scope.responseData=response.data;
+          angular.forEach($scope.responseData,function(value,index){
+                    value.votes = parseInt(value.votes);
+                })
+          console.log($scope.responseData);
+          FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
-
           //DEBUGGING//
           console.log("Status = " + response.statusText);
           console.log($scope.feedData);
@@ -398,18 +420,31 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.downvote,
-        entry_id: entryID
+        entry_id: entryID,
+        user_id: User.id
       }
     })
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data.success);
+      if(response.data.success=="false"){
+        alert("Sorry, you already voted down on this!");
+      }
       console.log(response.data.votes);
-      $http.get("http://52.37.14.110/index")
+      $http({
+        method: 'POST',
+        url: "http://52.37.14.110/filters",
+        data: Filters.data
+      })
       .then(function(response) {
-          FeedData.data = response.data;
+          console.log(response.data);
+          $scope.responseData=response.data;
+          angular.forEach($scope.responseData,function(value,index){
+                    value.votes = parseInt(value.votes);
+                })
+          console.log($scope.responseData);
+          FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
-
           //DEBUGGING//
           console.log("Status = " + response.statusText);
           console.log($scope.feedData);
@@ -489,7 +524,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.upvote,
-        entry_id: $scope.selectedID
+        entry_id: $scope.selectedID,
+        user_id: User.id
       }
     })
     .then(function(response) {
@@ -522,7 +558,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.downvote,
-        entry_id: $scope.selectedID
+        entry_id: $scope.selectedID,
+        user_id: User.id
       }
     })
     .then(function(response) {
