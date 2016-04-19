@@ -44,6 +44,30 @@ i.button.button-icon.icon.ion-chevron-down:hover{
   animation: 1s ease;
 }*/
 
+html{
+  font-family: 'Raleway', sans-serif;
+}
+
+body{
+  font-family: 'Raleway', sans-serif;
+}
+
+h1{
+  font-family: 'Raleway', sans-serif;
+}
+
+h2{
+  font-family: 'Raleway', sans-serif;
+}
+
+h3{
+  font-family: 'Raleway', sans-serif;
+}
+
+#postTitle{
+  text-transform: uppercase;
+}
+
 #commentBox{
   width: 40%;
   height: 3rem;

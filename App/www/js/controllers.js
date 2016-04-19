@@ -4,8 +4,8 @@ angular.module('starter.controllers', ['ngAnimate'])
   return {id: [], status: []};
 })
 
-
 .factory('FeedData', function(){
+
   return {data: []};
 })
 
@@ -117,7 +117,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     $scope.openModal = function() {
       console.log("openModal called!");
       $scope.modal.show();
-    }
+    };
 
     $scope.closeModal = function() {
       console.log("closeModal() called");
@@ -134,9 +134,10 @@ angular.module('starter.controllers', ['ngAnimate'])
       "dh_id":[]
     };
 
+
     $scope.diningHalls = [
-      {text:"Arnold", checked:true, value:"1"},
-      {text:"Umph", checked:true, value:"2"}
+      {text:"Arnold", checked:true, value:1},
+      {text:"Umph", checked:true, value:2}
     ];
 
     $scope.displayHalls = true;
@@ -167,10 +168,10 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
     $scope.filters = [
-      {text:"Hot", checked:true, value:"1"},
-      {text:"Cold", checked:true, value:"2"},
-      {text:"Vegetarian", checked:true, value:"3"},
-      {text:"Vegan", checked:true, value:"4"}
+      {text:"Hot", checked:true, value:1},
+      {text:"Cold", checked:true, value:2},
+      {text:"Vegetarian", checked:true, value:3},
+      {text:"Vegan", checked:true, value:4}
     ];
     $scope.displayTags = true;
     $scope.toggleTags = function() {
@@ -179,17 +180,16 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
 
-    $scope.applyFilters = function() {
+    $scope.applyFilters = function(original) {
       /* pass data into filters factory */
+      console.log("APPLY FILTERS CALLED");
       Filters.data = {};
       $scope.filterData = {
         "attribute_id":[],
         "station_id":[],
         "dh_id":[]
       };
-      console.log("<--$scope.filterData BEFORE-->");
-      console.log($scope.filterData);
-      console.log("<--Filters.data BEFORE-->");
+
       console.log(Filters.data);
 
       var i;
@@ -208,13 +208,15 @@ angular.module('starter.controllers', ['ngAnimate'])
           $scope.filterData.dh_id.push({"dh":$scope.diningHalls[i].value});
         }
       }
-      console.log("<--$scope.filterData AFTER-->");
-      console.log($scope.filterData);
-      Filters.data = $scope.filterData;
+
       console.log("<--Filters.data AFTER-->");
+      Filters.data = $scope.filterData;
       console.log(Filters.data);
+      $state.go("app.post");
       $state.go("app.feed");
-      $scope.closeModal();
+      if(!original){
+        $scope.closeModal();
+      }
     }
 
     $scope.openAccount = function() {
@@ -223,55 +225,55 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('PostCtrl', function($scope, $http, User) {
-  $scope.takeImage = function() {
-    console.log("takeImage() called");
+.controller('PostCtrl', function($scope, $http, User, $cordovaCamera) {
+  $scope.takeImage = function () {
     var options = {
-        quality: 80,
-        destinationType: Camera.DestinationType.DATA_URL,
-        sourceType: Camera.PictureSourceType.CAMERA,
-        allowEdit: true,
-        encodingType: Camera.EncodingType.JPEG,
-        targetWidth: 250,
-        targetHeight: 250,
-        popoverOptions: CameraPopoverOptions,
-        saveToPhotoAlbum: false
+      quality: 90,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 300,
+      targetHeight: 325,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false
     };
 
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-        $scope.srcImage = "data:image/jpeg;base64," + imageData;
-    }, function(err) {
-        // error
+    $cordovaCamera.getPicture(options).then(function (imageData) {
+        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+    }, function (err) {
+        // An error occured. Show a message to the user
     });
   }
 
   $scope.diningHalls = [
-    {text:"Arnold", checked:false},
-    {text:"Umph", checked:false}
+    {text:"Arnold", checked:false, value:1},
+    {text:"Umph", checked:false, value:2}
   ];
 
   $scope.stations = [
-    {text:"Bakery", checked:false},
-    {text:"Grill", checked:false},
-    {text:"Pizza", checked:false},
-    {text:"Deli", checked:false},
-    {text:"Home_zone", checked:false},
-    {text:"Mongolian_grill", checked:false},
-    {text:"Produce", checked:false},
-    {text:"Soup", checked:false},
-    {text:"Tex_Mex", checked:false},
-    {text:"Healthy_on_the_Hilltop", checked:false},
-    {text:"International", checked:false}
+    {text:"Bakery", checked:false, value:1},
+    {text:"Grill", checked:false, value:2},
+    {text:"Pizza", checked:false, value:3},
+    {text:"Deli", checked:false, value:4},
+    {text:"Home_zone", checked:false, value:5},
+    {text:"Mongolian_grill", checked:false, value:6},
+    {text:"Produce", checked:false, value:7},
+    {text:"Soup", checked:false, value:8},
+    {text:"Tex_Mex", checked:false, value:9},
+    {text:"Healthy_on_the_Hilltop", checked:false, value:10},
+    {text:"International", checked:false, value:11},
+    {text:"Salad Bar", checked:false, value:12}
   ];
 
-  $scope.temp = [
-    {text:"Hot", checked:false},
-    {text:"Cold", checked:false}
+  $scope.temps = [
+    {text:"Hot", checked:false, value:1},
+    {text:"Cold", checked:false, value:2}
   ];
 
   $scope.tags = [
-    {text:"Vegetarian", checked:false},
-    {text:"Vegan", checked:false}
+    {text:"Vegetarian", checked:false, value:3},
+    {text:"Vegan", checked:false, value:4}
   ];
 
   $scope.displayTags = false;
@@ -282,25 +284,39 @@ angular.module('starter.controllers', ['ngAnimate'])
   };
 
   $scope.newPostForm = {};
+
   $scope.submitData = function() {
     console.log("submitData() called...");
+    console.log("user_id: " + User.id);
     console.log("-- DATA --");
     console.log("title: " + $scope.newPostForm.title);
     console.log("newComment: " + $scope.newPostForm.comment);
-    console.log("user_id: " + User.id);
+    console.log("selectedDiningHall: " + $scope.newPostForm.selectedDiningHall);
+    console.log("selectedStation: " + $scope.newPostForm.selectedStation);
+    console.log("selectedTemp: " + $scope.newPostForm.selectedTemp);
+    $scope.selectedTags = [];
+    $scope.selectedTags.push({"attribute":$scope.newPostForm.selectedTemp})
+    var i;
+    for (i=0; i<2; i++) {
+      if($scope.tags[i].checked==true){
+        $scope.selectedTags.push({"attribute":$scope.tags[i].value})
+      }
+    }
+    console.log($scope.selectedTags);
     $http({
       method: 'POST',
       url: "http://52.37.14.110/entry",
       data: {
         title: $scope.newPostForm.title,
         comment: $scope.newPostForm.comment,
-        dh_id: 1,
-        station_id: 1,
-        attribute_id: [{"attribute":1},{"attribute":2}],
+        dh_id: $scope.newPostForm.selectedDiningHall,
+        station_id: $scope.newPostForm.selectedStation,
+        attribute_id: $scope.selectedTags,
         image: $scope.image,
         user_id: User.id
       }
     }).then(function(response){
+      console.log("<--Response from New Post call -->");
       console.log(response);
     });
   }
@@ -311,14 +327,24 @@ angular.module('starter.controllers', ['ngAnimate'])
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope, Filters) {
   console.log("Reached Feed.");
   console.log("User.id: " + User.id);
+  $scope.applyFilters(1);
 
   $rootScope.$on('$viewContentLoading', function(event, viewConfig){
     // Access to all the view config properties.
     // and one special property 'targetView'
     // viewConfig.targetView
-      $http.get("http://52.37.14.110/index")
-      .then(function(response) {
-          FeedData.data = response.data;
+    $http({
+      method: 'POST',
+      url: "http://52.37.14.110/filters",
+      data: Filters.data
+    })
+    .then(function(response) {
+          console.log(response);
+          $scope.responseData=response.data;
+          angular.forEach($scope.responseData,function(value,index){
+                    value.votes = parseInt(value.votes);
+                })
+          FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
 
           //DEBUGGING//
@@ -332,11 +358,20 @@ angular.module('starter.controllers', ['ngAnimate'])
     $state.go('app.post');
   }
 
-  $http.get("http://52.37.14.110/index")
+  $http({
+    method: 'POST',
+    url: "http://52.37.14.110/filters",
+    data: Filters.data
+  })
   .then(function(response) {
-      FeedData.data = response.data;
+      console.log(response.data);
+      $scope.responseData=response.data;
+      angular.forEach($scope.responseData,function(value,index){
+                value.votes = parseInt(value.votes);
+            })
+      console.log($scope.responseData);
+      FeedData.data = $scope.responseData;
       $scope.feedData = FeedData.data;
-
       //DEBUGGING//
       console.log("Status = " + response.statusText);
       console.log($scope.feedData);
@@ -355,18 +390,31 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.upvote,
-        entry_id: entryID
+        entry_id: entryID,
+        user_id: User.id
       }
     })
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data.success);
+      if(response.data.success=="false"){
+        alert("Sorry, you already voted up on this!");
+      }
       console.log(response.data.votes);
-      $http.get("http://52.37.14.110/index")
+      $http({
+        method: 'POST',
+        url: "http://52.37.14.110/filters",
+        data: Filters.data
+      })
       .then(function(response) {
-          FeedData.data = response.data;
+          console.log(response.data);
+          $scope.responseData=response.data;
+          angular.forEach($scope.responseData,function(value,index){
+                    value.votes = parseInt(value.votes);
+                })
+          console.log($scope.responseData);
+          FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
-
           //DEBUGGING//
           console.log("Status = " + response.statusText);
           console.log($scope.feedData);
@@ -387,18 +435,31 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.downvote,
-        entry_id: entryID
+        entry_id: entryID,
+        user_id: User.id
       }
     })
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data.success);
+      if(response.data.success=="false"){
+        alert("Sorry, you already voted down on this!");
+      }
       console.log(response.data.votes);
-      $http.get("http://52.37.14.110/index")
+      $http({
+        method: 'POST',
+        url: "http://52.37.14.110/filters",
+        data: Filters.data
+      })
       .then(function(response) {
-          FeedData.data = response.data;
+          console.log(response.data);
+          $scope.responseData=response.data;
+          angular.forEach($scope.responseData,function(value,index){
+                    value.votes = parseInt(value.votes);
+                })
+          console.log($scope.responseData);
+          FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
-
           //DEBUGGING//
           console.log("Status = " + response.statusText);
           console.log($scope.feedData);
@@ -478,7 +539,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.upvote,
-        entry_id: $scope.selectedID
+        entry_id: $scope.selectedID,
+        user_id: User.id
       }
     })
     .then(function(response) {
@@ -511,7 +573,8 @@ angular.module('starter.controllers', ['ngAnimate'])
       url: "http://52.37.14.110/index",
       data: {
         votes: $scope.downvote,
-        entry_id: $scope.selectedID
+        entry_id: $scope.selectedID,
+        user_id: User.id
       }
     })
     .then(function(response) {
@@ -554,6 +617,8 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 
 .controller('AccountCtrl', function($http, $scope, User, $state) {
+  $scope.userID = User.id;
+
   $scope.logout = function() {
     console.log("logout() called");
     console.log("DATA: ");

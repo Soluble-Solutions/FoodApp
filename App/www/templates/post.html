@@ -1,39 +1,61 @@
 <ion-view view-title="New Post">
   <ion-content id="post">
+    <br>
+    <div id="cameraButton" ng-show="imgURI == undefined">
+      <button class="button button-full button-dark" ng-click="takeImage()">
+          <i class="icon ion-ios-camera" id="cameraIcon"> Take Photo</i>
+      </button>
+    </div>
+
+    <div class="list list-inset" ng-show="imgURI !== undefined">
+      <div class="text-center">
+        (Click image to re-take)
+      </div>
+      <div class="item item-image" id="feedItemImage">
+        <img ng-src="{{imgURI}}" ng-click="takeImage()"></img>
+      </div>
+    </div>
+
     <div class="list list-inset">
 
       <label class="item item-input item-stacked-label">
         <span class="input-label">Food Title</span>
         <input type="text" placeholder="What food is this?" ng-model="newPostForm.title">
       </label>
-
       <label class="item item-input item-stacked-label">
         <span class="input-label">How did you like it?</span>
         <input type="text" placeholder="Good? Bad? Ugly?" ng-model="newPostForm.comment">
       </label>
-
       <label class="item item-input item-select">
         <div class="input-label">
           Dining Hall
         </div>
-        <select ng-model="selectedDiningHall">
-          <option ng-repeat="d in diningHalls" value="{{d.text}}" ng-selected="{{d.checked}}">
+        <select ng-model="newPostForm.selectedDiningHall">
+          <option ng-repeat="d in diningHalls" value="{{d.value}}" ng-selected="{{d.checked}}">
           {{d.text}}
           </option>
         </select>
       </label>
-
       <label class="item item-input item-select">
         <div class="input-label">
           Station
         </div>
-        <select ng-model="selectedStation">
-          <option ng-repeat="s in stations" value="{{s.text}}" ng-selected="{{s.checked}}">
+        <select ng-model="newPostForm.selectedStation">
+          <option ng-repeat="s in stations" value="{{s.value}}" ng-selected="{{s.checked}}">
           {{s.text}}
           </option>
         </select>
       </label>
-
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Temperature
+        </div>
+        <select ng-model="newPostForm.selectedTemp">
+          <option ng-repeat="t in temps" value="{{t.value}}" ng-selected="{{t.checked}}">
+          {{t.text}}
+          </option>
+        </select>
+      </label>
       <div class="item item-icon-right"  ng-click="showTags()">
         <button class="icon button button-icon button-clear ion-chevron-down">
           </button>
@@ -46,11 +68,7 @@
         {{t.text}}
       </ion-checkbox>
     </div>
-    <div id="cameraButton">
-      <button class="button button-full button-dark" ng-click="takeImage()">
-          <i class="icon ion-ios-camera" id="cameraIcon"> Add Photo</i>
-      </button>
-    </div>
+
   </ion-content>
 
   <button>
