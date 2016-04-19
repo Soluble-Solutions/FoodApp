@@ -227,7 +227,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 .controller('PostCtrl', function($scope, $http, User, $cordovaCamera) {
   $scope.takeImage = function () {
     var options = {
-      quality: 75,
+      quality: 80,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
@@ -246,32 +246,33 @@ angular.module('starter.controllers', ['ngAnimate'])
   }
 
   $scope.diningHalls = [
-    {text:"Arnold", checked:false},
-    {text:"Umph", checked:false}
+    {text:"Arnold", checked:false, value:1},
+    {text:"Umph", checked:false, value:2}
   ];
 
   $scope.stations = [
-    {text:"Bakery", checked:false},
-    {text:"Grill", checked:false},
-    {text:"Pizza", checked:false},
-    {text:"Deli", checked:false},
-    {text:"Home_zone", checked:false},
-    {text:"Mongolian_grill", checked:false},
-    {text:"Produce", checked:false},
-    {text:"Soup", checked:false},
-    {text:"Tex_Mex", checked:false},
-    {text:"Healthy_on_the_Hilltop", checked:false},
-    {text:"International", checked:false}
+    {text:"Bakery", checked:false, value:1},
+    {text:"Grill", checked:false, value:2},
+    {text:"Pizza", checked:false, value:3},
+    {text:"Deli", checked:false, value:4},
+    {text:"Home_zone", checked:false, value:5},
+    {text:"Mongolian_grill", checked:false, value:6},
+    {text:"Produce", checked:false, value:7},
+    {text:"Soup", checked:false, value:8},
+    {text:"Tex_Mex", checked:false, value:9},
+    {text:"Healthy_on_the_Hilltop", checked:false, value:10},
+    {text:"International", checked:false, value:11},
+    {text:"Salad Bar", checked:false, value:12}
   ];
 
-  $scope.temp = [
-    {text:"Hot", checked:false},
-    {text:"Cold", checked:false}
+  $scope.temps = [
+    {text:"Hot", checked:false, value:1},
+    {text:"Cold", checked:false, value:2}
   ];
 
   $scope.tags = [
-    {text:"Vegetarian", checked:false},
-    {text:"Vegan", checked:false}
+    {text:"Vegetarian", checked:false, value:3},
+    {text:"Vegan", checked:false, value:4}
   ];
 
   $scope.displayTags = false;
@@ -282,25 +283,39 @@ angular.module('starter.controllers', ['ngAnimate'])
   };
 
   $scope.newPostForm = {};
+
   $scope.submitData = function() {
     console.log("submitData() called...");
+    console.log("user_id: " + User.id);
     console.log("-- DATA --");
     console.log("title: " + $scope.newPostForm.title);
     console.log("newComment: " + $scope.newPostForm.comment);
-    console.log("user_id: " + User.id);
+    console.log("selectedDiningHall: " + $scope.newPostForm.selectedDiningHall);
+    console.log("selectedStation: " + $scope.newPostForm.selectedStation);
+    console.log("selectedTemp: " + $scope.newPostForm.selectedTemp);
+    $scope.selectedTags = [];
+    $scope.selectedTags.push({"attribute":$scope.newPostForm.selectedTemp})
+    var i;
+    for (i=0; i<2; i++) {
+      if($scope.tags[i].checked==true){
+        $scope.selectedTags.push({"attribute":$scope.tags[i].value})
+      }
+    }
+    console.log($scope.selectedTags);
     $http({
       method: 'POST',
       url: "http://52.37.14.110/entry",
       data: {
         title: $scope.newPostForm.title,
         comment: $scope.newPostForm.comment,
-        dh_id: 1,
-        station_id: 1,
-        attribute_id: [{"attribute":1},{"attribute":2}],
+        dh_id: $scope.newPostForm.selectedDiningHall,
+        station_id: $scope.newPostForm.selectedStation,
+        attribute_id: $scope.selectedTags,
         image: $scope.image,
         user_id: User.id
       }
     }).then(function(response){
+      console.log("<--Response from New Post call -->");
       console.log(response);
     });
   }

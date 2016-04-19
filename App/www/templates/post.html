@@ -29,8 +29,8 @@
         <div class="input-label">
           Dining Hall
         </div>
-        <select ng-model="selectedDiningHall">
-          <option ng-repeat="d in diningHalls" value="{{d.text}}" ng-selected="{{d.checked}}">
+        <select ng-model="newPostForm.selectedDiningHall">
+          <option ng-repeat="d in diningHalls" value="{{d.value}}" ng-selected="{{d.checked}}">
           {{d.text}}
           </option>
         </select>
@@ -40,9 +40,20 @@
         <div class="input-label">
           Station
         </div>
-        <select ng-model="selectedStation">
-          <option ng-repeat="s in stations" value="{{s.text}}" ng-selected="{{s.checked}}">
+        <select ng-model="newPostForm.selectedStation">
+          <option ng-repeat="s in stations" value="{{s.value}}" ng-selected="{{s.checked}}">
           {{s.text}}
+          </option>
+        </select>
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Temperature
+        </div>
+        <select ng-model="newPostForm.selectedTemp">
+          <option ng-repeat="t in temps" value="{{t.value}}" ng-selected="{{t.checked}}">
+          {{t.text}}
           </option>
         </select>
       </label>
