@@ -151,12 +151,12 @@ angular.module('starter.controllers', ['ngAnimate'])
       {text:"Grill", checked:true, value:"2"},
       {text:"Pizza", checked:true, value:"3"},
       {text:"Deli", checked:true, value:"4"},
-      {text:"Home_zone", checked:true, value:"5"},
-      {text:"Mongolian_grill", checked:true, value:"6"},
+      {text:"Home Zone", checked:true, value:"5"},
+      {text:"Mongolian Grill", checked:true, value:"6"},
       {text:"Produce", checked:true, value:"7"},
       {text:"Soup", checked:true, value:"8"},
-      {text:"Tex_Mex", checked:true, value:"9"},
-      {text:"Healthy_on_the_Hilltop", checked:true, value:"10"},
+      {text:"Tex Mex", checked:true, value:"9"},
+      {text:"Healthy on the Hilltop", checked:true, value:"10"},
       {text:"International", checked:true, value:"11"},
       {text:"Salad Bar", checked:true, value:"12"}
     ];
