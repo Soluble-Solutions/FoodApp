@@ -1,7 +1,7 @@
 <ion-view view-title="New Post">
   <ion-content id="post">
     <br>
-    <div id="cameraButton">
+    <div id="cameraButton" ng-show="imgURI == undefined">
       <button class="button button-full button-dark" ng-click="takeImage()">
           <i class="icon ion-ios-camera" id="cameraIcon"> Take Photo</i>
       </button>
@@ -9,22 +9,19 @@
 
     <div class="list list-inset" ng-show="imgURI !== undefined">
       <div class="item item-image" id="feedItemImage">
-        <img ng-src="{{imgURI}}"></img>
+        <img ng-src="{{imgURI}}" ng-click="takeImage()"></img>
       </div>
     </div>
 
     <div class="list list-inset">
-
       <label class="item item-input item-stacked-label">
         <span class="input-label">Food Title</span>
         <input type="text" placeholder="What food is this?" ng-model="newPostForm.title">
       </label>
-
       <label class="item item-input item-stacked-label">
         <span class="input-label">How did you like it?</span>
         <input type="text" placeholder="Good? Bad? Ugly?" ng-model="newPostForm.comment">
       </label>
-
       <label class="item item-input item-select">
         <div class="input-label">
           Dining Hall
@@ -35,7 +32,6 @@
           </option>
         </select>
       </label>
-
       <label class="item item-input item-select">
         <div class="input-label">
           Station
@@ -46,7 +42,6 @@
           </option>
         </select>
       </label>
-
       <label class="item item-input item-select">
         <div class="input-label">
           Temperature
@@ -57,7 +52,6 @@
           </option>
         </select>
       </label>
-
       <div class="item item-icon-right"  ng-click="showTags()">
         <button class="icon button button-icon button-clear ion-chevron-down">
           </button>

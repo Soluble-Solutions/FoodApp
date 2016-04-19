@@ -233,7 +233,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
       targetWidth: 300,
-      targetHeight: 300,
+      targetHeight: 325,
       popoverOptions: CameraPopoverOptions,
       saveToPhotoAlbum: false
     };
