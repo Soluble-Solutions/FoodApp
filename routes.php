@@ -109,8 +109,6 @@ $app->put('/index',function($request,$response,$args)
   $result = $db->query($sql);
   $arr = $result->fetch(PDO::FETCH_ASSOC);
   $retr_votes = $arr['votes'];
-  echo $retr_votes;
-  echo $votes;
 
   if($retr_votes == $votes){
     $success = "false";
@@ -144,18 +142,31 @@ $app->put('/index',function($request,$response,$args)
       $success = "true";
       $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
       $db->query($sql);
-      $sql = "UPDATE User_Votes SET upvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id";
+      $sql = "UPDATE User_Votes SET upvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
+              UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
       $str = array("success" => $success, "votes" => $votes);
       return $response->write(json_encode($str));
     }
 
     else {
+      $success = "true";
+      $sql = "UPDATE Entry SET votes = ('$retr_votes' - 1) WHERE entry_id = '$entry_id'";
+      $db->query($sql);
+      $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
+              UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+      $db->query($sql);
+      $str = array("success" => $success, "votes" => $retr_votes-1);
+      return $response->write(json_encode($str));
+
+    }
+
+    /*else {
       $success = "false";
       $messageDB = "This User Has Already Voted Yum";
       $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
       return $response->write(json_encode($str));
-    }
+    }*/
   }
 
   else
@@ -180,20 +191,31 @@ $app->put('/index',function($request,$response,$args)
       $success = "true";
       $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
       $db->query($sql);
-      $sql = "UPDATE User_Votes SET downvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id'";
+      $sql = "UPDATE User_Votes SET downvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
+              UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
       $str = array("success" => $success, "votes" => $votes);
       return $response->write(json_encode($str));
     }
-    else
+    else {
+      $success = "true";
+      $sql = "UPDATE Entry SET votes = ('$retr_votes' + 1) WHERE entry_id = '$entry_id'";
+      $db->query($sql);
+      $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
+              UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+      $db->query($sql);
+      $str = array("success" => $success, "votes" => $retr_votes+1);
+      return $response->write(json_encode($str));
+    }
+
+    /*else
     {
       $success = "false";
       $messageDB = "This User Has Already Voted Gross";
       $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
       return $response->write(json_encode($str));
-    }
+    }*/
     //echo $success;
-    return $response->write(json_encode($str));
   }
  // else{
    // $success = "false";
