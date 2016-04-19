@@ -8,6 +8,9 @@
     </div>
 
     <div class="list list-inset" ng-show="imgURI !== undefined">
+      <div class="text-center">
+        (Click image to re-take)
+      </div>
       <div class="item item-image" id="feedItemImage">
         <img ng-src="{{imgURI}}" ng-click="takeImage()"></img>
       </div>
