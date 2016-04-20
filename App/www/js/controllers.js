@@ -225,7 +225,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 })
 
 
-.controller('PostCtrl', function($scope, $http, User, $cordovaCamera) {
+.controller('PostCtrl', function($scope, $http, User, $cordovaCamera, $state) {
   $scope.takeImage = function () {
     var options = {
       quality: 90,
@@ -318,7 +318,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     }).then(function(response){
       console.log("<--Response from New Post call -->");
       console.log(response);
-      state.go("app.feed");
+      $state.go("app.feed");
     });
   }
 
