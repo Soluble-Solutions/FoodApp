@@ -318,6 +318,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     }).then(function(response){
       console.log("<--Response from New Post call -->");
       console.log(response);
+      state.go("app.feed");
     });
   }
 
