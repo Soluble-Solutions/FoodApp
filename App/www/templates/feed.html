@@ -22,13 +22,7 @@
           <p ng-repeat="s in stations | filter: {value : f.station_id} : true"> {{s.text}} </p>
           <div class="icon">
             <div class="col">
-            <!--
-              <i class="button button-icon icon ion-chevron-up" ng-click="upVote(f.entry_id, f.votes)" ng-disabled="upIsDisabled" ng-model="f.entry_id"></i>
-            -->
               <strong><h1 class="text-right" id="votes">{{f.votes}}</h1></strong>
-            <!--
-              <i class="button button-icon icon ion-chevron-down" ng-click = "downVote(f.entry_id, f.votes)" ng-disabled="downIsDisabled" ng-model="f.entry_id"></i>
-            -->
             </div>
           </div>
         </div>
@@ -43,17 +37,7 @@
         <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
           <img ng-src={{f.image}}>
         </a>
-        <div class="text">
-          {{f.comments[0]}}
-        </div>
       </div>
     </div>
   </ion-content>
-  <!--
-  <button>
-    <ion-footer-bar class="bar bar-footer bar-dark" ng-click="newPost()">
-      <h1 class="title"> <i class="icon ion-camera pull-xs-center"></i> Create New</h1>
-    </ion-footer-bar>
-  </button>
--->
 </ion-view>
