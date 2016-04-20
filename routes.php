@@ -433,6 +433,18 @@ $app->put('/login',function($request,$response,$args)
       $str = array("success" => $success, "messageDB" =>$messageDB);
       return $response->write(json_encode($str));
     }
+    else if(empty($user_id)) // check if not exist
+    {
+
+      //SESSION STUFF
+      $success = "false";
+      $messageDB = "User does not exist";
+      $str = array("success" => $success, "messageDB" =>$messageDB);
+      //echo $success;
+      return $response->write(json_encode($str));
+      //return $response->withJson($str,200);
+      //return $response->write(json_encode($success)); //?
+    }
     else if(hash_equals($hash,crypt($password,$salt))) // Valid
     {
       //$this->logger->info("success=true");
