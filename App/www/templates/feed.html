@@ -43,6 +43,9 @@
         <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
           <img ng-src={{f.image}}>
         </a>
+        <div class="text">
+          {{f.comments[0]}}
+        </div>
       </div>
     </div>
   </ion-content>
