@@ -32,9 +32,6 @@
             </div>
           </div>
         </div>
-        <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
-          <img ng-src={{f.image}}>
-        </a>
         <div class="button-bar" id="votingBar">
           <a class="button button-icon-left button-assertive" id="votingButton" ng-click="downVote(f.entry_id, f.votes)">
             <i class="icon ion-sad-outline"> Gross!</i>
@@ -43,6 +40,9 @@
             <i class="icon ion-happy-outline"> Yum!</i>
           </a>
         </div>
+        <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
+          <img ng-src={{f.image}}>
+        </a>
       </div>
     </div>
   </ion-content>
