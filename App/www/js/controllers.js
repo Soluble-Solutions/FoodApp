@@ -256,12 +256,12 @@ angular.module('starter.controllers', ['ngAnimate'])
     {text:"Grill", checked:false, value:2},
     {text:"Pizza", checked:false, value:3},
     {text:"Deli", checked:false, value:4},
-    {text:"Home_zone", checked:false, value:5},
-    {text:"Mongolian_grill", checked:false, value:6},
+    {text:"Home Zone", checked:false, value:5},
+    {text:"Mongolian Grill", checked:false, value:6},
     {text:"Produce", checked:false, value:7},
     {text:"Soup", checked:false, value:8},
-    {text:"Tex_Mex", checked:false, value:9},
-    {text:"Healthy_on_the_Hilltop", checked:false, value:10},
+    {text:"Tex Mex", checked:false, value:9},
+    {text:"Healthy on the Hilltop", checked:false, value:10},
     {text:"International", checked:false, value:11},
     {text:"Salad Bar", checked:false, value:12}
   ];
