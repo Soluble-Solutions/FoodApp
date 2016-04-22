@@ -137,6 +137,7 @@ $app->put('/index',function($request,$response,$args)
       return $response->write(json_encode($str));
 
     }
+
     else if($upvoted == 0)
     {
       $success = "true";
@@ -158,15 +159,7 @@ $app->put('/index',function($request,$response,$args)
       $db->query($sql);
       $str = array("success" => $success, "votes" => $retr_votes-1);
       return $response->write(json_encode($str));
-
     }
-
-    /*else {
-      $success = "false";
-      $messageDB = "This User Has Already Voted Yum";
-      $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
-      return $response->write(json_encode($str));
-    }*/
   }
 
   else
@@ -186,6 +179,7 @@ $app->put('/index',function($request,$response,$args)
       $str = array("success" => $success, "votes" => $votes);
       return $response->write(json_encode($str));
     }
+
     else if($downvoted == 0)
     {
       $success = "true";
@@ -197,6 +191,7 @@ $app->put('/index',function($request,$response,$args)
       $str = array("success" => $success, "votes" => $votes);
       return $response->write(json_encode($str));
     }
+
     else {
       $success = "true";
       $sql = "UPDATE Entry SET votes = ('$retr_votes' + 1) WHERE entry_id = '$entry_id'";
@@ -208,24 +203,8 @@ $app->put('/index',function($request,$response,$args)
       return $response->write(json_encode($str));
     }
 
-    /*else
-    {
-      $success = "false";
-      $messageDB = "This User Has Already Voted Gross";
-      $str = array("success" => $success, "votes" => $retr_votes, "messageDB" =>$messageDB);
-      return $response->write(json_encode($str));
-    }*/
-    //echo $success;
   }
- // else{
-   // $success = "false";
-    /*$sql = "SELECT votes FROM entry_id WHERE entry_id = '$entry_id'";
-    $result = $db->query($sql);*/
-   // $messageDB = "Entry_id not found";
-   // $str = array("success" => $success, "votes" => $votes, "messageDB" =>$messageDB);
-    //echo $success;
-   // return $response->write(json_encode($str));
- // }
+
 });
 
 $app->post('/entry',function($request,$response,$args)
@@ -245,6 +224,7 @@ $app->post('/entry',function($request,$response,$args)
   $weekday = date('w');
   $active = 1;
   $meal = 0;
+
 
   if($weekday == 0 || $weekday == 6)
   {
@@ -284,21 +264,34 @@ $app->post('/entry',function($request,$response,$args)
 
   $sql = 'SELECT dh_id
           FROM Dining_Hall'; #ORDER BY votes DESC
-  $db = $this->dbConn;
   $q = $db->query($sql);
   $currentDH = $q->fetchAll(PDO::FETCH_ASSOC);
 
   $sql = 'SELECT user_id
           FROM User'; #ORDER BY votes DESC
-  $db = $this->dbConn;
   $q = $db->query($sql);
   $currentUsers = $q->fetchAll(PDO::FETCH_ASSOC);
 
   $sql = 'SELECT station_id
           FROM Station'; #ORDER BY votes DESC
-  $db = $this->dbConn;
   $q = $db->query($sql);
   $currentStations = $q->fetchAll(PDO::FETCH_ASSOC);
+
+  $sql = "SELECT title
+          FROM Entry
+          WHERE dh_id = '$dh_id' AND station_id = '$station_id' AND active = 1";
+  $q = $db->query($sql);
+  $currentEntries = $q->fetchAll(PDO::FETCH_ASSOC);
+
+  $alreadExhists = 0;
+  foreach($currentEntries as $cE)
+  {
+    $lenDiff = (strlen($cE['title']) + strlen($title))/4;
+    if (levenshtein($cE['title'], $title) < $lenDiff)
+      $alreadExhists = 1;
+  }
+
+  #echo $alreadExhists;
 
   if(empty($dh_id) || empty($user_id) || empty($station_id) || empty($attribute_id) || empty($image) || empty($title))
   {
@@ -342,6 +335,15 @@ $app->post('/entry',function($request,$response,$args)
     //echo $success;
     return $response->write(json_encode($str));
   }
+
+  else if($alreadExhists == 1)
+  {
+    $success = "false";
+    $messageDB = "This Food Item is Currently in the Feed";
+    $str = array("success" => $success, "messageDB" =>$messageDB );
+    return $response->write(json_encode($str));
+  }
+
   else
   {
     $sql = "INSERT INTO Entry (image,title,time_stamp,dh_id,station_id,active,user_id,meal) VALUES ('$image','$title','$time_stamp','$dh_id','$station_id','$active','$user_id','$meal');";
@@ -390,8 +392,7 @@ $app->get('/comment/{entry_id}', function ($request, $response, $args) {
             FROM Comment c
             INNER JOIN Entry e
             ON e.entry_id = c.entry_id
-            AND e.entry_id = '$entry_id'
-            ;";
+            AND e.entry_id = '$entry_id';";
 
     $q = $db->query($sql);
     $commentdata = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -588,6 +589,7 @@ $app->post('/filters',function($request,$response,$args)
   $dh_id = $data['dh_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
+
 
 
 /*    echo gettype($dh_id);
