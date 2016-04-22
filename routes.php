@@ -561,12 +561,68 @@ $app->put('/logout',function($request,$response,$args)
 });
 $app->post('/filters',function($request,$response,$args)
 {
+
   $db = $this->dbConn;
   $data = $request->getParsedBody();
   $dh_id = $data['dh_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
 
+/*  foreach($check as $entry)
+  {
+    $entry_id = $entry['entry_id'];
+    $ts = $entry['time_stamp'];
+    $dt = new DateTime($ts);
+    $date = $dt->format("Y-m-d");
+
+    if($date != $day)
+    {
+      $sql = "UPDATE Entry SET active = 0 WHERE entry_id = '$entry_id'";
+      $db->query($sql);
+    }
+  }
+
+  if($weekday == 0 || $weekday == 6)
+  {
+    if(strtotime($currentTime) >= strtotime("12:00:00") && strtotime($currentTime) <= strtotime("14:30:00"))
+    {
+      $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
+      $db->query($sql);
+    }
+
+    else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
+    {
+      $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
+      $db->query($sql);
+    }
+
+    else if(strtotime($currentTime) >= strtotime("22:00:00"))
+    {
+      $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 OR meal = 2 OR meal 1';
+      $db->query($sql);
+    }
+
+  }
+
+  else
+  {
+    if(strtotime($currentTime) >= strtotime("10:30:00") && strtotime($currentTime) <= strtotime("14:30:00"))
+    {
+      $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
+      $db->query($sql);
+    }
+
+    else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
+    {
+      $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
+      $db->query($sql);
+    }
+
+    else if(strtotime($currentTime) >= strtotime("22:00:00"))
+    {
+      $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
+      $db->query($sql);
+    }*/
 
 /*    echo gettype($dh_id);
     echo is_array($dh_id) ? 'Array' : 'not an Array';
@@ -667,7 +723,62 @@ $app->post('/newFeed',function($request,$response,$args)
   $dh_id = $data['dh_id'];
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
+/*foreach($check as $entry)
+{
+  $entry_id = $entry['entry_id'];
+  $ts = $entry['time_stamp'];
+  $dt = new DateTime($ts);
+  $date = $dt->format("Y-m-d");
 
+  if($date != $day)
+  {
+    $sql = "UPDATE Entry SET active = 0 WHERE entry_id = '$entry_id'";
+    $db->query($sql);
+  }
+}
+
+if($weekday == 0 || $weekday == 6)
+{
+  if(strtotime($currentTime) >= strtotime("12:00:00") && strtotime($currentTime) <= strtotime("14:30:00"))
+  {
+    $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
+    $db->query($sql);
+  }
+
+  else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
+  {
+    $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
+    $db->query($sql);
+  }
+
+  else if(strtotime($currentTime) >= strtotime("22:00:00"))
+  {
+    $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 OR meal = 2 OR meal 1';
+    $db->query($sql);
+  }
+
+}
+
+else
+{
+  if(strtotime($currentTime) >= strtotime("10:30:00") && strtotime($currentTime) <= strtotime("14:30:00"))
+  {
+    $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
+    $db->query($sql);
+  }
+
+  else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
+  {
+    $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
+    $db->query($sql);
+  }
+
+  else if(strtotime($currentTime) >= strtotime("22:00:00"))
+  {
+    $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
+    $db->query($sql);
+  }
+*/
 
 /*    echo gettype($dh_id);
     echo is_array($dh_id) ? 'Array' : 'not an Array';
