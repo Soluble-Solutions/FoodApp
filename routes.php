@@ -3,6 +3,7 @@
 // Routes
 $servername = "localhost";
 $username = "admin";
+include 'checkImageFood.php';
 
 date_default_timezone_set('America/Chicago');
 
@@ -86,6 +87,9 @@ $app->get('/index', function ($request, $response, $args) {
             WHERE active = 1'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1460929747/noodles_c4gq9p.jpg";
+    sendImage($image);
     return $response->write(json_encode($check));
   }
   catch(PDOException $e){
