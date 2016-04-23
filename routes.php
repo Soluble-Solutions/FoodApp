@@ -89,7 +89,8 @@ $app->get('/index', function ($request, $response, $args) {
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
 
     $image = "http://res.cloudinary.com/doazmoxb7/image/upload/v1460929747/noodles_c4gq9p.jpg";
-    sendImage($image);
+    $result = sendImage($image);
+    echo $result;
     return $response->write(json_encode($check));
   }
   catch(PDOException $e){
