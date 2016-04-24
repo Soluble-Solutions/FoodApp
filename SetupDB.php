@@ -32,6 +32,7 @@ $dbname = "foodapp";
     hash VARCHAR(300) NOT NULL,
     email VARCHAR(100),
     phone VARCHAR(15),
+    admin TINYINT(1) NOT NULL,
     active TINYINT(1) NOT NULL
   );
 
@@ -149,13 +150,17 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = "INSERT into User (salt, hash, email, phone, active) values ('ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('n7pGScbbaGT327HBbzZYkHaGL3GHv3', '2cZvydbk5D4Vkgf3jacTvvvdemZAtx', 'lramirez1@hatena.ne.jp', '62-(892)331-3167', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('a95m4NpC3nyeM54RhTAR4n3Mn8pBAv', 'CWnxucn68vAVMBgEwCdP5WbSqCh6cf', 'ajames2@mozilla.org', '30-(851)903-0129', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('QSzgbk7kwR84GX8DfSgbEPYvffAGBD', 'QXkZecUm6E2m7WJcQLs83py4QweHqT', 'pshaw3@hostgator.com', '52-(295)439-0433', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('2dcCCMsCdTUZMyswWLryGxDC4zSdrL', 'DNTbCRVFbgfz88GaBE954rjGfFzdpR', 'kmills4@google.it', '51-(123)723-6056', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('RaGbWd2AMwzvDHewF4RRdUBTbFcaAz', 'jFTLm4JZssMAvaKRuwKRmeE2VtwGrc', 'pmyers5@youtu.be', '46-(671)666-8364', 1);";
-
+  $sql = "INSERT into User (salt, hash, email, phone, active, admin) values ('ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('n7pGScbbaGT327HBbzZYkHaGL3GHv3', '2cZvydbk5D4Vkgf3jacTvvvdemZAtx', 'lramirez1@hatena.ne.jp', '62-(892)331-3167', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('a95m4NpC3nyeM54RhTAR4n3Mn8pBAv', 'CWnxucn68vAVMBgEwCdP5WbSqCh6cf', 'ajames2@mozilla.org', '30-(851)903-0129', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('QSzgbk7kwR84GX8DfSgbEPYvffAGBD', 'QXkZecUm6E2m7WJcQLs83py4QweHqT', 'pshaw3@hostgator.com', '52-(295)439-0433', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('2dcCCMsCdTUZMyswWLryGxDC4zSdrL', 'DNTbCRVFbgfz88GaBE954rjGfFzdpR', 'kmills4@google.it', '51-(123)723-6056', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('RaGbWd2AMwzvDHewF4RRdUBTbFcaAz', 'jFTLm4JZssMAvaKRuwKRmeE2VtwGrc', 'pmyers5@youtu.be', '46-(671)666-8364', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','dterkuile@smu.edu','214-768-4351',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','wilkinsj@smu.edu','214-768-1494',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','tysonj@smu.edu','214-768-2336 ',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','cdelarosa@smu.edu','214-768-4349',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','genadmin@smu.edu','999-999-9999',1, 1);";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
