@@ -49,7 +49,15 @@ $dbname = "foodapp";
     active TINYINT(1) NOT NULL,
     meal TINYINT(1) NOT NULL
   );
-
+  CREATE TABLE IF NOT EXISTS User_Votes
+  (
+    entry_id INT  NOT NULL,
+    user_id INT  NOT NULL,		
+    upvote TINYINT(1),
+    downvote TINYINT(1),
+    CONSTRAINT User_Votes_pk PRIMARY KEY (entry_id,user_id),
+    CONSTRAINT User_Votes_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
+  );
   CREATE TABLE IF NOT EXISTS Comment
   (
     comment_id INT  NOT NULL  AUTO_INCREMENT PRIMARY KEY,
