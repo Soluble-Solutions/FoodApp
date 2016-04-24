@@ -32,6 +32,7 @@ $dbname = "foodapp";
     hash VARCHAR(300) NOT NULL,
     email VARCHAR(100),
     phone VARCHAR(15),
+    admin TINYINT(1) NOT NULL,
     active TINYINT(1) NOT NULL
   );
 
@@ -47,16 +48,6 @@ $dbname = "foodapp";
     user_id INT NOT NULL,
     active TINYINT(1) NOT NULL,
     meal TINYINT(1) NOT NULL
-  );
-
-  CREATE TABLE IF NOT EXISTS User_Votes
-  (
-    entry_id INT  NOT NULL,
-    user_id INT  NOT NULL,
-    upvote TINYINT(1),
-    downvote TINYINT(1),
-    CONSTRAINT User_Votes_pk PRIMARY KEY (entry_id,user_id),
-    CONSTRAINT User_Votes_Entry_fk FOREIGN KEY (entry_id) REFERENCES Entry (entry_id)
   );
 
   CREATE TABLE IF NOT EXISTS Comment
@@ -149,13 +140,17 @@ $dbname = "foodapp";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = "INSERT into User (salt, hash, email, phone, active) values ('ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('n7pGScbbaGT327HBbzZYkHaGL3GHv3', '2cZvydbk5D4Vkgf3jacTvvvdemZAtx', 'lramirez1@hatena.ne.jp', '62-(892)331-3167', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('a95m4NpC3nyeM54RhTAR4n3Mn8pBAv', 'CWnxucn68vAVMBgEwCdP5WbSqCh6cf', 'ajames2@mozilla.org', '30-(851)903-0129', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('QSzgbk7kwR84GX8DfSgbEPYvffAGBD', 'QXkZecUm6E2m7WJcQLs83py4QweHqT', 'pshaw3@hostgator.com', '52-(295)439-0433', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('2dcCCMsCdTUZMyswWLryGxDC4zSdrL', 'DNTbCRVFbgfz88GaBE954rjGfFzdpR', 'kmills4@google.it', '51-(123)723-6056', 1);
-  INSERT into User (salt, hash, email, phone, active) values ('RaGbWd2AMwzvDHewF4RRdUBTbFcaAz', 'jFTLm4JZssMAvaKRuwKRmeE2VtwGrc', 'pmyers5@youtu.be', '46-(671)666-8364', 1);";
-
+  $sql = "INSERT into User (salt, hash, email, phone, active, admin) values ('ELNjNsSgwbDXpKRFXa7NBjGuFyRVyP', 'ELjVIJe6P9w7g', 'arichardson0@cmu.edu', '591-(481)352-2469', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('n7pGScbbaGT327HBbzZYkHaGL3GHv3', '2cZvydbk5D4Vkgf3jacTvvvdemZAtx', 'lramirez1@hatena.ne.jp', '62-(892)331-3167', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('a95m4NpC3nyeM54RhTAR4n3Mn8pBAv', 'CWnxucn68vAVMBgEwCdP5WbSqCh6cf', 'ajames2@mozilla.org', '30-(851)903-0129', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('QSzgbk7kwR84GX8DfSgbEPYvffAGBD', 'QXkZecUm6E2m7WJcQLs83py4QweHqT', 'pshaw3@hostgator.com', '52-(295)439-0433', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('2dcCCMsCdTUZMyswWLryGxDC4zSdrL', 'DNTbCRVFbgfz88GaBE954rjGfFzdpR', 'kmills4@google.it', '51-(123)723-6056', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('RaGbWd2AMwzvDHewF4RRdUBTbFcaAz', 'jFTLm4JZssMAvaKRuwKRmeE2VtwGrc', 'pmyers5@youtu.be', '46-(671)666-8364', 1, 0);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','dterkuile@smu.edu','214-768-4351',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','wilkinsj@smu.edu','214-768-1494',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','tysonj@smu.edu','214-768-2336 ',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','cdelarosa@smu.edu','214-768-4349',1, 1);
+  INSERT into User (salt, hash, email, phone, active, admin) values ('$2a$10$2Qz5VHsQRoqQnKEQujxJ9g==','$2a$10$2Qz5VHsQRoqQnKEQujxJ9eqdQlRkURrGQYlJn5kVsg.mFsW/dJMMq','genadmin@smu.edu','999-999-9999',1, 1);";
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -175,6 +170,16 @@ $dbname = "foodapp";
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('butter-chicken', 76, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1460594328/Butter-Chicken.jpg', 1, 11, 3, 1, 3);
   INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('baked sweet potato', 38, '2008-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1460594473/sweet_potato.jpg', 2, 2, 4, 1, 3);
 
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('Cheese Pizza', 59, '2008-05-14 21:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461292058/cheese-pizza.jpg', 2, 3, 4, 1, 3);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('velvet cupcake', 91, '2012-05-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461292312/velvet-cupcake.jpg', 1, 1, 3, 1, 3);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('omelette', 61, '2009-12-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461292480/cheese-omelette.jpg', 2, 2, 4, 1, 3);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('grilled-tofu', 30, '2008-05-14 18:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461292709/grilled-tofu.jpg', 1, 2, 5, 1, 3);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('apple cinnamon scone', 92, '2012-05-14 08:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461293118/apple%20cinnamon%20scone.jpg', 2, 1, 6, 1, 1);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('grilled squash', 24, '2009-12-14 20:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461292969/grilled%20squash.jpg', 1, 2, 1, 1, 3);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('chocolate-brownie', 35, '2010-07-14 19:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461293253/Chocolate-Brownies.jpg', 2, 4, 2, 1, 3);
+  INSERT into Entry (title, votes, time_stamp, image, dh_id, station_id, user_id, active, meal) values ('Braised-Cabbage', 90, '2010-07-14 11:00', 'http://res.cloudinary.com/doazmoxb7/image/upload/v1461293353/Braised-Cabbage.jpg', 1, 5, 3, 1, 2);
+
+
   INSERT into Entry_Attributes (entry_id, attribute_id) values (1, 2);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (2, 2);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (3, 1);
@@ -189,6 +194,14 @@ $dbname = "foodapp";
   INSERT into Entry_Attributes (entry_id, attribute_id) values (12, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (13, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (14, 1);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (15, 1);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (16, 2);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (17, 1);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (18, 1);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (19, 2);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (20, 1);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (21, 2);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (22, 1);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (2, 3);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (4, 3);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (5, 4);
@@ -196,6 +209,15 @@ $dbname = "foodapp";
   INSERT into Entry_Attributes (entry_id, attribute_id) values (8, 3);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (10, 4);
   INSERT into Entry_Attributes (entry_id, attribute_id) values (14, 3);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (18, 3);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (19, 3);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (20, 4);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (21, 3);
+  INSERT into Entry_Attributes (entry_id, attribute_id) values (22, 4);
+
+
+
+
   ";
 
   $conn->query($sql);
@@ -231,9 +253,7 @@ $dbname = "foodapp";
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('great', '2008-10-14 20:41', 7, 40);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('yum', '2008-11-14 22:37', 8, 22);
   INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('disgusting', '2008-04-14 7:12', 9, 24);
-  INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('tasty', '2008-02-14 14:29', 10, 16);
-
-  INSERT int ";
+  INSERT into Comment (comment, time_stamp, entry_id, user_id) values ('tasty', '2008-02-14 14:29', 10, 16);";
 
   $conn->query($sql);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
