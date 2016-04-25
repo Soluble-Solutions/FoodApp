@@ -180,9 +180,10 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
 
-    $scope.applyFilters = function(original, User) {
+    $scope.applyFilters = function(original) {
       /* pass data into filters factory */
       console.log("APPLY FILTERS CALLED");
+      console.log("USERID: " + User.id);
       Filters.data = {};
       $scope.filterData = {
         "attribute_id":[],
