@@ -21,66 +21,6 @@ $app->get('/index', function ($request, $response, $args) {
             ORDER BY votes DESC'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
-
-    /*foreach($check as $entry)
-    {
-      $entry_id = $entry['entry_id'];
-      $ts = $entry['time_stamp'];
-      $dt = new DateTime($ts);
-      $date = $dt->format("Y-m-d");
-
-      if($date != $day)
-      {
-        $sql = "UPDATE Entry SET active = 0 WHERE entry_id = '$entry_id'";
-        $db->query($sql);
-      }
-    }
-
-    if($weekday == 0 || $weekday == 6)
-    {
-      if(strtotime($currentTime) >= strtotime("12:00:00") && strtotime($currentTime) <= strtotime("14:30:00"))
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
-        $db->query($sql);
-      }
-
-      else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
-        $db->query($sql);
-      }
-
-      else if(strtotime($currentTime) >= strtotime("22:00:00"))
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 3 OR meal = 2 OR meal 1';
-        $db->query($sql);
-      }
-
-    }
-
-    else
-    {
-      if(strtotime($currentTime) >= strtotime("10:30:00") && strtotime($currentTime) <= strtotime("14:30:00"))
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1';
-        $db->query($sql);
-      }
-
-      else if(strtotime($currentTime) >= strtotime("14:30:00") && strtotime($currentTime) <= strtotime("22:00:00"))
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 2 OR meal = 1';
-        $db->query($sql);
-      }
-
-      else if(strtotime($currentTime) >= strtotime("22:00:00"))
-      {
-        $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
-        $db->query($sql);
-      }
-
-    }*/
-
-
     $sql = 'SELECT *
             FROM Entry
             WHERE active = 1'; #ORDER BY votes DESC
@@ -595,6 +535,7 @@ $app->post('/filters',function($request,$response,$args)
           WHERE user_id = '$user_id'";
   $q = $db->query($sql);
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
+
   if((int)$isAdmin['admin'] == 0) //if User
   {
   /*  foreach($check as $entry)
@@ -719,7 +660,17 @@ $app->post('/filters',function($request,$response,$args)
             $test=false;
           }
         }
+
         if($test==true){
+
+          $entry_id = $row['entry_id'];
+          $sql = "SELECT comment
+                  FROM Comment
+                  WHERE entry_id = '$entry_id';";
+          $query = $db->query($sql);
+          $comments = $query->fetch(PDO::FETCH_ASSOC);
+          $comment = $comments['comment'];
+
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['title'] = $row['title'];
           $returnArr['votes'] = $row['votes'];
@@ -731,6 +682,7 @@ $app->post('/filters',function($request,$response,$args)
           $returnArr['active'] = $row['active'];
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['attribute_id'] = $row['attribute_id'];
+          $returnArr['comment'] = $comment;
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
         }
@@ -803,6 +755,15 @@ $app->post('/filters',function($request,$response,$args)
           }
         }
         if($test==true){
+
+          $entry_id = $row['entry_id'];
+          $sql = "SELECT comment
+                  FROM Comment
+                  WHERE entry_id = '$entry_id';";
+          $query = $db->query($sql);
+          $comments = $query->fetch(PDO::FETCH_ASSOC);
+          $comment = $comments['comment'];
+
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['title'] = $row['title'];
           $returnArr['votes'] = $row['votes'];
@@ -814,6 +775,7 @@ $app->post('/filters',function($request,$response,$args)
           $returnArr['active'] = $row['active'];
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['attribute_id'] = $row['attribute_id'];
+          $returnArr['comment'] = $comment;
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
         }
@@ -967,6 +929,15 @@ $app->post('/newFeed',function($request,$response,$args)
           }
         }
         if($test==true){
+
+          $entry_id = $row['entry_id'];
+          $sql = "SELECT comment
+                  FROM Comment
+                  WHERE entry_id = '$entry_id';";
+          $query = $db->query($sql);
+          $comments = $query->fetch(PDO::FETCH_ASSOC);
+          $comment = $comments['comment'];
+
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['title'] = $row['title'];
           $returnArr['votes'] = $row['votes'];
@@ -978,6 +949,7 @@ $app->post('/newFeed',function($request,$response,$args)
           $returnArr['active'] = $row['active'];
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['attribute_id'] = $row['attribute_id'];
+          $returnArr['comment'] = $comment;
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
         }
@@ -1052,6 +1024,15 @@ $app->post('/newFeed',function($request,$response,$args)
           }
         }
         if($test==true){
+
+          $entry_id = $row['entry_id'];
+          $sql = "SELECT comment
+                  FROM Comment
+                  WHERE entry_id = '$entry_id';";
+          $query = $db->query($sql);
+          $comments = $query->fetch(PDO::FETCH_ASSOC);
+          $comment = $comments['comment'];
+
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['title'] = $row['title'];
           $returnArr['votes'] = $row['votes'];
@@ -1062,7 +1043,9 @@ $app->post('/newFeed',function($request,$response,$args)
           $returnArr['user_id'] = $row['user_id'];
           $returnArr['active'] = $row['active'];
           $returnArr['entry_id'] = $row['entry_id'];
+          $returnArr['comment'] = $row['comment'];
           $returnArr['attribute_id'] = $row['attribute_id'];
+          $returnArr['comment'] = $comment;
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
         }
