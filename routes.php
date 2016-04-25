@@ -61,10 +61,11 @@ $app->put('/index',function($request,$response,$args)
   }
   else if($retr_votes < $votes) //if(!empty($retr_votes))//
   {
-    $sql = "SELECT upvote FROM User_Votes WHERE entry_id = '$entry_id' AND user_id = '$user_id'";
+    $sql = "SELECT * FROM User_Votes WHERE entry_id = '$entry_id' AND user_id = '$user_id'";
     $result = $db->query($sql);
     $arr = $result->fetch(PDO::FETCH_ASSOC);
     $upvoted = (int)$arr['upvote'];
+    $downvoted = (int)$arr['downvote'];
 
     if(empty($arr))
     {
@@ -83,8 +84,7 @@ $app->put('/index',function($request,$response,$args)
       $success = "true";
       $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
       $db->query($sql);
-      $sql = "UPDATE User_Votes SET upvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
-              UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+      $sql = "UPDATE User_Votes SET upvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
       $str = array("success" => $success, "votes" => $votes);
       return $response->write(json_encode($str));
@@ -92,22 +92,24 @@ $app->put('/index',function($request,$response,$args)
 
     else {
       $success = "true";
-      $sql = "UPDATE Entry SET votes = ('$retr_votes' - 1) WHERE entry_id = '$entry_id'";
+      $newvotes = $retr_votes - 1;
+      $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
       $db->query($sql);
-      $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
-              UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+      $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
-      $str = array("success" => $success, "votes" => $retr_votes-1);
+      $str = array("success" => $success, "votes" => $newvotes);
       return $response->write(json_encode($str));
     }
+
   }
 
   else
   {
-    $sql = "SELECT downvote FROM User_Votes WHERE entry_id = '$entry_id' AND user_id = '$user_id'";
+    $sql = "SELECT * FROM User_Votes WHERE entry_id = '$entry_id' AND user_id = '$user_id'";
     $result = $db->query($sql);
     $arr = $result->fetch(PDO::FETCH_ASSOC);
     $downvoted = (int)$arr['downvote'];
+    $upvoted = (int)$arr['upvote'];
 
     if(empty($arr))
     {
@@ -125,20 +127,19 @@ $app->put('/index',function($request,$response,$args)
       $success = "true";
       $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
       $db->query($sql);
-      $sql = "UPDATE User_Votes SET downvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
-              UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+      $sql = "UPDATE User_Votes SET downvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
       $str = array("success" => $success, "votes" => $votes);
       return $response->write(json_encode($str));
     }
     else {
       $success = "true";
-      $sql = "UPDATE Entry SET votes = ('$retr_votes' + 1) WHERE entry_id = '$entry_id'";
+      $newvotes = $retr_votes + 1;
+      $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
       $db->query($sql);
-      $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';
-              UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+      $sql = "UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
-      $str = array("success" => $success, "votes" => $retr_votes+1);
+      $str = array("success" => $success, "votes" => $newvotes);
       return $response->write(json_encode($str));
     }
   }
@@ -534,6 +535,7 @@ $app->post('/filters',function($request,$response,$args)
           WHERE user_id = '$user_id'";
   $q = $db->query($sql);
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
+
   if((int)$isAdmin['admin'] == 0) //if User
   {
   /*  foreach($check as $entry)
@@ -974,6 +976,7 @@ $app->post('/filters',function($request,$response,$args)
           $query=$db->query($sql);
           $comments=$query->fetch(PDO::FETCH_ASSOC);
           $comment=$comments['comment'];
+
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['title'] = $row['title'];
           $returnArr['votes'] = $row['votes'];
@@ -986,6 +989,7 @@ $app->post('/filters',function($request,$response,$args)
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['attribute_id'] = $row['attribute_id'];
           $returnArr['comment']=$comment;
+
 
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
@@ -1376,6 +1380,7 @@ $app->post('/newFeed',function($request,$response,$args)
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['attribute_id'] = $row['attribute_id'];
           $returnArr['comment']=$comment;
+
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
         }
@@ -1455,6 +1460,7 @@ $app->post('/newFeed',function($request,$response,$args)
           $query=$db->query($sql);
           $comments=$query->fetch(PDO::FETCH_ASSOC);
           $comment=$comments['comment'];
+
           $returnArr['entry_id'] = $row['entry_id'];
           $returnArr['title'] = $row['title'];
           $returnArr['votes'] = $row['votes'];
@@ -1465,8 +1471,10 @@ $app->post('/newFeed',function($request,$response,$args)
           $returnArr['user_id'] = $row['user_id'];
           $returnArr['active'] = $row['active'];
           $returnArr['entry_id'] = $row['entry_id'];
+          $returnArr['comment'] = $row['comment'];
           $returnArr['attribute_id'] = $row['attribute_id'];
           $returnArr['comment']=$comment;
+
           //echo json_encode($returnArr);
           $AssocArr[] = $returnArr;
         }
