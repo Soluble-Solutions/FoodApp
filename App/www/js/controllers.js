@@ -180,14 +180,15 @@ angular.module('starter.controllers', ['ngAnimate'])
     };
 
 
-    $scope.applyFilters = function(original) {
+    $scope.applyFilters = function(original, User) {
       /* pass data into filters factory */
       console.log("APPLY FILTERS CALLED");
       Filters.data = {};
       $scope.filterData = {
         "attribute_id":[],
         "station_id":[],
-        "dh_id":[]
+        "dh_id":[],
+        "user_id": User.id
       };
 
       console.log(Filters.data);
@@ -209,6 +210,7 @@ angular.module('starter.controllers', ['ngAnimate'])
         }
       }
 
+      $scope.filterData
       console.log("<--Filters.data AFTER-->");
       Filters.data = $scope.filterData;
       console.log(Filters.data);
@@ -334,6 +336,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     // Access to all the view config properties.
     // and one special property 'targetView'
     // viewConfig.targetView
+    push()
     $http({
       method: 'POST',
       url: "http://52.37.14.110/filters",
