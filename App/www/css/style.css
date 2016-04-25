@@ -7,35 +7,6 @@
   color:white;
 }
 
-i.button.button-icon.icon.ion-chevron-up:hover{
-  color: #236B8E;
-}
-
-i.button.button-icon.icon.ion-chevron-up{
-  position: absolute;
-  bottom: 2rem;
-  top: 5px;
-  margin-bottom: 1rem;
-  padding-bottom: 3rem;
-}
-
-i.button.button-icon.icon.ion-chevron-up:before{
-  position: relative;
-}
-
-i.button.button-icon.icon.ion-chevron-down{
-  position: absolute;
-  top: 2rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-
-}
-
-
-i.button.button-icon.icon.ion-chevron-down:hover{
-  color: #236B8E;
-}
-
 
 html{
   font-family: 'Raleway', sans-serif;
@@ -112,11 +83,18 @@ h3{
 #feedItem {
   border-bottom: none;
   padding: .25rem;
-  -webkit-transition: top 0.5s ease-in-out;
-  -moz-transition: top 0.5s ease-in-out;
-  transition: top 0.5s ease-in-out;
 }
 
+.f-move {
+    position: relative;
+    transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    opacity: 0;
+}
+
+.f-move.f-move-active {
+    opacity: 1;
+}
 
 #feedItemImage {
   max-height: 60%;
