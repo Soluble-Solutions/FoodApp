@@ -337,7 +337,6 @@ angular.module('starter.controllers', ['ngAnimate'])
     // Access to all the view config properties.
     // and one special property 'targetView'
     // viewConfig.targetView
-    push()
     $http({
       method: 'POST',
       url: "http://52.37.14.110/filters",

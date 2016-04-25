@@ -112,6 +112,9 @@ h3{
 #feedItem {
   border-bottom: none;
   padding: .25rem;
+  -webkit-transition: top 0.5s ease-in-out;
+  -moz-transition: top 0.5s ease-in-out;
+  transition: top 0.5s ease-in-out;
 }
 
 
