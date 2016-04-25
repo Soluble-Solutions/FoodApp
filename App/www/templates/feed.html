@@ -1,8 +1,9 @@
-<ion-view view-title="Yum!">
+<script src="C:/Users/argns_000/Documents/FoodApp/App/www/lib/angular-animate/angular-animate.js"></script>
+<ion-view view-title="GoodEats">
   <ion-content id="feed">
     <div class="list">
 
-      <div id="feedItem">
+      <div id="postButton">
         <div class="item item-icon text-center" ng-click="newPost()" id="newPostItem">
           <i class="icon ion-camera pull-xs-center"></i>
           New Post
@@ -10,7 +11,7 @@
       </div>
 
 
-      <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem">
+      <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem" ng-animate="'f'">
         <div class="item item-icon-right" id="feedItemTitle">
           <h2 id = "postTitle"><b>{{f.title}}</b></h2>
           <p ng-if = "f.dh_id == 1">
@@ -28,14 +29,17 @@
         </div>
         <div class="button-bar" id="votingBar">
           <a class="button button-icon-left button-assertive" id="votingButton" ng-click="downVote(f.entry_id, f.votes)">
-            <i class="icon ion-sad-outline" id="sadFace"> Yuck!</i>
+            <i class="icon ion-sad-outline" id="sadFace"></i>
           </a>
           <a class="button button-icon-left button-balanced" id="votingButton" ng-click="upVote(f.entry_id, f.votes)">
-            <i class="icon ion-happy-outline" id="happyFace"> Yum!</i>
+            <i class="icon ion-happy-outline" id="happyFace"></i>
           </a>
         </div>
         <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
           <img ng-src={{f.image}}>
+        </a>
+        <a class="item item-icon">
+          <h3><strong>{{f.comment}}</strong></h3>
         </a>
       </div>
     </div>
