@@ -85,7 +85,7 @@ h3{
   padding: .25rem;
 }
 
-.ng-enter, .ng-leave{
+#feedItem.ng-enter, #feedItem.ng-leave{
     position: relative;
     transition: all .75s ease-in;
     -webkit-transition: all .75s ease-in;
@@ -95,7 +95,7 @@ h3{
     left: 1px;
 }
 
-.ng-enter-active, .ng-leave-active {
+#feedItem.ng-enter-active, #feedItem.ng-leave-active {
     opacity: 1;
 }
 
