@@ -81,6 +81,11 @@ $app->put('/index',function($request,$response,$args)
 
     else if($upvoted == 0)
     {
+      if($downvoted == 1)
+      {
+        $sql = "UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+      }
       $success = "true";
       $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
       $db->query($sql);
@@ -91,6 +96,11 @@ $app->put('/index',function($request,$response,$args)
     }
 
     else {
+      if($downvoted == 1)
+      {
+        $sql = "UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+      }
       $success = "true";
       $newvotes = $retr_votes - 1;
       $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
@@ -124,6 +134,11 @@ $app->put('/index',function($request,$response,$args)
 
     else if($downvoted == 0)
     {
+      if($upvoted == 1)
+      {
+        $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+      }
       $success = "true";
       $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
       $db->query($sql);
@@ -133,6 +148,11 @@ $app->put('/index',function($request,$response,$args)
       return $response->write(json_encode($str));
     }
     else {
+      if($upvoted == 1)
+      {
+        $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+      }
       $success = "true";
       $newvotes = $retr_votes + 1;
       $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
