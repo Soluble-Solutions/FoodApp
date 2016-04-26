@@ -21,6 +21,7 @@ $app->get('/index', function ($request, $response, $args) {
             ORDER BY votes DESC'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
     $sql = 'SELECT *
             FROM Entry
             WHERE active = 1'; #ORDER BY votes DESC
@@ -557,14 +558,27 @@ $app->post('/filters',function($request,$response,$args)
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
   $user_id = $data['user_id'];
+
   $sql = "SELECT admin
           FROM User
           WHERE user_id = '$user_id'";
   $q = $db->query($sql);
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
 
+
   if((int)$isAdmin['admin'] == 0) //if User
   {
+    $currentTime = date("H:i:s");
+    $weekday = date('w');
+    $day = date("Y-m-d");
+
+    $sql = 'SELECT entry_id,time_stamp
+            FROM Entry
+            WHERE active = 1
+            ORDER BY votes DESC'; #ORDER BY votes DESC
+    $q = $db->query($sql);
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
     foreach($check as $entry)
     {
       $entry_id = $entry['entry_id'];
@@ -1252,6 +1266,7 @@ $app->post('/newFeed',function($request,$response,$args)
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
   $user_id = $data['user_id'];
+
   $sql = "SELECT admin
           FROM User
           WHERE user_id = '$user_id'";
@@ -1259,8 +1274,19 @@ $app->post('/newFeed',function($request,$response,$args)
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
   if((int)$isAdmin['admin'] == 0) //if not admin
   {
-  foreach($check as $entry)
-  {
+    $currentTime = date("H:i:s");
+    $weekday = date('w');
+    $day = date("Y-m-d");
+
+    $sql = 'SELECT entry_id,time_stamp
+            FROM Entry
+            WHERE active = 1
+            ORDER BY votes DESC'; #ORDER BY votes DESC
+    $q = $db->query($sql);
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach($check as $entry)
+    {
     $entry_id = $entry['entry_id'];
     $ts = $entry['time_stamp'];
     $dt = new DateTime($ts);
@@ -1271,7 +1297,7 @@ $app->post('/newFeed',function($request,$response,$args)
       $sql = "UPDATE Entry SET active = 0 WHERE entry_id = '$entry_id'";
       $db->query($sql);
     }
-  }
+    }
 
   if($weekday == 0 || $weekday == 6)
   {
