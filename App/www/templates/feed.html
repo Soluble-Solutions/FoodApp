@@ -11,7 +11,7 @@
       </div>
 
 
-      <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem" ng-animate="'f'">
+      <div ng-repeat="f in feedData | orderBy: -votes" id="feedItem" class = "repeat-animation">
         <div class="item item-icon-right" id="feedItemTitle">
           <h2 id = "postTitle"><b>{{f.title}}</b></h2>
           <p ng-if = "f.dh_id == 1">
