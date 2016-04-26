@@ -83,25 +83,23 @@ h3{
 #feedItem {
   border-bottom: none;
   padding: .25rem;
-  height: 31rem;
 }
 
-.ng-enter, .ng-leave, .ng-hide {
+.ng-enter, .ng-leave{
     position: relative;
-    transition: all .5s ease-in-out;
-    -webkit-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    opacity: 0;
-    left: 2px;
-    height: 0px;
+    transition: all .75s ease-in;
+    -webkit-transition: all .75s ease-in;
+    -o-transition: all .75s ease-in;
+    -moz-transition: all .75s ease-in;
+    opacity: .05;
+    left: 1px;
 }
 
 .ng-enter-active, .ng-leave-active {
     opacity: 1;
 }
 
-.view-slide-in.ng-enter {
+/*.view-slide-in.ng-enter {
   transition: all 1s ease;
   -webkit-transition:all 1s ease;
   -moz-transition: all 1s ease;
@@ -129,7 +127,7 @@ h3{
   top:0;
   left:0;
   opacity:0;
-}
+}*/
 
 /*.repeat-animation.ng-enter,
 .repeat-animation.ng-leave,
