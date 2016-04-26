@@ -341,29 +341,28 @@ angular.module('starter.controllers', ['ngAnimate'])
   console.log("User.id: " + User.id);
   $scope.applyFilters(1);
 
-  $rootScope.$on('$viewContentLoading', function(event, viewConfig){
-    // Access to all the view config properties.
-    // and one special property 'targetView'
-    // viewConfig.targetView
-    $http({
-      method: 'POST',
-      url: "http://52.37.14.110/filters",
-      data: Filters.data
-    })
-    .then(function(response) {
-          console.log(response);
-          $scope.responseData=response.data;
-          angular.forEach($scope.responseData,function(value,index){
-                    value.votes = parseInt(value.votes);
-                })
-          FeedData.data = $scope.responseData;
-          $scope.feedData = FeedData.data;
+  // $rootScope.$on('$viewContentLoading', function(event, viewConfig){
+  //   // Access to all the view config properties.
+  //   // and one special property 'targetView'
+  //   // viewConfig.targetView
+  //   $http({
+  //     method: 'POST',
+  //     url: "http://52.37.14.110/filters",
+  //     data: Filters.data
+  //   })
+  //   .then(function(response) {
+  //         console.log(response);
+  //         $scope.responseData=response.data;
+  //         angular.forEach($scope.responseData,function(value,index){
+  //                   value.votes = parseInt(value.votes);
+  //               })
+  //         FeedData.data = $scope.responseData;
 
-          //DEBUGGING//
-          console.log("Status = " + response.statusText);
-          console.log($scope.feedData);
-      });
-  });
+  //         //DEBUGGING//
+  //         console.log("Status = " + response.statusText);
+  //         console.log($scope.feedData);
+  //     });
+  // });
 
   $scope.newPost = function() {
     console.log("newPost() called");
@@ -376,14 +375,17 @@ angular.module('starter.controllers', ['ngAnimate'])
     data: Filters.data
   })
   .then(function(response) {
-      console.log(response.data);
       $scope.responseData=response.data;
       angular.forEach($scope.responseData,function(value,index){
                 value.votes = parseInt(value.votes);
             })
-      console.log($scope.responseData);
       FeedData.data = $scope.responseData;
       $scope.feedData = FeedData.data;
+      console.log("feedData.length = " + FeedData.data.length);
+      for(var i = 0; i < FeedData.data.length; i++){
+        $scope.feedData[i].upFlag = false;
+        $scope.feedData[i].downFlag = false;
+      }
       //DEBUGGING//
       console.log("Status = " + response.statusText);
       console.log($scope.feedData);
@@ -409,9 +411,25 @@ angular.module('starter.controllers', ['ngAnimate'])
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data.success);
-      if(response.data.success=="false"){
-        alert("Sorry, you already voted up on this!");
+      for(var x=0; x < $scope.feedData.length; x++)
+      {            
+
+        if($scope.feedData[x].entry_id == entryID){
+          console.log("index: " + x);
+           if($scope.feedData[x].upFlag == true){
+              $scope.feedData[x].upFlag = false;
+              console.log("in for upFlag was true");
+            }
+           else{
+             $scope.feedData[x].upFlag = true;
+             console.log("in for upFlag was false");
+           }
+           $scope.feedData[x].downFlag = false;
+        }
       }
+      // if(response.data.success=="false"){
+      //   alert("Sorry, you already voted up on this!");
+      // }
       console.log(response.data.votes);
       $http({
         method: 'POST',
@@ -419,21 +437,32 @@ angular.module('starter.controllers', ['ngAnimate'])
         data: Filters.data
       })
       .then(function(response) {
-          console.log(response.data);
           $scope.responseData=response.data;
           angular.forEach($scope.responseData,function(value,index){
                     value.votes = parseInt(value.votes);
                 })
-          console.log($scope.responseData);
           FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
+          for(x=0; x < $scope.feedData.length; x++)
+          {
+            if($scope.feedData[x].entry_id == entryID){
+              console.log("index: " + x);
+              if($scope.feedData[x].upFlag == true){
+                $scope.feedData[x].upFlag = false;
+                console.log("in for upFlag was true");
+              }
+              else{
+                $scope.feedData[x].upFlag = true;
+                console.log("in for upFlag was false");
+              }
+              $scope.feedData[x].downFlag = false;
+            }
+          }
           //DEBUGGING//
           console.log("Status = " + response.statusText);
           console.log($scope.feedData);
       });
     });
-    $scope.upIsDisabled = true;
-    $scope.downIsDisabled = false;
   }
 
   $scope.downVote = function(entryID, invotes) {
@@ -454,9 +483,19 @@ angular.module('starter.controllers', ['ngAnimate'])
     .then(function(response) {
       console.log("<-- DATA -->");
       console.log(response.data.success);
-      if(response.data.success=="false"){
-        alert("Sorry, you already voted down on this!");
+      for(var x=0; x < $scope.feedData.length; x++)
+      {
+        if($scope.feedData[x].entry_id == entryID){
+          if($scope.feedData[x].downFlag == true){
+            $scope.feedData[x].downFlag = false;
+          }
+          else{
+            $scope.feedData[x].downFlag = true;
+          }
+          $scope.feedData[x].upFlag = false;
+        }
       }
+     
       console.log(response.data.votes);
       $http({
         method: 'POST',
@@ -469,16 +508,25 @@ angular.module('starter.controllers', ['ngAnimate'])
           angular.forEach($scope.responseData,function(value,index){
                     value.votes = parseInt(value.votes);
                 })
-          console.log($scope.responseData);
           FeedData.data = $scope.responseData;
           $scope.feedData = FeedData.data;
+          for(var x=0; x < $scope.feedData.length; x++)
+          {
+            if($scope.feedData[x].entry_id == entryID){
+              if($scope.feedData[x].downFlag == true){
+                $scope.feedData[x].downFlag = false;
+              }
+              else{
+                $scope.feedData[x].downFlag = true;
+              }
+              $scope.feedData[x].upFlag = false;
+            }
+          }
           //DEBUGGING//
           console.log("Status = " + response.statusText);
           console.log($scope.feedData);
       });
     });
-    $scope.downIsDisabled = true;
-    $scope.upIsDisabled = false;
   }
 })
 
