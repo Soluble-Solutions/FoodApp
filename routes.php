@@ -218,7 +218,8 @@ $app->post('/entry',function($request,$response,$args)
 
   $sql = "SELECT title
           FROM Entry
-          WHERE dh_id = '$dh_id' AND station_id = '$station_id' AND active = 1";
+          WHERE dh_id = '$dh_id' AND station_id = '$station_id'";
+          //AND active = 1";
   $q = $db->query($sql);
   $currentEntries = $q->fetchAll(PDO::FETCH_ASSOC);
 
