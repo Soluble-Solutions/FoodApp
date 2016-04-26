@@ -970,7 +970,6 @@ $app->post('/filters',function($request,$response,$args)
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
                     ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -995,7 +994,6 @@ $app->post('/filters',function($request,$response,$args)
               FROM Entry  e
               INNER JOIN Entry_Attributes ea
               ON e.entry_id = ea.entry_id
-              WHERE e.active=1
               ORDER BY e.votes DESC";
       $q = $db->query($sql);
 
@@ -1030,7 +1028,6 @@ $app->post('/filters',function($request,$response,$args)
                     ON e.entry_id = ea.entry_id
                     WHERE e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
                     ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -1063,7 +1060,6 @@ $app->post('/filters',function($request,$response,$args)
                       ON e.entry_id = ea.entry_id
                       WHERE e.dh_id='$dhnum'
                       AND ea.attribute_id='$attributenum'
-                      AND e.active=1
                       ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -1095,7 +1091,6 @@ $app->post('/filters',function($request,$response,$args)
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
                   AND e.station_id='$stationnum'
-                  AND e.active=1
                   ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -1124,7 +1119,6 @@ $app->post('/filters',function($request,$response,$args)
                   INNER JOIN Entry_Attributes ea
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
-                  AND e.active=1
                   ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -1155,7 +1149,6 @@ $app->post('/filters',function($request,$response,$args)
                   INNER JOIN Entry_Attributes ea
                   ON e.entry_id = ea.entry_id
                   WHERE e.station_id='$stationnum'
-                  AND e.active=1
                   ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -1185,7 +1178,6 @@ $app->post('/filters',function($request,$response,$args)
                       INNER JOIN Entry_Attributes ea
                       ON e.entry_id = ea.entry_id
                       WHERE ea.attribute_id='$attributenum'
-                      AND e.active=1
                       ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -1676,7 +1668,6 @@ $app->post('/newFeed',function($request,$response,$args)
                       WHERE e.dh_id='$dhnum'
                       AND e.station_id='$stationnum'
                       AND ea.attribute_id='$attributenum'
-                      AND e.active=1
                       ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
@@ -1701,7 +1692,6 @@ $app->post('/newFeed',function($request,$response,$args)
                 FROM Entry  e
                 INNER JOIN Entry_Attributes ea
                 ON e.entry_id = ea.entry_id
-                WHERE e.active=1
                 ORDER BY e.votes DESC";
         $q = $db->query($sql);
 
@@ -1736,7 +1726,6 @@ $app->post('/newFeed',function($request,$response,$args)
                       ON e.entry_id = ea.entry_id
                       WHERE e.station_id='$stationnum'
                       AND ea.attribute_id='$attributenum'
-                      AND e.active=1
                       ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
@@ -1769,7 +1758,6 @@ $app->post('/newFeed',function($request,$response,$args)
                         ON e.entry_id = ea.entry_id
                         WHERE e.dh_id='$dhnum'
                         AND ea.attribute_id='$attributenum'
-                        AND e.active=1
                         ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
@@ -1801,7 +1789,6 @@ $app->post('/newFeed',function($request,$response,$args)
                     ON e.entry_id = ea.entry_id
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
-                    AND e.active=1
                     ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
@@ -1830,7 +1817,6 @@ $app->post('/newFeed',function($request,$response,$args)
                     INNER JOIN Entry_Attributes ea
                     ON e.entry_id = ea.entry_id
                     WHERE e.dh_id='$dhnum'
-                    AND e.active=1
                     ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
@@ -1861,7 +1847,6 @@ $app->post('/newFeed',function($request,$response,$args)
                     INNER JOIN Entry_Attributes ea
                     ON e.entry_id = ea.entry_id
                     WHERE e.station_id='$stationnum'
-                    AND e.active=1
                     ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
@@ -1891,7 +1876,6 @@ $app->post('/newFeed',function($request,$response,$args)
                         INNER JOIN Entry_Attributes ea
                         ON e.entry_id = ea.entry_id
                         WHERE ea.attribute_id='$attributenum'
-                        AND e.active=1
                         ORDER BY e.votes DESC";
               $q = $db->query($sql);
 
