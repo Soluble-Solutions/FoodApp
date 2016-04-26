@@ -296,12 +296,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.newPostForm = {};
 
-
   $scope.submitData = function() {
-<<<<<<< HEAD
-
-=======
->>>>>>> bb131dccece7aef2753a8f97ffb93fc1064f9537
     console.log("submitData() called...");
     console.log("user_id: " + User.id);
     console.log("-- DATA --");
@@ -407,7 +402,7 @@ angular.module('starter.controllers', ['ngAnimate'])
     })
     .then(function(response) {
       for(var x=0; x < $scope.feedData.length; x++)
-      {            
+      {
 
         if($scope.feedData[x].entry_id == entryID){
            if($scope.feedData[x].upFlag == true){
@@ -475,7 +470,7 @@ angular.module('starter.controllers', ['ngAnimate'])
           $scope.feedData[x].upFlag = false;
         }
       }
-     
+
       $http({
         method: 'POST',
         url: "http://52.37.14.110/filters",
