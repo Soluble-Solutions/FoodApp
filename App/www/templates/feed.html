@@ -38,8 +38,8 @@
         <a class="item item-image" href="#/app/feed/{{f.entry_id}}" id="feedItemImage">
           <img ng-src={{f.image}}>
         </a>
-        <a class="item item-icon">
-          <h2><strong>{{f.comment}}</strong></h2>
+        <a class="item item-icon" ng-if="f.comment">
+          <p><strong>Description:</strong> {{f.comment}}</p>
         </a>
       </div>
     </div>

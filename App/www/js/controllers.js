@@ -305,7 +305,9 @@ angular.module('starter.controllers', ['ngAnimate'])
         $scope.selectedTags.push({"attribute":$scope.tags[i].value})
       }
     }
-    console.log($scope.selectedTags);
+    console.log("selectedTags: " + $scope.selectedTags);
+
+    /* Post information to API */
     $http({
       method: 'POST',
       url: "http://52.37.14.110/entry",
@@ -323,7 +325,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log(response);
       $state.go("app.feed");
     });
-  }
+  } /* end submitData() function */
 
 })
 

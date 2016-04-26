@@ -37,14 +37,15 @@ h3{
   border-radius: 6px;
 }
 
-.button.button-dark{
-  border-radius: 6px;
-}
-
 .item-icon{
   border-radius: 6px;
 }
 */
+
+.button.button-dark{
+  border-radius: 6px;
+}
+
 
 #commentBox{
   width: 40%;
