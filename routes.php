@@ -17,13 +17,16 @@ $app->get('/index', function ($request, $response, $args) {
 
     $sql = 'SELECT entry_id,time_stamp
             FROM Entry
-            WHERE active = 1
+
             ORDER BY votes DESC'; #ORDER BY votes DESC
+            //  WHERE active = 1
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
     $sql = 'SELECT *
             FROM Entry
-            WHERE active = 1'; #ORDER BY votes DESC
+            '; #ORDER BY votes DESC
+            //WHERE active = 1
+
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
     return $response->write(json_encode($check));
