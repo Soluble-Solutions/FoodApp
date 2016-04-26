@@ -83,24 +83,29 @@ $app->put('/index',function($request,$response,$args)
     {
       if($downvoted == 1)
       {
+        $newvotes = $votes + 1;
         $sql = "UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+        $success = "true";
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
+      else
+      {
+        $newvotes = $votes;
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
         $db->query($sql);
       }
       $success = "true";
-      $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-      $db->query($sql);
+
       $sql = "UPDATE User_Votes SET upvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
-      $str = array("success" => $success, "votes" => $votes);
+      $str = array("success" => $success, "votes" => $newvotes);
       return $response->write(json_encode($str));
     }
 
-    else {
-      if($downvoted == 1)
-      {
-        $sql = "UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
-        $db->query($sql);
-      }
+    else
+    {
       $success = "true";
       $newvotes = $retr_votes - 1;
       $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
@@ -136,23 +141,25 @@ $app->put('/index',function($request,$response,$args)
     {
       if($upvoted == 1)
       {
+        $newvotes = $votes - 1;
         $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
+      else
+      {
+        $newvotes = $votes;
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
         $db->query($sql);
       }
       $success = "true";
-      $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-      $db->query($sql);
       $sql = "UPDATE User_Votes SET downvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
-      $str = array("success" => $success, "votes" => $votes);
+      $str = array("success" => $success, "votes" => $newvotes);
       return $response->write(json_encode($str));
     }
     else {
-      if($upvoted == 1)
-      {
-        $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
-        $db->query($sql);
-      }
       $success = "true";
       $newvotes = $retr_votes + 1;
       $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
@@ -558,7 +565,7 @@ $app->post('/filters',function($request,$response,$args)
 
   if((int)$isAdmin['admin'] == 0) //if User
   {
-  /*  foreach($check as $entry)
+    foreach($check as $entry)
     {
       $entry_id = $entry['entry_id'];
       $ts = $entry['time_stamp'];
@@ -614,7 +621,7 @@ $app->post('/filters',function($request,$response,$args)
       {
         $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
         $db->query($sql);
-      }*/
+      }
 
   /*    echo gettype($dh_id);
       echo is_array($dh_id) ? 'Array' : 'not an Array';
@@ -1041,7 +1048,7 @@ $app->post('/newFeed',function($request,$response,$args)
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
   if((int)$isAdmin['admin'] == 0) //if not admin
   {
-  /*foreach($check as $entry)
+  foreach($check as $entry)
   {
     $entry_id = $entry['entry_id'];
     $ts = $entry['time_stamp'];
@@ -1096,7 +1103,7 @@ $app->post('/newFeed',function($request,$response,$args)
       $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
       $db->query($sql);
     }
-  */
+
 
   /*    echo gettype($dh_id);
       echo is_array($dh_id) ? 'Array' : 'not an Array';
