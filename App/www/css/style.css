@@ -87,10 +87,10 @@ h3{
 
 #feedItem.ng-enter, #feedItem.ng-leave{
     position: relative;
-    transition: all .75s ease-in;
-    -webkit-transition: all .75s ease-in;
-    -o-transition: all .75s ease-in;
-    -moz-transition: all .75s ease-in;
+    transition: all 1s ease-in;
+    -webkit-transition: all 1s ease-in;
+    -o-transition: all 1s ease-in;
+    -moz-transition: all 1s ease-in;
     opacity: .05;
     left: 1px;
 }
