@@ -134,7 +134,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
   }
-  
+
   if(User.status=="0") {
     $state.go("login");
   }
@@ -359,6 +359,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       console.log("<--Response from New Post call -->");
       console.log(response);
       $state.go("app.feed");
+      alert("Your post was created! Scroll down to view");
     });
   } /* end submitData() function */
 
