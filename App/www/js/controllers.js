@@ -229,6 +229,7 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 
 .controller('PostCtrl', function($scope, $http, User, $cordovaCamera, $state) {
+  
   $scope.takeImage = function () {
     var options = {
       quality: 90,
@@ -288,11 +289,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.newPostForm = {};
 
-  $scope.submitPicture = function() {
-    cloudinary.v2.uploader.unsigned_upload("sample.jpg", "unsigned_1",
-    { cloud_name: "demo" },
-    function(error, result) {console.log(result) });
-  }
 
   $scope.submitData = function() {
     console.log("submitData() called...");
