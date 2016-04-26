@@ -218,7 +218,7 @@ $app->post('/entry',function($request,$response,$args)
 
   $sql = "SELECT title
           FROM Entry
-          WHERE dh_id = '$dh_id' AND station_id = '$station_id'";
+          WHERE dh_id = '$dh_id' AND station_id = '$station_id';";
           //AND active = 1";
   $q = $db->query($sql);
   $currentEntries = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -292,7 +292,8 @@ $app->post('/entry',function($request,$response,$args)
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     #GET Entry_id from first line (based on image)
-    $sql = "SELECT entry_id FROM Entry WHERE image = '$image' AND time_stamp = '$time_stamp';";
+    $sql = "SELECT entry_id FROM Entry WHERE image = '$image';";
+    // AND time_stamp = '$time_stamp';";
     $query = $db->query($sql);
     $arr = $query->fetch(PDO::FETCH_ASSOC);
     $entry_id = (int)$arr['entry_id'];
