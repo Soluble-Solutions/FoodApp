@@ -39,9 +39,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   $scope.form = {};
 
   $scope.login = function() {
-    console.log("login() called");
-    console.log("DATA: ");
-    console.log("email: " + $scope.form.email + " & password: " + $scope.form.password);
     $http({
       method: 'PUT',
       url: 'http://52.37.14.110/login',
@@ -52,15 +49,11 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log(response.data);
       $scope.loginSuccess = response.data.success;
-      console.log("Success: " + $scope.loginSuccess);
 
       if($scope.loginSuccess == "true") {
         User.id = response.data.user_id;
         User.status="1";
-        console.log("User.id: " + User.id);
-        console.log("User.status: " + User.status);
         $state.go("app.feed");
       } else {
         $scope.messageDB = response.data.messageDB;
@@ -70,9 +63,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   }
 
   $scope.signUp = function() {
-    console.log("signUp() called");
-    console.log("DATA: ");
-    console.log("email: " + $scope.form.newEmail + " & password: " + $scope.form.newPassword + " & phone: " + $scope.form.newPhone);
     $http({
       method: 'POST',
       url: "http://52.37.14.110/registration",
@@ -83,14 +73,10 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log(response.data);
       $scope.loginSuccess = response.data.success;
-      console.log("Success: " + $scope.loginSuccess);
       if($scope.loginSuccess == "true") {
         User.id = response.data.user_id;
         User.status="1";
-        console.log("User.id: " + User.id);
-        console.log("User.status: " + User.status);
         $scope.closeModal();
         $state.go("app.feed");
       } else {
@@ -115,12 +101,10 @@ angular.module('starter.controllers', ['ngAnimate'])
     })
 
     $scope.openModal = function() {
-      console.log("openModal called!");
       $scope.modal.show();
     };
 
     $scope.closeModal = function() {
-      console.log("closeModal() called");
       $scope.modal.hide();
     };
 
@@ -142,7 +126,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
     $scope.displayHalls = true;
     $scope.toggleHalls = function() {
-      console.log("toggleHalls() called");
       $scope.displayHalls = $scope.displayHalls === false ? true: false;
     };
 
@@ -163,7 +146,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
     $scope.displayStations = true;
     $scope.toggleStations = function() {
-      console.log("toggleStations() called");
       $scope.displayStations = $scope.displayStations === false ? true: false;
     };
 
@@ -175,15 +157,11 @@ angular.module('starter.controllers', ['ngAnimate'])
     ];
     $scope.displayTags = true;
     $scope.toggleTags = function() {
-      console.log("toggleTags() called");
       $scope.displayTags = $scope.displayTags === false ? true: false;
     };
 
 
     $scope.applyFilters = function(original) {
-      /* pass data into filters factory */
-      console.log("APPLY FILTERS CALLED");
-      console.log("USERID: " + User.id);
       Filters.data = {};
       $scope.filterData = {
         "attribute_id":[],
@@ -192,7 +170,6 @@ angular.module('starter.controllers', ['ngAnimate'])
         "user_id": User.id
       };
 
-      console.log(Filters.data);
 
       var i;
       for(i=0; i<4; i++){
@@ -212,9 +189,7 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
 
       $scope.filterData
-      console.log("<--Filters.data AFTER-->");
       Filters.data = $scope.filterData;
-      console.log(Filters.data);
       $state.go("app.post");
       $state.go("app.feed");
       if(!original){
@@ -337,8 +312,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 
 .controller('FeedCtrl', function($scope, $http, $state, FeedData, $stateParams, $window, $location, User, $rootScope, Filters) {
-  console.log("Reached Feed.");
-  console.log("User.id: " + User.id);
   $scope.applyFilters(1);
 
   // $rootScope.$on('$viewContentLoading', function(event, viewConfig){
@@ -365,7 +338,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   // });
 
   $scope.newPost = function() {
-    console.log("newPost() called");
     $state.go('app.post');
   }
 
@@ -381,23 +353,15 @@ angular.module('starter.controllers', ['ngAnimate'])
             })
       FeedData.data = $scope.responseData;
       $scope.feedData = FeedData.data;
-      console.log("feedData.length = " + FeedData.data.length);
       for(var i = 0; i < FeedData.data.length; i++){
         $scope.feedData[i].upFlag = false;
         $scope.feedData[i].downFlag = false;
       }
       //DEBUGGING//
-      console.log("Status = " + response.statusText);
-      console.log($scope.feedData);
   });
 
   $scope.upVote = function(entryID, invotes) {
-    console.log("upVote() called!");
-    console.log(entryID);
-    console.log(invotes);
     $scope.upvote = parseInt(invotes-0+1);
-
-    console.log($scope.upvote);
 
     $http({
       method: 'PUT',
@@ -409,20 +373,15 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log("<-- DATA -->");
-      console.log(response.data.success);
       for(var x=0; x < $scope.feedData.length; x++)
       {            
 
         if($scope.feedData[x].entry_id == entryID){
-          console.log("index: " + x);
            if($scope.feedData[x].upFlag == true){
               $scope.feedData[x].upFlag = false;
-              console.log("in for upFlag was true");
             }
            else{
              $scope.feedData[x].upFlag = true;
-             console.log("in for upFlag was false");
            }
            $scope.feedData[x].downFlag = false;
         }
@@ -430,7 +389,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       // if(response.data.success=="false"){
       //   alert("Sorry, you already voted up on this!");
       // }
-      console.log(response.data.votes);
       $http({
         method: 'POST',
         url: "http://52.37.14.110/filters",
@@ -446,31 +404,22 @@ angular.module('starter.controllers', ['ngAnimate'])
           for(x=0; x < $scope.feedData.length; x++)
           {
             if($scope.feedData[x].entry_id == entryID){
-              console.log("index: " + x);
               if($scope.feedData[x].upFlag == true){
                 $scope.feedData[x].upFlag = false;
-                console.log("in for upFlag was true");
               }
               else{
                 $scope.feedData[x].upFlag = true;
-                console.log("in for upFlag was false");
               }
               $scope.feedData[x].downFlag = false;
             }
           }
           //DEBUGGING//
-          console.log("Status = " + response.statusText);
-          console.log($scope.feedData);
       });
     });
   }
 
   $scope.downVote = function(entryID, invotes) {
-    console.log("downVote() called!");
-    console.log(entryID);
-    console.log(invotes);
     $scope.downvote = parseFloat(invotes-1);
-    console.log($scope.downvote);
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
@@ -481,8 +430,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log("<-- DATA -->");
-      console.log(response.data.success);
       for(var x=0; x < $scope.feedData.length; x++)
       {
         if($scope.feedData[x].entry_id == entryID){
@@ -496,14 +443,12 @@ angular.module('starter.controllers', ['ngAnimate'])
         }
       }
      
-      console.log(response.data.votes);
       $http({
         method: 'POST',
         url: "http://52.37.14.110/filters",
         data: Filters.data
       })
       .then(function(response) {
-          console.log(response.data);
           $scope.responseData=response.data;
           angular.forEach($scope.responseData,function(value,index){
                     value.votes = parseInt(value.votes);
@@ -523,8 +468,6 @@ angular.module('starter.controllers', ['ngAnimate'])
             }
           }
           //DEBUGGING//
-          console.log("Status = " + response.statusText);
-          console.log($scope.feedData);
       });
     });
   }
@@ -540,24 +483,16 @@ angular.module('starter.controllers', ['ngAnimate'])
     method: 'GET',
     url: $scope.commentURL
   }).then(function(response){
-    console.log("response.data: \n" + response.data);
     $scope.comments = response.data.comment;
     $scope.entryData = [];
-    console.log("response.data.entry: \n" + response.data.entry);
     $scope.entryData = response.data.entry[0];
-    console.log("entryData: " + $scope.entryData);
     $scope.votes = $scope.entryData.votes;
     $scope.upvote = parseFloat($scope.votes) + 1;
-    console.log($scope.upvote);
     $scope.downvote = $scope.votes - 1;
-    console.log(response.data);
   });
 
 
   $scope.submitComment = function() {
-    console.log("submitComment() called");
-    console.log("with text: ");
-    console.log($scope.newComment);
     if($scope.newComment != ''){
       $http({
         method: 'POST',
@@ -568,32 +503,24 @@ angular.module('starter.controllers', ['ngAnimate'])
           user_id: User.id
         }
       }).then(function(response){
-        console.log("<-- post success -->");
-        console.log(response.data);
         $http({
           method: 'GET',
           url: $scope.commentURL
         }).then(function(response){
-          console.log(response);
           $scope.$parent.comments = response.data.comment;
           $scope.entryData = [];
           $scope.entryData = response.data.entry[0];
-          console.log("entryData: " + $scope.entryData);
           $scope.votes = $scope.entryData.votes;
           $scope.upvote = parseFloat($scope.votes) + 1;
-          console.log($scope.upvote);
           $scope.downvote = $scope.votes - 1;
-          console.log(response.data);
         });
       });
       $scope.newComment = '';
-      console.log($scope.comments);
     }
   }
 
 
   $scope.upVote = function() {
-    console.log("upVote() called!");
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
@@ -604,8 +531,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log("<-- DATA -->");
-      console.log(response.data);
       $http({
         method: 'GET',
         url: $scope.commentURL
@@ -613,12 +538,9 @@ angular.module('starter.controllers', ['ngAnimate'])
         $scope.comments = response.data.comment;
         $scope.entryData = [];
         $scope.entryData = response.data.entry[0];
-        console.log("entryData: " + $scope.entryData);
         $scope.votes = $scope.entryData.votes;
         $scope.upvote = parseFloat($scope.votes) + 1;
-        console.log($scope.upvote);
         $scope.downvote = $scope.votes - 1;
-        console.log(response.data);
       });
     });
     $scope.upIsDisabled = true;
@@ -627,7 +549,6 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 
   $scope.downVote = function() {
-    console.log("downVote() called!");
     $http({
       method: 'PUT',
       url: "http://52.37.14.110/index",
@@ -638,8 +559,6 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log("<-- DATA -->");
-      console.log(response.data);
       $http({
         method: 'GET',
         url: $scope.commentURL
@@ -647,16 +566,11 @@ angular.module('starter.controllers', ['ngAnimate'])
         $scope.comments = response.data.comment;
         $scope.entryData = [];
         $scope.entryData = response.data.entry[0];
-        console.log("entryData: " + $scope.entryData);
         $scope.votes = $scope.entryData.votes;
         $scope.upvote = parseFloat($scope.votes) + 1;
-        console.log($scope.upvote);
         $scope.downvote = $scope.votes - 1;
-        console.log(response.data);
       });
     });
-    $scope.downIsDisabled = true;
-    $scope.upIsDisabled = false;
   }
 
   // var oldSoftBack = $rootScope.$ionicGoBack;
@@ -672,7 +586,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   //   oldSoftBack();
   // };
 
-  console.log("Reached DetailsCtrl");
 })
 
 
@@ -680,9 +593,6 @@ angular.module('starter.controllers', ['ngAnimate'])
   $scope.userID = User.id;
 
   $scope.logout = function() {
-    console.log("logout() called");
-    console.log("DATA: ");
-    console.log("user_id: " + User.id);
     $http({
       method: 'PUT',
       url: 'http://52.37.14.110/logout',
@@ -692,16 +602,11 @@ angular.module('starter.controllers', ['ngAnimate'])
       }
     })
     .then(function(response) {
-      console.log(response.data);
       $scope.loginSuccess = response.data.success;
-      console.log("Success: " + $scope.loginSuccess);
 
       if($scope.loginSuccess == "true") {
-        console.log("Logged out");
         User.status="0";
-        console.log("User.status: " + User.status);
         User.id="";
-        console.log("User.id: " + User.id);
         $state.go("login");
       } else {
         $scope.messageDB = response.data.messageDB;
