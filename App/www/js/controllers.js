@@ -103,6 +103,38 @@ angular.module('starter.controllers', ['ngAnimate'])
 
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, $http, User, Filters) {
+
+  $scope.logout = function() {
+    console.log("logout() called");
+    console.log("DATA: ");
+    console.log("user_id: " + User.id);
+    $http({
+      method: 'PUT',
+      url: 'http://52.37.14.110/logout',
+      contentType: "application/json",
+      data: {
+        user_id: User.id
+      }
+    })
+    .then(function(response) {
+      console.log(response.data);
+      $scope.loginSuccess = response.data.success;
+      console.log("Success: " + $scope.loginSuccess);
+
+      if($scope.loginSuccess == "true") {
+        console.log("Logged out");
+        User.status="0";
+        console.log("User.status: " + User.status);
+        User.id="";
+        console.log("User.id: " + User.id);
+        $state.go("login");
+      } else {
+        $scope.messageDB = response.data.messageDB;
+        alert("Logout Failed: " + $scope.messageDB);
+      }
+    })
+  }
+  
   if(User.status=="0") {
     $state.go("login");
   }
@@ -290,12 +322,7 @@ angular.module('starter.controllers', ['ngAnimate'])
   $scope.newPostForm = {};
 
 
-  $scope.submitData = function(imgURI) {
-
-    cloudinary.v2.uploader.upload(imgURI,
-      function(error, result) {
-        alert(result);
-      });
+  $scope.submitData = function() {
 
     console.log("submitData() called...");
     console.log("user_id: " + User.id);
