@@ -628,8 +628,9 @@ $app->post('/filters',function($request,$response,$args)
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
+
                     ORDER BY e.votes DESC";
+                    //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -653,8 +654,9 @@ $app->post('/filters',function($request,$response,$args)
               FROM Entry  e
               INNER JOIN Entry_Attributes ea
               ON e.entry_id = ea.entry_id
-              WHERE e.active=1
+
               ORDER BY e.votes DESC";
+              //WHERE e.active=1
       $q = $db->query($sql);
 
       $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -688,8 +690,9 @@ $app->post('/filters',function($request,$response,$args)
                     ON e.entry_id = ea.entry_id
                     WHERE e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
+
                     ORDER BY e.votes DESC";
+                    //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -721,8 +724,9 @@ $app->post('/filters',function($request,$response,$args)
                       ON e.entry_id = ea.entry_id
                       WHERE e.dh_id='$dhnum'
                       AND ea.attribute_id='$attributenum'
-                      AND e.active=1
+
                       ORDER BY e.votes DESC";
+                      //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -753,8 +757,9 @@ $app->post('/filters',function($request,$response,$args)
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
                   AND e.station_id='$stationnum'
-                  AND e.active=1
+
                   ORDER BY e.votes DESC";
+                  //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -782,8 +787,9 @@ $app->post('/filters',function($request,$response,$args)
                   INNER JOIN Entry_Attributes ea
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
-                  AND e.active=1
+
                   ORDER BY e.votes DESC";
+                  //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -813,8 +819,9 @@ $app->post('/filters',function($request,$response,$args)
                   INNER JOIN Entry_Attributes ea
                   ON e.entry_id = ea.entry_id
                   WHERE e.station_id='$stationnum'
-                  AND e.active=1
+
                   ORDER BY e.votes DESC";
+                  //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -843,8 +850,9 @@ $app->post('/filters',function($request,$response,$args)
                       INNER JOIN Entry_Attributes ea
                       ON e.entry_id = ea.entry_id
                       WHERE ea.attribute_id='$attributenum'
-                      AND e.active=1
+
                       ORDER BY e.votes DESC";
+                      //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -935,8 +943,9 @@ $app->post('/filters',function($request,$response,$args)
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
+
                     ORDER BY e.votes DESC";
+                    //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1110,8 +1119,9 @@ $app->post('/newFeed',function($request,$response,$args)
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
+
                     ORDER BY e.votes DESC";
+                    //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1135,8 +1145,9 @@ $app->post('/newFeed',function($request,$response,$args)
               FROM Entry  e
               INNER JOIN Entry_Attributes ea
               ON e.entry_id = ea.entry_id
-              WHERE e.active=1
+
               ORDER BY e.votes DESC";
+              //WHERE e.active=1
       $q = $db->query($sql);
 
       $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1170,8 +1181,9 @@ $app->post('/newFeed',function($request,$response,$args)
                     ON e.entry_id = ea.entry_id
                     WHERE e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
+
                     ORDER BY e.votes DESC";
+                    //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1203,8 +1215,9 @@ $app->post('/newFeed',function($request,$response,$args)
                       ON e.entry_id = ea.entry_id
                       WHERE e.dh_id='$dhnum'
                       AND ea.attribute_id='$attributenum'
-                      AND e.active=1
+
                       ORDER BY e.votes DESC";
+                      //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1235,8 +1248,9 @@ $app->post('/newFeed',function($request,$response,$args)
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
                   AND e.station_id='$stationnum'
-                  AND e.active=1
+
                   ORDER BY e.votes DESC";
+                  //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1264,8 +1278,9 @@ $app->post('/newFeed',function($request,$response,$args)
                   INNER JOIN Entry_Attributes ea
                   ON e.entry_id = ea.entry_id
                   WHERE e.dh_id='$dhnum'
-                  AND e.active=1
+
                   ORDER BY e.votes DESC";
+                  //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1295,8 +1310,9 @@ $app->post('/newFeed',function($request,$response,$args)
                   INNER JOIN Entry_Attributes ea
                   ON e.entry_id = ea.entry_id
                   WHERE e.station_id='$stationnum'
-                  AND e.active=1
+
                   ORDER BY e.votes DESC";
+                  //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1325,8 +1341,9 @@ $app->post('/newFeed',function($request,$response,$args)
                       INNER JOIN Entry_Attributes ea
                       ON e.entry_id = ea.entry_id
                       WHERE ea.attribute_id='$attributenum'
-                      AND e.active=1
+
                       ORDER BY e.votes DESC";
+                      //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
@@ -1419,8 +1436,9 @@ $app->post('/newFeed',function($request,$response,$args)
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
+
                     ORDER BY e.time_stamp DESC";
+                    //AND e.active=1
             $q = $db->query($sql);
 
             $val =$q->fetchAll(PDO::FETCH_ASSOC);
