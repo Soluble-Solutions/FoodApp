@@ -28,10 +28,10 @@
           </div>
         </div>
         <div class="button-bar" id="votingBar">
-          <a class="button button-icon-left button-assertive" id="votingButton" ng-click="downVote(f.entry_id, f.votes)">
+          <a class="button button-icon-left button-assertive" id="votingButton" ng-click="downVote(f.entry_id, f.votes)" ng-disabled = "f.downFlag == true">
             <i class="icon ion-sad-outline" id="sadFace"></i>
           </a>
-          <a class="button button-icon-left button-balanced" id="votingButton" ng-click="upVote(f.entry_id, f.votes)">
+          <a class="button button-icon-left button-balanced" id="votingButton" ng-click="upVote(f.entry_id, f.votes)" ng-disabled = "f.upFlag == true">
             <i class="icon ion-happy-outline" id="happyFace"></i>
           </a>
         </div>
