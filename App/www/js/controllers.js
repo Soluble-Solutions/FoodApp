@@ -288,6 +288,10 @@ angular.module('starter.controllers', ['ngAnimate'])
 
   $scope.newPostForm = {};
 
+  $scope.submitPicture = function() {
+    
+  }
+
   $scope.submitData = function() {
     console.log("submitData() called...");
     console.log("user_id: " + User.id);
