@@ -21,6 +21,7 @@ $app->get('/index', function ($request, $response, $args) {
             ORDER BY votes DESC'; #ORDER BY votes DESC
     $q = $db->query($sql);
     $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
     $sql = 'SELECT *
             FROM Entry
             WHERE active = 1'; #ORDER BY votes DESC
@@ -81,16 +82,31 @@ $app->put('/index',function($request,$response,$args)
 
     else if($upvoted == 0)
     {
+      if($downvoted == 1)
+      {
+        $newvotes = $votes + 1;
+        $sql = "UPDATE User_Votes SET downvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+        $success = "true";
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
+      else
+      {
+        $newvotes = $votes;
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
       $success = "true";
-      $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-      $db->query($sql);
+
       $sql = "UPDATE User_Votes SET upvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
-      $str = array("success" => $success, "votes" => $votes);
+      $str = array("success" => $success, "votes" => $newvotes);
       return $response->write(json_encode($str));
     }
 
-    else {
+    else
+    {
       $success = "true";
       $newvotes = $retr_votes - 1;
       $sql = "UPDATE Entry SET votes = ('$newvotes') WHERE entry_id = '$entry_id'";
@@ -124,12 +140,24 @@ $app->put('/index',function($request,$response,$args)
 
     else if($downvoted == 0)
     {
+      if($upvoted == 1)
+      {
+        $newvotes = $votes - 1;
+        $sql = "UPDATE User_Votes SET upvote = 0 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
+        $db->query($sql);
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
+      else
+      {
+        $newvotes = $votes;
+        $sql = "UPDATE Entry SET votes = '$newvotes' WHERE entry_id = '$entry_id'";
+        $db->query($sql);
+      }
       $success = "true";
-      $sql = "UPDATE Entry SET votes = '$votes' WHERE entry_id = '$entry_id'";
-      $db->query($sql);
       $sql = "UPDATE User_Votes SET downvote = 1 WHERE entry_id = '$entry_id' AND user_id = '$user_id';";
       $db->query($sql);
-      $str = array("success" => $success, "votes" => $votes);
+      $str = array("success" => $success, "votes" => $newvotes);
       return $response->write(json_encode($str));
     }
     else {
@@ -530,15 +558,28 @@ $app->post('/filters',function($request,$response,$args)
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
   $user_id = $data['user_id'];
+
   $sql = "SELECT admin
           FROM User
           WHERE user_id = '$user_id'";
   $q = $db->query($sql);
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
 
+
   if((int)$isAdmin['admin'] == 0) //if User
   {
-  /*  foreach($check as $entry)
+    $currentTime = date("H:i:s");
+    $weekday = date('w');
+    $day = date("Y-m-d");
+
+    $sql = 'SELECT entry_id,time_stamp
+            FROM Entry
+            WHERE active = 1
+            ORDER BY votes DESC'; #ORDER BY votes DESC
+    $q = $db->query($sql);
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach($check as $entry)
     {
       $entry_id = $entry['entry_id'];
       $ts = $entry['time_stamp'];
@@ -594,15 +635,9 @@ $app->post('/filters',function($request,$response,$args)
       {
         $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
         $db->query($sql);
-      }*/
+      }
+    }
 
-  /*    echo gettype($dh_id);
-      echo is_array($dh_id) ? 'Array' : 'not an Array';
-      echo "\n";
-      */
-
-      //echo "dh";
-    //  $query = $db->query(('$dh_id','$station_id','$attribute_id'));
     $arr=array();
     if(!empty($dh_id)&&!empty($station_id)&&!empty($attribute_id))
     {
@@ -913,6 +948,8 @@ $app->post('/filters',function($request,$response,$args)
 }
   else { // if Admin
     $arr=array();
+    if(!empty($dh_id)&&!empty($station_id)&&!empty($attribute_id))
+    {
       foreach($dh_id as $dh)
      {
         foreach($station_id as $station)
@@ -933,7 +970,6 @@ $app->post('/filters',function($request,$response,$args)
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
                     AND ea.attribute_id='$attributenum'
-                    AND e.active=1
                     ORDER BY e.votes DESC";
             $q = $db->query($sql);
 
@@ -951,57 +987,265 @@ $app->post('/filters',function($request,$response,$args)
           }
         }
       }
-    //  usort($arr, "entry_id");
-      $AssocArr = array();
-      $returnArr = array();
-      usort($arr, function($a, $b) {
-      return $b['votes'] - $a['votes'];
-      });
-    //  echo gettype($arr);
-    //  print_r(array_values($arr));
-      $counter=0;
-      foreach($arr as $row){
-        $counter+=1;
-        $test=true;
+    }
+    elseif (empty($dh_id)&&empty($station_id)&&empty($attribute_id)) {
 
-        for($i=0;$i<$counter-1;$i++){
-          if($row['entry_id']==$arr[$i]['entry_id'])
+      $sql = "SELECT *
+              FROM Entry  e
+              INNER JOIN Entry_Attributes ea
+              ON e.entry_id = ea.entry_id
+              ORDER BY e.votes DESC";
+      $q = $db->query($sql);
+
+      $val =$q->fetchAll(PDO::FETCH_ASSOC);
+      //echo gettype($q);
+      //echo "!!!!!";
+    //  echo gettype($val);
+    //  $arr[]=$val;
+      foreach($val as $row)
+      {
+        $arr[]=$row;
+      //  print_r(array_values($arr));
+      }
+
+
+    }
+    elseif (empty($dh_id)&&!empty($station_id)&&!empty($attribute_id)){
+
+        foreach($station_id as $station)
+        {
+          foreach($attribute_id as $attribute)
           {
-            $test=false;
+          //  echo $attribute;
+            //print_r(array_values($attribute_id));
+          //  echo gettype($dh);
+
+            $stationnum =(int)$station['station'];
+            $attributenum =(int)$attribute['attribute'];
+            $sql = "SELECT *
+                    FROM Entry  e
+                    INNER JOIN Entry_Attributes ea
+                    ON e.entry_id = ea.entry_id
+                    WHERE e.station_id='$stationnum'
+                    AND ea.attribute_id='$attributenum'
+                    ORDER BY e.votes DESC";
+            $q = $db->query($sql);
+
+            $val =$q->fetchAll(PDO::FETCH_ASSOC);
+            //echo gettype($q);
+            //echo "!!!!!";
+          //  echo gettype($val);
+          //  $arr[]=$val;
+            foreach($val as $row)
+            {
+              $arr[]=$row;
+            //  print_r(array_values($arr));
+            }
+          //  print_r(array_values($arr));
           }
         }
-        if($test==true){
-          $entry_id=$row['entry_id'];
-          $sql="SELECT comment FROM Comment WHERE entry_id='$entry_id';";
-          $query=$db->query($sql);
-          $comments=$query->fetch(PDO::FETCH_ASSOC);
-          $comment=$comments['comment'];
 
-          $returnArr['entry_id'] = $row['entry_id'];
-          $returnArr['title'] = $row['title'];
-          $returnArr['votes'] = $row['votes'];
-          $returnArr['time_stamp'] = $row['time_stamp'];
-          $returnArr['image'] = $row['image'];
-          $returnArr['dh_id'] = $row['dh_id'];
-          $returnArr['station_id'] = $row['station_id'];
-          $returnArr['user_id'] = $row['user_id'];
-          $returnArr['active'] = $row['active'];
-          $returnArr['entry_id'] = $row['entry_id'];
-          $returnArr['attribute_id'] = $row['attribute_id'];
-          $returnArr['comment']=$comment;
+    }
+    elseif (!empty($dh_id)&&empty($station_id)&&!empty($attribute_id)) {
+      foreach($dh_id as $dh)
+     {
+           foreach($attribute_id as $attribute)
+           {
+             $dhnum =(int)$dh['dh'];
 
+             $attributenum =(int)$attribute['attribute'];
+             $sql = "SELECT *
+                      FROM Entry  e
+                      INNER JOIN Entry_Attributes ea
+                      ON e.entry_id = ea.entry_id
+                      WHERE e.dh_id='$dhnum'
+                      AND ea.attribute_id='$attributenum'
+                      ORDER BY e.votes DESC";
+            $q = $db->query($sql);
 
-          //echo json_encode($returnArr);
-          $AssocArr[] = $returnArr;
+            $val =$q->fetchAll(PDO::FETCH_ASSOC);
+            //echo gettype($q);
+            //echo "!!!!!";
+          //  echo gettype($val);
+          //  $arr[]=$val;
+            foreach($val as $row)
+            {
+              $arr[]=$row;
+            //  print_r(array_values($arr));
+            }
+          //  print_r(array_values($arr));
+          }
+        }
+
+    }
+    elseif (!empty($dh_id)&&!empty($station_id)&&empty($attribute_id)) {
+      foreach($dh_id as $dh)
+     {
+        foreach($station_id as $station)
+        {
+          $dhnum =(int)$dh['dh'];
+          $stationnum =(int)$station['station'];
+          $sql = "SELECT *
+                  FROM Entry  e
+                  INNER JOIN Entry_Attributes ea
+                  ON e.entry_id = ea.entry_id
+                  WHERE e.dh_id='$dhnum'
+                  AND e.station_id='$stationnum'
+                  ORDER BY e.votes DESC";
+            $q = $db->query($sql);
+
+            $val =$q->fetchAll(PDO::FETCH_ASSOC);
+            //echo gettype($q);
+            //echo "!!!!!";
+          //  echo gettype($val);
+          //  $arr[]=$val;
+            foreach($val as $row)
+            {
+              $arr[]=$row;
+            //  print_r(array_values($arr));
+            }
+          //  print_r(array_values($arr));
+
         }
       }
-  /*
-      $success = "true";
-      $str = array("success" => $success, "data" => $arr);
-      //echo $success;
-      return $response->write(json_encode($str));
-      */
-      return $response->write(json_encode($AssocArr));
+
+    }
+    elseif (!empty($dh_id)&&empty($station_id)&&empty($attribute_id)) {
+      foreach($dh_id as $dh)
+     {
+          $dhnum =(int)$dh['dh'];
+          $sql = "SELECT *
+                  FROM Entry  e
+                  INNER JOIN Entry_Attributes ea
+                  ON e.entry_id = ea.entry_id
+                  WHERE e.dh_id='$dhnum'
+                  ORDER BY e.votes DESC";
+            $q = $db->query($sql);
+
+            $val =$q->fetchAll(PDO::FETCH_ASSOC);
+            //echo gettype($q);
+            //echo "!!!!!";
+          //  echo gettype($val);
+          //  $arr[]=$val;
+            foreach($val as $row)
+            {
+              $arr[]=$row;
+            //  print_r(array_values($arr));
+            }
+          //  print_r(array_values($arr));
+
+
+      }
+
+    }
+    elseif (empty($dh_id)&&!empty($station_id)&&empty($attribute_id)) {
+
+        foreach($station_id as $station)
+        {
+
+          $stationnum =(int)$station['station'];
+          $sql = "SELECT *
+                  FROM Entry  e
+                  INNER JOIN Entry_Attributes ea
+                  ON e.entry_id = ea.entry_id
+                  WHERE e.station_id='$stationnum'
+                  ORDER BY e.votes DESC";
+            $q = $db->query($sql);
+
+            $val =$q->fetchAll(PDO::FETCH_ASSOC);
+            //echo gettype($q);
+            //echo "!!!!!";
+          //  echo gettype($val);
+          //  $arr[]=$val;
+            foreach($val as $row)
+            {
+              $arr[]=$row;
+            //  print_r(array_values($arr));
+            }
+          //  print_r(array_values($arr));
+
+        }
+
+
+    }
+    elseif (empty($dh_id)&&empty($station_id)&&!empty($attribute_id)) {
+        foreach($attribute_id as $attribute)
+           {
+
+             $attributenum =(int)$attribute['attribute'];
+             $sql = "SELECT *
+                      FROM Entry  e
+                      INNER JOIN Entry_Attributes ea
+                      ON e.entry_id = ea.entry_id
+                      WHERE ea.attribute_id='$attributenum'
+                      ORDER BY e.votes DESC";
+            $q = $db->query($sql);
+
+            $val =$q->fetchAll(PDO::FETCH_ASSOC);
+            //echo gettype($q);
+            //echo "!!!!!";
+          //  echo gettype($val);
+          //  $arr[]=$val;
+            foreach($val as $row)
+            {
+              $arr[]=$row;
+            //  print_r(array_values($arr));
+            }
+          //  print_r(array_values($arr));
+          }
+
+
+    }
+
+
+
+    //  usort($arr, "entry_id");
+    $AssocArr = array();
+    $returnArr = array();
+    usort($arr, function($a, $b) {
+    return $b['votes'] - $a['votes'];
+    });
+  //  echo gettype($arr);
+  //  print_r(array_values($arr));
+    $counter=0;
+    foreach($arr as $row){
+      $counter+=1;
+      $test=true;
+      for($i=0;$i<$counter-1;$i++){
+        if($row['entry_id']==$arr[$i]['entry_id'])
+        {
+          $test=false;
+        }
+      }
+      if($test==true){
+        $entry_id=$row['entry_id'];
+        $sql="SELECT comment FROM Comment WHERE entry_id='$entry_id';";
+        $query=$db->query($sql);
+        $comments=$query->fetch(PDO::FETCH_ASSOC);
+        $comment=$comments['comment'];
+        $returnArr['entry_id'] = $row['entry_id'];
+        $returnArr['title'] = $row['title'];
+        $returnArr['votes'] = $row['votes'];
+        $returnArr['time_stamp'] = $row['time_stamp'];
+        $returnArr['image'] = $row['image'];
+        $returnArr['dh_id'] = $row['dh_id'];
+        $returnArr['station_id'] = $row['station_id'];
+        $returnArr['user_id'] = $row['user_id'];
+        $returnArr['active'] = $row['active'];
+        $returnArr['entry_id'] = $row['entry_id'];
+        $returnArr['attribute_id'] = $row['attribute_id'];
+        $returnArr['comment']=$comment;
+        //echo json_encode($returnArr);
+        $AssocArr[] = $returnArr;
+      }
+    }
+/*
+    $success = "true";
+    $str = array("success" => $success, "data" => $arr);
+    //echo $success;
+    return $response->write(json_encode($str));
+    */
+    return $response->write(json_encode($AssocArr));
   }
 
 });
@@ -1014,6 +1258,7 @@ $app->post('/newFeed',function($request,$response,$args)
   $station_id = $data['station_id'];
   $attribute_id =$data['attribute_id'];
   $user_id = $data['user_id'];
+
   $sql = "SELECT admin
           FROM User
           WHERE user_id = '$user_id'";
@@ -1021,8 +1266,19 @@ $app->post('/newFeed',function($request,$response,$args)
   $isAdmin = $q->fetch(PDO::FETCH_ASSOC);
   if((int)$isAdmin['admin'] == 0) //if not admin
   {
-  /*foreach($check as $entry)
-  {
+    $currentTime = date("H:i:s");
+    $weekday = date('w');
+    $day = date("Y-m-d");
+
+    $sql = 'SELECT entry_id,time_stamp
+            FROM Entry
+            WHERE active = 1
+            ORDER BY votes DESC'; #ORDER BY votes DESC
+    $q = $db->query($sql);
+    $check = $q->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach($check as $entry)
+    {
     $entry_id = $entry['entry_id'];
     $ts = $entry['time_stamp'];
     $dt = new DateTime($ts);
@@ -1033,7 +1289,7 @@ $app->post('/newFeed',function($request,$response,$args)
       $sql = "UPDATE Entry SET active = 0 WHERE entry_id = '$entry_id'";
       $db->query($sql);
     }
-  }
+    }
 
   if($weekday == 0 || $weekday == 6)
   {
@@ -1076,22 +1332,15 @@ $app->post('/newFeed',function($request,$response,$args)
       $sql = 'UPDATE Entry SET active = 0 WHERE meal = 1 OR meal = 2 OR meal = 3';
       $db->query($sql);
     }
-  */
+  }
 
-  /*    echo gettype($dh_id);
-      echo is_array($dh_id) ? 'Array' : 'not an Array';
-      echo "\n";
-      */
-
-      //echo "dh";
-    //  $query = $db->query(('$dh_id','$station_id','$attribute_id'));
-    $arr=array();
-    if(!empty($dh_id)&&!empty($station_id)&&!empty($attribute_id))
+  $arr=array();
+  if(!empty($dh_id)&&!empty($station_id)&&!empty($attribute_id))
+  {
+    foreach($dh_id as $dh)
     {
-      foreach($dh_id as $dh)
-     {
-        foreach($station_id as $station)
-        {
+      foreach($station_id as $station)
+      {
           foreach($attribute_id as $attribute)
           {
           //  echo $attribute;
@@ -1397,89 +1646,304 @@ $app->post('/newFeed',function($request,$response,$args)
   else //if admin, don't do time/day fading
   {
     $arr=array();
+    if(!empty($dh_id)&&!empty($station_id)&&!empty($attribute_id))
+    {
       foreach($dh_id as $dh)
-     {
+      {
         foreach($station_id as $station)
         {
-          foreach($attribute_id as $attribute)
-          {
-          //  echo $attribute;
-            //print_r(array_values($attribute_id));
-          //  echo gettype($dh);
+            foreach($attribute_id as $attribute)
+            {
+            //  echo $attribute;
+              //print_r(array_values($attribute_id));
+            //  echo gettype($dh);
 
+              $dhnum =(int)$dh['dh'];
+              $stationnum =(int)$station['station'];
+              $attributenum =(int)$attribute['attribute'];
+              $sql = "SELECT *
+                      FROM Entry  e
+                      INNER JOIN Entry_Attributes ea
+                      ON e.entry_id = ea.entry_id
+                      WHERE e.dh_id='$dhnum'
+                      AND e.station_id='$stationnum'
+                      AND ea.attribute_id='$attributenum'
+                      ORDER BY e.votes DESC";
+              $q = $db->query($sql);
+
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
+            //  print_r(array_values($arr));
+            }
+          }
+        }
+      }
+      elseif (empty($dh_id)&&empty($station_id)&&empty($attribute_id)) {
+
+        $sql = "SELECT *
+                FROM Entry  e
+                INNER JOIN Entry_Attributes ea
+                ON e.entry_id = ea.entry_id
+                ORDER BY e.votes DESC";
+        $q = $db->query($sql);
+
+        $val =$q->fetchAll(PDO::FETCH_ASSOC);
+        //echo gettype($q);
+        //echo "!!!!!";
+      //  echo gettype($val);
+      //  $arr[]=$val;
+        foreach($val as $row)
+        {
+          $arr[]=$row;
+        //  print_r(array_values($arr));
+        }
+
+
+      }
+      elseif (empty($dh_id)&&!empty($station_id)&&!empty($attribute_id)){
+
+          foreach($station_id as $station)
+          {
+            foreach($attribute_id as $attribute)
+            {
+            //  echo $attribute;
+              //print_r(array_values($attribute_id));
+            //  echo gettype($dh);
+
+              $stationnum =(int)$station['station'];
+              $attributenum =(int)$attribute['attribute'];
+              $sql = "SELECT *
+                      FROM Entry  e
+                      INNER JOIN Entry_Attributes ea
+                      ON e.entry_id = ea.entry_id
+                      WHERE e.station_id='$stationnum'
+                      AND ea.attribute_id='$attributenum'
+                      ORDER BY e.votes DESC";
+              $q = $db->query($sql);
+
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
+            //  print_r(array_values($arr));
+            }
+          }
+
+      }
+      elseif (!empty($dh_id)&&empty($station_id)&&!empty($attribute_id)) {
+        foreach($dh_id as $dh)
+       {
+             foreach($attribute_id as $attribute)
+             {
+               $dhnum =(int)$dh['dh'];
+
+               $attributenum =(int)$attribute['attribute'];
+               $sql = "SELECT *
+                        FROM Entry  e
+                        INNER JOIN Entry_Attributes ea
+                        ON e.entry_id = ea.entry_id
+                        WHERE e.dh_id='$dhnum'
+                        AND ea.attribute_id='$attributenum'
+                        ORDER BY e.votes DESC";
+              $q = $db->query($sql);
+
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
+            //  print_r(array_values($arr));
+            }
+          }
+
+      }
+      elseif (!empty($dh_id)&&!empty($station_id)&&empty($attribute_id)) {
+        foreach($dh_id as $dh)
+       {
+          foreach($station_id as $station)
+          {
             $dhnum =(int)$dh['dh'];
             $stationnum =(int)$station['station'];
-            $attributenum =(int)$attribute['attribute'];
             $sql = "SELECT *
                     FROM Entry  e
                     INNER JOIN Entry_Attributes ea
                     ON e.entry_id = ea.entry_id
                     WHERE e.dh_id='$dhnum'
                     AND e.station_id='$stationnum'
-                    AND ea.attribute_id='$attributenum'
-                    AND e.active=1
-                    ORDER BY e.time_stamp DESC";
-            $q = $db->query($sql);
+                    ORDER BY e.votes DESC";
+              $q = $db->query($sql);
 
-            $val =$q->fetchAll(PDO::FETCH_ASSOC);
-            //echo gettype($q);
-            //echo "!!!!!";
-          //  echo gettype($val);
-          //  $arr[]=$val;
-            foreach($val as $row)
-            {
-              $arr[]=$row;
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
+            //  print_r(array_values($arr));
+
+          }
+        }
+
+      }
+      elseif (!empty($dh_id)&&empty($station_id)&&empty($attribute_id)) {
+        foreach($dh_id as $dh)
+       {
+            $dhnum =(int)$dh['dh'];
+            $sql = "SELECT *
+                    FROM Entry  e
+                    INNER JOIN Entry_Attributes ea
+                    ON e.entry_id = ea.entry_id
+                    WHERE e.dh_id='$dhnum'
+                    ORDER BY e.votes DESC";
+              $q = $db->query($sql);
+
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
+            //  print_r(array_values($arr));
+
+
+        }
+
+      }
+      elseif (empty($dh_id)&&!empty($station_id)&&empty($attribute_id)) {
+
+          foreach($station_id as $station)
+          {
+
+            $stationnum =(int)$station['station'];
+            $sql = "SELECT *
+                    FROM Entry  e
+                    INNER JOIN Entry_Attributes ea
+                    ON e.entry_id = ea.entry_id
+                    WHERE e.station_id='$stationnum'
+                    ORDER BY e.votes DESC";
+              $q = $db->query($sql);
+
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
+            //  print_r(array_values($arr));
+
+          }
+
+
+      }
+      elseif (empty($dh_id)&&empty($station_id)&&!empty($attribute_id)) {
+          foreach($attribute_id as $attribute)
+             {
+
+               $attributenum =(int)$attribute['attribute'];
+               $sql = "SELECT *
+                        FROM Entry  e
+                        INNER JOIN Entry_Attributes ea
+                        ON e.entry_id = ea.entry_id
+                        WHERE ea.attribute_id='$attributenum'
+                        ORDER BY e.votes DESC";
+              $q = $db->query($sql);
+
+              $val =$q->fetchAll(PDO::FETCH_ASSOC);
+              //echo gettype($q);
+              //echo "!!!!!";
+            //  echo gettype($val);
+            //  $arr[]=$val;
+              foreach($val as $row)
+              {
+                $arr[]=$row;
+              //  print_r(array_values($arr));
+              }
             //  print_r(array_values($arr));
             }
-          //  print_r(array_values($arr));
-          }
-        }
+
+
       }
-    //  usort($arr, "entry_id");
-      $AssocArr = array();
-      $returnArr = array();
-      usort($arr, function($a, $b) {
-      return $b['time_stamp'] - $a['time_stamp'];
-      });
-    //  echo gettype($arr);
-    //  print_r(array_values($arr));
-      $counter=0;
-      foreach($arr as $row){
-        $counter+=1;
-        $test=true;
 
-        for($i=0;$i<$counter-1;$i++){
-          if($row['entry_id']==$arr[$i]['entry_id'])
-          {
-            $test=false;
+      //  usort($arr, "entry_id");
+        $AssocArr = array();
+        $returnArr = array();
+        usort($arr, function($a, $b) {
+        return $b['time_stamp'] - $a['time_stamp'];
+        });
+      //  echo gettype($arr);
+      //  print_r(array_values($arr));
+        $counter=0;
+        foreach($arr as $row){
+          $counter+=1;
+          $test=true;
+
+          for($i=0;$i<$counter-1;$i++){
+            if($row['entry_id']==$arr[$i]['entry_id'])
+            {
+              $test=false;
+            }
           }
-        }
-        if($test==true){
-          $entry_id=$row['entry_id'];
-          $sql="SELECT comment FROM Comment WHERE entry_id='$entry_id';";
-          $query=$db->query($sql);
-          $comments=$query->fetch(PDO::FETCH_ASSOC);
-          $comment=$comments['comment'];
+          if($test==true){
+            $entry_id=$row['entry_id'];
+            $sql="SELECT comment FROM Comment WHERE entry_id='$entry_id';";
+            $query=$db->query($sql);
+            $comments=$query->fetch(PDO::FETCH_ASSOC);
+            $comment=$comments['comment'];
+            $returnArr['entry_id'] = $row['entry_id'];
+            $returnArr['title'] = $row['title'];
+            $returnArr['votes'] = $row['votes'];
+            $returnArr['time_stamp'] = $row['time_stamp'];
+            $returnArr['image'] = $row['image'];
+            $returnArr['dh_id'] = $row['dh_id'];
+            $returnArr['station_id'] = $row['station_id'];
+            $returnArr['user_id'] = $row['user_id'];
+            $returnArr['active'] = $row['active'];
+            $returnArr['entry_id'] = $row['entry_id'];
+            $returnArr['attribute_id'] = $row['attribute_id'];
+            $returnArr['comment']=$comment;
 
-          $returnArr['entry_id'] = $row['entry_id'];
-          $returnArr['title'] = $row['title'];
-          $returnArr['votes'] = $row['votes'];
-          $returnArr['time_stamp'] = $row['time_stamp'];
-          $returnArr['image'] = $row['image'];
-          $returnArr['dh_id'] = $row['dh_id'];
-          $returnArr['station_id'] = $row['station_id'];
-          $returnArr['user_id'] = $row['user_id'];
-          $returnArr['active'] = $row['active'];
-          $returnArr['entry_id'] = $row['entry_id'];
-          $returnArr['comment'] = $row['comment'];
-          $returnArr['attribute_id'] = $row['attribute_id'];
-          $returnArr['comment']=$comment;
-
-          //echo json_encode($returnArr);
-          $AssocArr[] = $returnArr;
-        }
-      }
-      return $response->write(json_encode($AssocArr));
+            //echo json_encode($returnArr);
+            $AssocArr[] = $returnArr;
+          }
+       }
+    /*
+        $success = "true";
+        $str = array("success" => $success, "data" => $arr);
+        //echo $success;
+        return $response->write(json_encode($str));
+        */
+        return $response->write(json_encode($AssocArr));
   }
 }
 );
